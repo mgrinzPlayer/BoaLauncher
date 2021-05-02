@@ -2,3 +2,5 @@
 *.lps
 *.res
 lib/
+backup/
+boa-launcher.ini
