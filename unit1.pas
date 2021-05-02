@@ -40,6 +40,8 @@ type
     procedure btnExitClick(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure Image1MouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure PageControl1Change(Sender: TObject);
   private
     LanguageList: array of string;
@@ -274,6 +276,13 @@ begin
   examineIPK3file;
   lblActiveAddon.Caption:='Currently selected addon: {none}';
   loadSettings;
+end;
+
+procedure TForm1.Image1MouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  ReleaseCapture;
+  SendMessage(Form1.Handle,WM_SYSCOMMAND,$F012,0);
 end;
 
 procedure TForm1.btnExitClick(Sender: TObject);
