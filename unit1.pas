@@ -421,8 +421,6 @@ begin
 
   while Panel1.ControlCount>0 do Panel1.Controls[0].Free;
 
-  Caption:=inttostr( Panel1.ControlCount );
-
   for i:=0 to fileList.Count-1 do
   begin
     Application.ProcessMessages;
