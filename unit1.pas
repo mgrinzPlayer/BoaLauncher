@@ -73,7 +73,7 @@ implementation
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-//                 extract from ZIP functions/procedures, paring text helpers
+//                 extract from ZIP functions/procedures, parsing text helpers
 
 function findFileInsideArchive(zip: TUnZipper; what: string):integer;
 var i: integer;
@@ -444,6 +444,8 @@ begin
       lblNameOfAddon.Parent:=pnlAddon;
       lblNameOfAddon.AnchorHorizontalCenterTo(pnlAddon);
       lblNameOfAddon.AnchorVerticalCenterTo(pnlAddon);
+      lblNameOfAddon.BorderSpacing.Top:=15;
+      lblNameOfAddon.BorderSpacing.Bottom:=15;
       lblNameOfAddon.Caption:=ExtractFileName(fileList[i])+'  (couldn''t find addoninfo.txt)';
 
       //clickable just like panels
@@ -458,7 +460,7 @@ begin
       lblNameOfAddon:=TLabel.Create(Panel1);
       lblNameOfAddon.Parent:=pnlAddon;
       lblNameOfAddon.WordWrap:=true;
-      lblNameOfAddon.Top:=5;
+      lblNameOfAddon.BorderSpacing.Top:=5;
       lblNameOfAddon.AnchorHorizontalCenterTo(pnlAddon);
       lblNameOfAddon.Caption:=title;
 
