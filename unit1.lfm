@@ -2873,7 +2873,7 @@ object Form1: TForm1
       'Use displacement textures (beautiful)'
     )
     Style = csDropDownList
-    TabOrder = 2
+    TabOrder = 1
     Text = 'Don''t use displacement textures (faster)'
   end
   object lblTextureFiltering: TLabel
@@ -2907,7 +2907,7 @@ object Form1: TForm1
       'Trilinear (with Normal2x)'
     )
     Style = csDropDownList
-    TabOrder = 3
+    TabOrder = 2
     Text = 'Use Last Settings'
   end
   object lblLanguage: TLabel
@@ -2935,11 +2935,11 @@ object Form1: TForm1
     ItemHeight = 15
     ItemIndex = 0
     Items.Strings = (
-      'Use last setting'
+      'Use Last Settings'
     )
     Style = csDropDownList
-    TabOrder = 1
-    Text = 'Use last setting'
+    TabOrder = 3
+    Text = 'Use Last Settings'
   end
   object btnStart: TButton
     AnchorSideLeft.Control = cbLanguage

@@ -109,7 +109,7 @@ begin
       if brackets=0 then break;
 
       cbLanguage.Clear;
-      cbLanguage.AddItem('Use last setting',nil);
+      cbLanguage.AddItem('Use Last Settings',nil);
       cbLanguage.ItemIndex:=0;
 
       for j:=i+2 to DecompressedFile.Count-1 do
