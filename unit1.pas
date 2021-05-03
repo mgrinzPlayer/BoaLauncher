@@ -262,8 +262,13 @@ begin
   addonFileName:=inifile.ReadString('Launcher','addonFileName','');
   chkbLaunchWithAddon.Checked:=inifile.ReadBool('Launcher','LaunchWithAddon',false);
 
-  if chkbLaunchWithAddon.Checked and (addonFileName<>'') then
+  if (addonTitle<>'') and (addonFileName<>'') then
+  begin
     lblActiveAddon.Caption:='Currently selected addon: "'+addonTitle+'"';
+    chkbLaunchWithAddon.Visible:=true;
+  end
+  else
+    chkbLaunchWithAddon.Checked:=false;
 
   inifile.Free;
 end;
@@ -274,7 +279,8 @@ begin
   PageControl1.PageIndex:=0;
 
   examineIPK3file;
-  lblActiveAddon.Caption:='Currently selected addon: {none}';
+  lblActiveAddon.Caption:='Addon not selected.';
+  chkbLaunchWithAddon.Visible:=false;
   loadSettings;
 end;
 
@@ -337,7 +343,7 @@ begin
   if cbLanguage.ItemIndex=0 then lang:=''
                             else lang:='+set language '+LanguageList[cbLanguage.ItemIndex-1];
 
-  case chkbLaunchWithAddon.Checked of
+  case (addonFileName<>'') and chkbLaunchWithAddon.Checked of
     false: commandLineParam:=Format('-iwad "%s" %s %s %s %s %s',[ipk3Name,displacement,detail,filtering,devcom,lang]);
     true: commandLineParam:=Format('-file "%s" %s %s %s %s %s',[addonFileName,displacement,detail,filtering,devcom,lang]);
   end;
@@ -372,6 +378,7 @@ begin
 
   lblActiveAddon.Caption:='Currently selected addon: "'+AddonList_titles[selected]+'"';
   chkbLaunchWithAddon.Checked:=true;
+  chkbLaunchWithAddon.Visible:=true;
 
   for i:=0 to Length(listOfAllAddonPanels)-1 do // colors
   begin
