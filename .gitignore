@@ -4,3 +4,6 @@
 lib/
 backup/
 boa-launcher.ini
+.svn/
+*.7z
+*.zip

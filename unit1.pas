@@ -40,6 +40,8 @@ type
       Shift: TShiftState; X, Y: Integer);
     procedure Image1MouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+
+    procedure delayedExecution(Sender: TObject);
   private
     LanguageList: array of string;
     AddonList_titles: array of string;
@@ -297,19 +299,32 @@ begin
   inifile.Free;
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
-begin
-  SetCurrentDir(ExtractFilePath(ParamStr(0)));
+var delayedExecutionTimer: TTimer;
 
-  examineIPK3file;
+procedure TForm1.delayedExecution(Sender: TObject);
+begin
+  delayedExecutionTimer.Enabled:=false;
 
   AdjustComboboxSize(cbDetailPreset, Canvas);
   AdjustComboboxSize(cbDisplacementTextures, Canvas);
   AdjustComboboxSize(cbLanguage, Canvas);
+
+  examineIPK3file;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  SetCurrentDir(ExtractFilePath(ParamStr(0)));
+
   lblActiveAddon.Caption:='Addon not selected.';
   chkbLaunchWithAddon.Visible:=false;
   loadSettings;
   Image1.Picture.LoadFromResourceName(HInstance,'LAUNCHERIMAGE');
+
+  delayedExecutionTimer:=TTimer.Create(Self);
+  delayedExecutionTimer.OnTimer:=delayedExecution;
+  delayedExecutionTimer.Interval:=1;
+  delayedExecutionTimer.Enabled:=true;
 end;
 
 procedure TForm1.FormMouseDown(Sender: TObject; Button: TMouseButton;

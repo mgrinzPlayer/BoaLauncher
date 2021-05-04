@@ -3,10 +3,12 @@ object Form1: TForm1
   Height = 650
   Top = 189
   Width = 900
-  BorderStyle = bsToolWindow
+  BorderStyle = bsNone
   Caption = 'Blade of Agony'
   ClientHeight = 650
   ClientWidth = 900
+  Constraints.MinHeight = 650
+  Constraints.MinWidth = 900
   Icon.Data = {
     28A000000000010002002020000001002000A810000026000000000000000100
     20005A8F0000CE10000028000000200000004000000001002000000000000010
