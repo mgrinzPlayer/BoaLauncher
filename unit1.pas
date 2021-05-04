@@ -14,35 +14,32 @@ type
 
   TForm1 = class(TForm)
 
-    btnStart: TButton;
-    btnExit: TButton;
-    chkbLaunchWithAddon: TCheckBox;
-
-    chkbDeveloperCommentary: TCheckBox;
-    lblActiveAddon: TLabel;
-
     lblDetailPreset: TLabel;
     cbDetailPreset: TComboBox;
     lblDisplacementTextures: TLabel;
     cbDisplacementTextures: TComboBox;
-    lblTextureFiltering: TLabel;
-    cbTextureFiltering: TComboBox;
     lblLanguage: TLabel;
     cbLanguage: TComboBox;
+    chkbDeveloperCommentary: TCheckBox;
+    lblActiveAddon: TLabel;
+    chkbLaunchWithAddon: TCheckBox;
 
-    Image1: TImage;
-    PageControl1: TPageControl;
+    btnStart: TButton;
+    btnExit: TButton;
+    btnAddonScan: TButton;
     Panel1: TPanel;
     ScrollBox1: TScrollBox;
-    TabSheet1: TTabSheet;
-    TabSheet2: TTabSheet;
+    Image1: TImage;
 
+    procedure btnAddonScanClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure ClosePreviewKey(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure FormMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
     procedure Image1MouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure PageControl1Change(Sender: TObject);
   private
     LanguageList: array of string;
     AddonList_titles: array of string;
@@ -50,11 +47,20 @@ type
     listOfAllAddonPanels: array of TPanel;
     addonFileName: string;
     addonTitle: string;
+
+    //zip
     tmpMemoryStream: TMemoryStream;
     procedure ZipOnCreateStreamProc(Sender: TObject; var AStream: TStream; AItem: TFullZipFileEntry);
     procedure ZipOnDoneStreamProc(Sender: TObject; var AStream: TStream; AItem: TFullZipFileEntry);
     function ExtractSingleFileToStream(archiveName: string; fileName: string; var MS: TMemoryStream): boolean;
     function ExtractSingleFileToStringList(archiveName: string; fileName: string; var SL: TStringList): boolean;
+
+    //addon preview
+    procedure ClosePreviewClick(Sender: TObject);
+    procedure PreviewClick(Sender: TObject);
+    procedure previewButtonEnter(Sender: TObject);
+
+    //main launcher
     procedure examineIPK3file;
     procedure addon_panelinfo_click(Sender: TObject);
     procedure preparing_BoA_addons_page;
@@ -136,6 +142,13 @@ begin
   if a>0 then s:=copy(s,1,a-1);
 end;
 
+procedure removePadding(var s: string);
+var a: integer;
+begin
+  a:=pos(':',s);
+  if a>0 then s:=copy(s,1,a-1);
+end;
+
 procedure parse_addoninfo_txt(SL: TStringList; var title,description,requirements: string; var previewImages: integer);
 var
   s,key,value: string;
@@ -161,6 +174,17 @@ begin
       if key='previewimages' then previewImages:=StrToInt(value);
     end;
   end;
+end;
+
+procedure AdjustComboboxSize(cb: TComboBox; canvas: TCanvas);
+var
+  i,w: integer;
+  maxwidth: integer=0;
+begin
+  for i:=0 to cb.Items.Count-1 do maxwidth:=max(maxwidth, canvas.TextWidth(cb.Items[i]));
+  w:=maxwidth+GetSystemMetrics(SM_CXVSCROLL)+10;
+  cb.width:=w;
+  cb.Constraints.MinWidth:=w;
 end;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -276,12 +300,22 @@ end;
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   SetCurrentDir(ExtractFilePath(ParamStr(0)));
-  PageControl1.PageIndex:=0;
 
   examineIPK3file;
+
+  AdjustComboboxSize(cbDetailPreset, Canvas);
+  AdjustComboboxSize(cbDisplacementTextures, Canvas);
+  AdjustComboboxSize(cbLanguage, Canvas);
   lblActiveAddon.Caption:='Addon not selected.';
   chkbLaunchWithAddon.Visible:=false;
   loadSettings;
+end;
+
+procedure TForm1.FormMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  ReleaseCapture;
+  SendMessage(Form1.Handle,WM_SYSCOMMAND,$F012,0);
 end;
 
 procedure TForm1.Image1MouseDown(Sender: TObject; Button: TMouseButton;
@@ -305,13 +339,12 @@ end;
 
 procedure TForm1.btnStartClick(Sender: TObject);
 var
-  execName,ipk3Name,detail,displacement,filtering,devcom,lang,commandLineParam: string;
+  execName,ipk3Name,detail,displacement,devcom,lang,commandLineParam: string;
 begin
   execName:='boa.exe:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
-  execName:=copy(execName,1,pos(':',execName)-1);
-
   ipk3Name:='boa.ipk3:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
-  ipk3Name:=copy(ipk3Name,1,pos(':',ipk3Name)-1);
+  removePadding(execName);
+  removePadding(ipk3Name);
 
   case cbDisplacementTextures.ItemIndex of
     0: displacement:='';  // without displacement textures
@@ -328,12 +361,14 @@ begin
     6: detail:='+exec launcher-resource/detail-veryhigh.cfg';
   end;
 
+  {
   case cbTextureFiltering.ItemIndex of
     0: filtering:='';                     //unchanged
     1: filtering:='+exec launcher-resource/texfilt-none.cfg';
     2: filtering:='+exec launcher-resource/texfilt-tri.cfg';
     3: filtering:='+exec launcher-resource/texfilt-nnx.cfg';
   end;
+  }
 
   case chkbDeveloperCommentary.Checked of
     false: devcom:='+set boa_devcomswitch 0';
@@ -344,8 +379,8 @@ begin
                             else lang:='+set language '+LanguageList[cbLanguage.ItemIndex-1];
 
   case (addonFileName<>'') and chkbLaunchWithAddon.Checked of
-    false: commandLineParam:=Format('-iwad "%s" %s %s %s %s %s',[ipk3Name,displacement,detail,filtering,devcom,lang]);
-    true: commandLineParam:=Format('-file "%s" %s %s %s %s %s',[addonFileName,displacement,detail,filtering,devcom,lang]);
+    false: commandLineParam:=Format('-iwad "%s" %s %s %s %s',[ipk3Name,displacement,detail,devcom,lang]);
+    true: commandLineParam:=Format('-file "%s" %s %s %s %s',[addonFileName,displacement,detail,devcom,lang]);
   end;
 
   ShellExecute(0, 'open', pchar(execName), pchar(commandLineParam), '', sw_show);
@@ -354,17 +389,36 @@ begin
   Application.Terminate;
 end;
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 //                 Addon stuff
 
-procedure TForm1.PageControl1Change(Sender: TObject);
+procedure TForm1.btnAddonScanClick(Sender: TObject);
 begin
-  if PageControl1.TabIndex=0 then exit;
-  preparing_BoA_addons_page();
+  ScrollBox1.Visible:=not ScrollBox1.Visible;
+  if ScrollBox1.Visible then
+  begin
+    btnAddonScan.Caption:='Close addons informations';
+    preparing_BoA_addons_page();
+  end
+  else
+    btnAddonScan.Caption:='Click to scan for addons';
+end;
+
+procedure TForm1.previewButtonEnter(Sender: TObject);
+var
+  pos: Integer=0;
+  control: TControl;
+begin
+  control:=TControl(TControl(Sender).Parent); //panel pos
+  inc(pos,control.Top);
+  dec(pos,control.BorderSpacing.Top);
+
+  if pos < ScrollBox1.VertScrollBar.Position then
+    ScrollBox1.VertScrollBar.Position:=pos
+  else if pos-ScrollBox1.VertScrollBar.Position+5 > ScrollBox1.Height then
+    ScrollBox1.VertScrollBar.Position:=pos;
 end;
 
 procedure TForm1.addon_panelinfo_click(Sender: TObject);
@@ -372,7 +426,6 @@ var
   i,selected: integer;
 begin
   selected:=TControl(Sender).Tag;
-
   addonTitle:=AddonList_titles[selected];
   addonFileName:=AddonList_fileNames[selected];
 
@@ -387,12 +440,53 @@ begin
   end;
 end;
 
+var
+  PreviewImageFullSize: TImage;
+  PreviewForm: TForm;
+
+procedure TForm1.ClosePreviewClick(Sender: TObject);
+begin
+  PreviewForm.Close;
+end;
+
+procedure TForm1.ClosePreviewKey(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  PreviewForm.Close;
+end;
+
+procedure TForm1.PreviewClick(Sender: TObject);
+begin
+  PreviewForm:=TForm.Create(Form1);
+  PreviewImageFullSize:=TImage.Create(PreviewForm);
+  PreviewImageFullSize.Parent:=PreviewForm;
+  PreviewImageFullSize.Picture.Assign(TImage(Sender).Picture);
+  PreviewImageFullSize.Align:=alClient;
+  PreviewImageFullSize.BorderSpacing.Around:=10;
+  PreviewImageFullSize.Stretch:=true;
+  PreviewImageFullSize.StretchInEnabled:=true;
+  PreviewImageFullSize.StretchOutEnabled:=true;
+  PreviewImageFullSize.OnClick:=ClosePreviewClick;
+
+  PreviewForm.Color:=clBlack;
+  PreviewForm.BorderStyle:=bsNone;
+  PreviewForm.Position:=Form1.Position;
+  PreviewForm.Constraints.MaxHeight:=Screen.DesktopHeight * 6 div 10;
+  PreviewForm.Constraints.MaxWidth:=Screen.DesktopWidth * 6 div 10;
+  PreviewForm.AutoSize:=true;
+
+  PreviewForm.OnClick:=ClosePreviewClick;
+  PreviewForm.OnKeyUp:=ClosePreviewKey;
+  PreviewForm.ShowModal;
+  PreviewForm.Free;
+end;
+
 procedure TForm1.preparing_BoA_addons_page;
 var
   searchRec: TSearchRec;
-  i,r: integer;
+  i,j,r: integer;
   fileList: TStringList=nil;
   addoninfo_txt_SL: TStringList=nil;
+  MS: TMemoryStream=nil;
 
   title: string='';
   description: string='';
@@ -400,25 +494,12 @@ var
   imageCount: integer=0;
 
   pnlAddon: TPanel;
-  lblNameOfAddon, lblDescOfAddon, lblRequirementsOfAddon: TLabel;
+  btnNameOfAddon: TButton; // user can use tab to select addon
+  lblDescOfAddon, lblRequirementsOfAddon: TLabel;
+  imgPreview: TImage;
 
+  prevImgPreview: TImage=nil;
   lastControl: TControl=nil;
-
-  procedure anchorTheControl(c: TControl);
-  begin
-    if lastControl=nil then
-    begin
-      c.AnchorParallel(akTop,15,Panel1);
-      c.AnchorParallel(akLeft,15,Panel1);
-      c.AnchorParallel(akRight,15,Panel1);
-      c.BorderSpacing.Bottom:=15;
-    end
-    else
-    begin
-      c.AnchorToCompanion(akTop,0,lastControl);
-      c.BorderSpacing.Bottom:=15;
-    end;
-  end;
 
 begin
   fileList:=TStringList.Create;
@@ -444,47 +525,48 @@ begin
     pnlAddon:=TPanel.Create(Panel1);
     pnlAddon.Parent:=Panel1;
     pnlAddon.AutoSize:=true;
-    pnlAddon.Tag:=i;
-    pnlAddon.OnClick:=addon_panelinfo_click;
-    anchorTheControl(pnlAddon);
+
+    if i=0 then
+    begin
+      pnlAddon.AnchorParallel(akTop,15,Panel1);
+      pnlAddon.AnchorParallel(akLeft,15,Panel1);
+      pnlAddon.AnchorParallel(akRight,15,Panel1);
+    end
+    else
+      pnlAddon.AnchorToCompanion(akTop,15,lastControl);
+
     lastControl:=pnlAddon;
 
     AddonList_fileNames[i]:=ExtractFileName(fileList[i]);
     listOfAllAddonPanels[i]:=pnlAddon;
 
+    btnNameOfAddon:=TButton.Create(Panel1);
+    btnNameOfAddon.Parent:=pnlAddon;
+    btnNameOfAddon.AutoSize:=true;
+    btnNameOfAddon.AnchorParallel(akLeft,10,pnlAddon);
+    btnNameOfAddon.AnchorParallel(akRight,10,pnlAddon);
+
     if not ExtractSingleFileToStringList(fileList[i], 'addoninfo.txt', addoninfo_txt_SL) then
     begin
       AddonList_titles[i]:=AddonList_fileNames[i];
 
-      lblNameOfAddon:=TLabel.Create(Panel1);
-      lblNameOfAddon.Parent:=pnlAddon;
-      lblNameOfAddon.AnchorHorizontalCenterTo(pnlAddon);
-      lblNameOfAddon.AnchorVerticalCenterTo(pnlAddon);
-      lblNameOfAddon.BorderSpacing.Top:=15;
-      lblNameOfAddon.BorderSpacing.Bottom:=15;
-      lblNameOfAddon.Caption:=ExtractFileName(fileList[i])+'  (couldn''t find addoninfo.txt)';
-
-      //clickable just like panels
-      lblNameOfAddon.Tag:=i;
-      lblNameOfAddon.OnClick:=addon_panelinfo_click;
+      btnNameOfAddon.BorderSpacing.Top:=15;
+      btnNameOfAddon.BorderSpacing.Bottom:=15;
+      btnNameOfAddon.Caption:=ExtractFileName(fileList[i])+'  (couldn''t find addoninfo.txt)';
     end
     else
     begin
       parse_addoninfo_txt(addoninfo_txt_SL,title,description,requirements,imageCount);
       AddonList_titles[i]:=title;
 
-      lblNameOfAddon:=TLabel.Create(Panel1);
-      lblNameOfAddon.Parent:=pnlAddon;
-      lblNameOfAddon.WordWrap:=true;
-      lblNameOfAddon.BorderSpacing.Top:=5;
-      lblNameOfAddon.AnchorHorizontalCenterTo(pnlAddon);
-      lblNameOfAddon.Caption:=title;
+      btnNameOfAddon.BorderSpacing.Top:=10;
+      btnNameOfAddon.Caption:=title;
 
       lblDescOfAddon:=TLabel.Create(Panel1);
       lblDescOfAddon.Parent:=pnlAddon;
       lblDescOfAddon.WordWrap:=true;
       lblDescOfAddon.AutoSize:=true;
-      lblDescOfAddon.AnchorToNeighbour(akTop,15,lblNameOfAddon);
+      lblDescOfAddon.AnchorToNeighbour(akTop,15,btnNameOfAddon);
       lblDescOfAddon.AnchorParallel(akLeft,10,pnlAddon);
       lblDescOfAddon.AnchorParallel(akRight,10,pnlAddon);
       lblDescOfAddon.Caption:='Description: '+description;
@@ -499,19 +581,60 @@ begin
       lblRequirementsOfAddon.Caption:='Requirements: '+requirements;
       lblRequirementsOfAddon.BorderSpacing.Bottom:=10;
 
+      // PREVIEW IMAGES
+      if imageCount>0 then
+      begin
+        for j:=1 to imageCount do
+        begin
+          Application.ProcessMessages;
+          if ExtractSingleFileToStream(fileList[i], Format('preview/%d.jpg',[j]),MS) then
+          begin
+            imgPreview:=TImage.Create(Panel1);
+            imgPreview.Picture.LoadFromStream(MS);
+            imgPreview.Parent:=pnlAddon;
+            imgPreview.Constraints.MaxWidth:=pnlAddon.Width div 2;
+            imgPreview.Constraints.MaxHeight:=(9 * pnlAddon.Width div 2) div 16;
+            imgPreview.Proportional:=true;
+            imgPreview.AutoSize:=true;
+            imgPreview.Stretch:=true;
+            imgPreview.StretchInEnabled:=true;
+            imgPreview.StretchOutEnabled:=false;
+            imgPreview.AnchorParallel(akLeft,10,pnlAddon);
 
-      //clickable just like panels
-      lblNameOfAddon.Tag:=i;
-      lblNameOfAddon.OnClick:=addon_panelinfo_click;
+            imgPreview.Tag:=i;
+            imgPreview.OnClick:=addon_panelinfo_click;
+            imgPreview.OnDblClick:=PreviewClick;
+
+            if prevImgPreview=nil then
+              imgPreview.AnchorToNeighbour(akTop,0,lblRequirementsOfAddon)
+            else
+              imgPreview.AnchorToNeighbour(akTop,15,prevImgPreview);
+            prevImgPreview:=imgPreview;
+
+          end;
+        end;
+        prevImgPreview.BorderSpacing.Bottom:=10;
+        prevImgPreview:=nil;
+      end;
+
+      //make them clickable
       lblDescOfAddon.Tag:=i;
       lblDescOfAddon.OnClick:=addon_panelinfo_click;
       lblRequirementsOfAddon.Tag:=i;
       lblRequirementsOfAddon.OnClick:=addon_panelinfo_click;
     end;
-  end;
 
-  lastControl.BorderSpacing.Bottom:=100;
+    //make them clickable
+    pnlAddon.Tag:=i;
+    pnlAddon.OnClick:=addon_panelinfo_click;
+    btnNameOfAddon.Tag:=i;
+    btnNameOfAddon.OnClick:=addon_panelinfo_click;
+    btnNameOfAddon.OnEnter:=previewButtonEnter;
 
+
+  end;//end loop: "for i:=0 to fileList.Count-1"
+
+  pnlAddon.BorderSpacing.Bottom:=50;
 end;
 
 end.
