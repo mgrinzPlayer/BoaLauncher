@@ -52,7 +52,7 @@ begin
   end;
 end;
 
-procedure parseAddoninfoTXT(SL: TStringList; var title,description,requirements: string; var previewImages: integer);
+procedure parseAddonInfoTXT(SL: TStringList; var title,description,requirements: string; var previewImages: integer);
 var
   s,key,value: string;
   i,a: integer;

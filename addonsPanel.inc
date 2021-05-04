@@ -79,7 +79,7 @@ var
   searchRec: TSearchRec;
   i,j,r: integer;
   fileList: TStringList=nil;
-  addoninfo_txt_SL: TStringList=nil;
+  addonInfoTXT: TStringList=nil;
   MS: TMemoryStream=nil;
 
   title: string='';
@@ -97,7 +97,17 @@ var
   prevImgPreview: TImage=nil;
   lastControl: TControl=nil;
 
-  start: qword=0;
+  pnlAddonWidth: integer;
+  textBlockWidth: integer;
+
+const
+  leftMargin=10;// pnlAddon margins
+  rightMargin=10;
+  topMargin=15;
+  bottomMargin=15;
+
+  buttonBottomSpace=15;// space between btnNameOfAddon and other control below
+  blockSpacing=10; //space between two TextBlocks, or two images
 begin
 
   fileList:=TStringList.Create;
@@ -114,37 +124,44 @@ begin
   SetLength(AddonList_titles,fileList.Count);
   SetLength(listOfAllAddonPanels,fileList.Count);
 
+  pnlAddonWidth:=ScrollBox1.Width-leftMargin-rightMargin-GetSystemMetrics(SM_CXVSCROLL);
+  textBlockWidth:=(2*(pnlAddonWidth-leftMargin-rightMargin) div 3);
+
   mainAddonsPanel.Free;
   mainAddonsPanel:=TPanel.Create(Form1);
   mainAddonsPanel.Parent:=ScrollBox1;
   mainAddonsPanel.Align:=alClient;
+  mainAddonsPanel.DoubleBuffered:=true;
 
   progressBar:=TProgressBar.Create(Form1);
   progressBar.Max:=fileList.Count-1;
   progressBar.Parent:=Form1;
-  progressBar.AnchorToCompanion(akTop,0,ScrollBox1);
+  progressBar.Anchors:=[];
+  progressBar.AnchorParallel(akBottom,0,ScrollBox1);
+  progressBar.AnchorParallel(akLeft,0,ScrollBox1);
+  progressBar.AnchorParallel(akRight,0,ScrollBox1);
 
-  start:=GetTickCount64;
+  prepareBoA_addons_page_processing:=true;
+
   for i:=0 to fileList.Count-1 do
   begin
     if terminate then break;
 
     progressBar.Position:=i;
     Application.ProcessMessages;
-    prepareBoA_addons_page_processing:=true;
 
     pnlAddon:=TPanel.Create(mainAddonsPanel);
     pnlAddon.Parent:=mainAddonsPanel;
-    pnlAddon.AutoSize:=true;
+    pnlAddon.Width:=pnlAddonWidth;
 
     if i=0 then
     begin
-      pnlAddon.AnchorParallel(akTop,15,mainAddonsPanel);
-      pnlAddon.AnchorParallel(akLeft,15,mainAddonsPanel);
-      pnlAddon.AnchorParallel(akRight,15,mainAddonsPanel);
+      pnlAddon.AnchorParallel(akTop,topMargin,mainAddonsPanel);
+      pnlAddon.AnchorParallel(akLeft,leftMargin,mainAddonsPanel);
+      pnlAddon.AnchorParallel(akRight,rightMargin,mainAddonsPanel);
     end
     else
-      pnlAddon.AnchorToCompanion(akTop,15,lastControl);
+      pnlAddon.AnchorToCompanion(akTop,topMargin,lastControl);
 
     lastControl:=pnlAddon;
 
@@ -154,45 +171,38 @@ begin
     btnNameOfAddon:=TButton.Create(mainAddonsPanel);
     btnNameOfAddon.Parent:=pnlAddon;
     btnNameOfAddon.AutoSize:=true;
-    btnNameOfAddon.AnchorParallel(akLeft,10,pnlAddon);
-    btnNameOfAddon.AnchorParallel(akRight,10,pnlAddon);
+    btnNameOfAddon.AnchorParallel(akTop,10,pnlAddon);
+    btnNameOfAddon.AnchorParallel(akLeft,leftMargin,pnlAddon);
+    btnNameOfAddon.AnchorParallel(akRight,rightMargin,pnlAddon);
 
-    if not ExtractSingleFileToStringList(fileList[i], 'addoninfo.txt', addoninfo_txt_SL) then
+    if ExtractSingleFileToStringList(fileList[i], 'addoninfo.txt', addonInfoTXT) then
     begin
-      AddonList_titles[i]:=AddonList_fileNames[i];
-
-      btnNameOfAddon.BorderSpacing.Top:=15;
-      btnNameOfAddon.BorderSpacing.Bottom:=15;
-      btnNameOfAddon.Caption:=ExtractFileName(fileList[i])+'  (couldn''t find addoninfo.txt)';
-    end
-    else
-    begin
-      parseAddoninfoTXT(addoninfo_txt_SL,title,description,requirements,imageCount);
+      parseAddonInfoTXT(addonInfoTXT,title,description,requirements,imageCount);
       AddonList_titles[i]:=title;
 
-      btnNameOfAddon.BorderSpacing.Top:=10;
       btnNameOfAddon.Caption:=title;
 
       lblDescOfAddon:=TLabel.Create(mainAddonsPanel);
       lblDescOfAddon.Parent:=pnlAddon;
       lblDescOfAddon.WordWrap:=true;
       lblDescOfAddon.AutoSize:=true;
-      lblDescOfAddon.AnchorToNeighbour(akTop,15,btnNameOfAddon);
-      lblDescOfAddon.AnchorParallel(akLeft,10,pnlAddon);
-      lblDescOfAddon.AnchorParallel(akRight,10,pnlAddon);
-      lblDescOfAddon.Caption:='Description: '+description;
+      lblDescOfAddon.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
+      lblDescOfAddon.Left:=leftMargin;
+      lblDescOfAddon.Constraints.MaxWidth:=textBlockWidth;
+      lblDescOfAddon.Caption:='Description:'+LineEnding+description;
 
       lblRequirementsOfAddon:=TLabel.Create(mainAddonsPanel);
       lblRequirementsOfAddon.Parent:=pnlAddon;
       lblRequirementsOfAddon.WordWrap:=true;
       lblRequirementsOfAddon.AutoSize:=true;
-      lblRequirementsOfAddon.AnchorToNeighbour(akTop,15,lblDescOfAddon);
-      lblRequirementsOfAddon.AnchorParallel(akLeft,10,pnlAddon);
-      lblRequirementsOfAddon.AnchorParallel(akRight,10,pnlAddon);
-      lblRequirementsOfAddon.Caption:='Requirements: '+requirements;
-      lblRequirementsOfAddon.BorderSpacing.Bottom:=10;
+      lblRequirementsOfAddon.AnchorToNeighbour(akTop,blockSpacing,lblDescOfAddon);
+      lblRequirementsOfAddon.Left:=leftMargin;
+      lblRequirementsOfAddon.Constraints.MaxWidth:=lblDescOfAddon.Constraints.MaxWidth;
+      lblRequirementsOfAddon.Caption:='Requirements:'+LineEnding+requirements;
 
       // PREVIEW IMAGES
+      prevImgPreview:=nil;
+      imgPreview:=nil;
       if imageCount>0 then
       begin
         for j:=1 to imageCount do
@@ -203,29 +213,29 @@ begin
             imgPreview:=TImage.Create(mainAddonsPanel);
             imgPreview.Picture.LoadFromStream(MS);
             imgPreview.Parent:=pnlAddon;
-            imgPreview.Constraints.MaxWidth:=pnlAddon.Width div 2;
-            imgPreview.Constraints.MaxHeight:=(9 * pnlAddon.Width div 2) div 16;
+            imgPreview.Constraints.MaxWidth:= textBlockWidth div 2;
+            imgPreview.Constraints.MaxHeight:=(9 * imgPreview.Constraints.MaxWidth) div 16;
+            imgPreview.Left:=leftMargin+textBlockWidth;
+
+            if prevImgPreview=nil then
+              imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon)
+            else
+              imgPreview.AnchorToNeighbour(akTop,blockSpacing,prevImgPreview);
+
             imgPreview.Proportional:=true;
-            imgPreview.AutoSize:=true;
             imgPreview.Stretch:=true;
             imgPreview.StretchInEnabled:=true;
             imgPreview.StretchOutEnabled:=false;
-            imgPreview.AnchorParallel(akLeft,10,pnlAddon);
+            imgPreview.AutoSize:=true;
 
             imgPreview.Tag:=i;
             imgPreview.OnClick:=addon_panelinfo_click;
             imgPreview.OnDblClick:=PreviewClick;
 
-            if prevImgPreview=nil then
-              imgPreview.AnchorToNeighbour(akTop,0,lblRequirementsOfAddon)
-            else
-              imgPreview.AnchorToNeighbour(akTop,15,prevImgPreview);
             prevImgPreview:=imgPreview;
 
           end;
         end;
-        prevImgPreview.BorderSpacing.Bottom:=10;
-        prevImgPreview:=nil;
       end;
 
       //make them clickable
@@ -233,20 +243,28 @@ begin
       lblDescOfAddon.OnClick:=addon_panelinfo_click;
       lblRequirementsOfAddon.Tag:=i;
       lblRequirementsOfAddon.OnClick:=addon_panelinfo_click;
+
+      //adjust height
+      pnlAddon.Height:=lblRequirementsOfAddon.Top+lblRequirementsOfAddon.Height+bottomMargin;
+      if imgPreview<>nil then pnlAddon.Height:=max(imgPreview.Top+imgPreview.Height+bottomMargin, pnlAddon.Height)
+    end
+    else
+    begin
+      AddonList_titles[i]:=AddonList_fileNames[i];
+      btnNameOfAddon.Caption:=ExtractFileName(fileList[i])+'  (couldn''t find addoninfo.txt)';
+
+      //adjust height
+      pnlAddon.Height:=btnNameOfAddon.Top+btnNameOfAddon.Height+bottomMargin;
     end;
 
-    //make them clickable
+    //make them clickable (common)
     pnlAddon.Tag:=i;
     pnlAddon.OnClick:=addon_panelinfo_click;
     btnNameOfAddon.Tag:=i;
     btnNameOfAddon.OnClick:=addon_panelinfo_click;
     btnNameOfAddon.OnEnter:=previewButtonEnter;
 
-
   end;//end loop: "for i:=0 to fileList.Count-1"
-  pnlAddon.BorderSpacing.Bottom:=50;
-
-  //ShowMessage(FloatToStr((GetTickCount64 - start) / 1000)+' seconds');
 
   progressBar.Free;
   prepareBoA_addons_page_processing:=false;
