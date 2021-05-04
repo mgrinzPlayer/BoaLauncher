@@ -309,6 +309,7 @@ begin
   lblActiveAddon.Caption:='Addon not selected.';
   chkbLaunchWithAddon.Visible:=false;
   loadSettings;
+  Image1.Picture.LoadFromResourceName(HInstance,'LAUNCHERIMAGE');
 end;
 
 procedure TForm1.FormMouseDown(Sender: TObject; Button: TMouseButton;
