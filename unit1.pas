@@ -182,9 +182,16 @@ procedure AdjustComboboxSize(cb: TComboBox; canvas: TCanvas);
 var
   i,w: integer;
   maxwidth: integer=0;
+  comboboxInfo: TComboboxInfo;
 begin
   for i:=0 to cb.Items.Count-1 do maxwidth:=max(maxwidth, canvas.TextWidth(cb.Items[i]));
-  w:=maxwidth+GetSystemMetrics(SM_CXVSCROLL)+10;
+
+  comboboxInfo.cbSize:=sizeof(comboboxInfo);
+  if GetComboBoxInfo(cb.Handle, @comboboxInfo) then
+    w:=(cb.width+comboboxInfo.rcItem.Left-comboboxInfo.rcItem.Right)+maxwidth+4
+  else
+    w:=maxwidth+16;
+
   cb.width:=w;
   cb.Constraints.MinWidth:=w;
 end;
@@ -308,8 +315,6 @@ begin
   AdjustComboboxSize(cbDetailPreset, Canvas);
   AdjustComboboxSize(cbDisplacementTextures, Canvas);
   AdjustComboboxSize(cbLanguage, Canvas);
-
-  examineIPK3file;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -320,6 +325,8 @@ begin
   chkbLaunchWithAddon.Visible:=false;
   loadSettings;
   Image1.Picture.LoadFromResourceName(HInstance,'LAUNCHERIMAGE');
+
+  examineIPK3file;
 
   delayedExecutionTimer:=TTimer.Create(Self);
   delayedExecutionTimer.OnTimer:=delayedExecution;
