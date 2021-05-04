@@ -70,7 +70,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="2">
+    <Units Count="7">
       <Unit0>
         <Filename Value="BladeOfAgonyLauncher.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -83,6 +83,26 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
       </Unit1>
+      <Unit2>
+        <Filename Value="loadAndSaveSetttings.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="executingTheGame.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="addonsPanel.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="helpers.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="parsing.inc"/>
+        <IsPartOfProject Value="True"/>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

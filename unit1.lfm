@@ -1516,7 +1516,7 @@ object Form1: TForm1
     ClientWidth = 840
     TabOrder = 8
     Visible = False
-    object Panel1: TPanel
+    object mainAddonsPanel: TPanel
       Left = 0
       Height = 446
       Top = 0
