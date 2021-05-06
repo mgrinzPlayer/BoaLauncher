@@ -33,11 +33,14 @@ begin
 
   if (addonTitle<>'') and (addonFileName<>'') then
   begin
-    lblActiveAddon.Caption:='Currently selected addon: "'+addonTitle+'"';
-    chkbLaunchWithAddon.Visible:=true;
+    lblActiveAddon.Caption:='"'+addonTitle+'"';
   end
   else
+  begin
     chkbLaunchWithAddon.Checked:=false;
+    chkbLaunchWithAddonVisibilityChange(false);
+    lblActiveAddon.Caption:='Addon not selected.';
+  end;
 
   inifile.Free;
 end;

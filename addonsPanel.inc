@@ -23,9 +23,9 @@ begin
   addonTitle:=AddonList_titles[selected];
   addonFileName:=AddonList_fileNames[selected];
 
-  lblActiveAddon.Caption:='Currently selected addon: "'+AddonList_titles[selected]+'"';
+  lblActiveAddon.Caption:='"'+AddonList_titles[selected]+'"';
   chkbLaunchWithAddon.Checked:=true;
-  chkbLaunchWithAddon.Visible:=true;
+  chkbLaunchWithAddonVisibilityChange(true);
 
   for i:=0 to Length(listOfAllAddonPanels)-1 do // colors
   begin

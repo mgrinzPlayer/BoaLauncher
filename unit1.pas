@@ -35,12 +35,14 @@ type
     btnExit: TButton;
     btnAddonScan: TButton;
     mainAddonsPanel: TPanel;
+    Panel1: TPanel;
     ScrollBox1: TScrollBox;
     Image1: TImage;
 
     procedure btnAddonScanClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
+    procedure chkbLaunchWithAddonVisibilityChange(visible: boolean);
     procedure FormCreate(Sender: TObject);
 
     procedure ClosePreviewKey(Sender: TObject; var {%H-}Key: Word; {%H-}Shift: TShiftState);
@@ -154,12 +156,27 @@ begin
   AdjustComboboxSize(cbLanguage, Canvas);
 end;
 
+procedure TForm1.chkbLaunchWithAddonVisibilityChange(visible: boolean);
+begin
+  if chkbLaunchWithAddon.Visible=visible then exit;
+
+  chkbLaunchWithAddon.Visible:=visible;
+  if visible then
+  begin
+    lblActiveAddon.AnchorToNeighbour(akLeft,0,chkbLaunchWithAddon);
+    lblActiveAddon.AnchorVerticalCenterTo(chkbLaunchWithAddon);
+  end
+  else
+  begin
+    lblActiveAddon.AnchorParallel(akLeft,0,Panel1);
+    lblActiveAddon.AnchorParallel(akTop,0,Panel1);
+  end;
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   SetCurrentDir(ExtractFilePath(ParamStr(0)));
 
-  lblActiveAddon.Caption:='Addon not selected.';
-  chkbLaunchWithAddon.Visible:=false;
   loadSettings;
   Image1.Picture.LoadFromResourceName(HInstance,'LAUNCHERIMAGE');
 
