@@ -3,7 +3,6 @@ object Form1: TForm1
   Height = 650
   Top = 189
   Width = 900
-  BorderStyle = bsNone
   Caption = 'Blade of Agony'
   ClientHeight = 650
   ClientWidth = 900
@@ -1483,10 +1482,15 @@ object Form1: TForm1
     TabOrder = 5
   end
   object Image1: TImage
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
     Left = 0
     Height = 506
     Top = 0
     Width = 900
+    Anchors = [akTop, akLeft, akRight, akBottom]
     OnMouseDown = Image1MouseDown
     Stretch = True
   end

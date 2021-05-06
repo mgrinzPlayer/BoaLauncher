@@ -97,7 +97,7 @@ var
   prevImgPreview: TImage=nil;
   lastControl: TControl=nil;
 
-  pnlAddonWidth: integer;
+  pnlAddonClientWidth: integer;
   textBlockWidth: integer;
 
 const
@@ -124,14 +124,17 @@ begin
   SetLength(AddonList_titles,fileList.Count);
   SetLength(listOfAllAddonPanels,fileList.Count);
 
-  pnlAddonWidth:=ScrollBox1.Width-leftMargin-rightMargin-GetSystemMetrics(SM_CXVSCROLL);
-  textBlockWidth:=(2*(pnlAddonWidth-leftMargin-rightMargin) div 3);
-
   mainAddonsPanel.Free;
   mainAddonsPanel:=TPanel.Create(Form1);
   mainAddonsPanel.Parent:=ScrollBox1;
   mainAddonsPanel.Align:=alClient;
-  mainAddonsPanel.DoubleBuffered:=true;
+
+  ScrollBox1.VertScrollBar.Range:=ScrollBox1.ClientHeight+1;
+  mainAddonsPanel.AdjustSize;
+  pnlAddonClientWidth:=mainAddonsPanel.ClientWidth;
+  ScrollBox1.VertScrollBar.Range:=0;
+  textBlockWidth:=(2*(pnlAddonClientWidth-leftMargin-rightMargin) div 3);
+  ScrollBox1.AutoScroll:=true;
 
   progressBar:=TProgressBar.Create(Form1);
   progressBar.Max:=fileList.Count-1;
@@ -152,7 +155,7 @@ begin
 
     pnlAddon:=TPanel.Create(mainAddonsPanel);
     pnlAddon.Parent:=mainAddonsPanel;
-    pnlAddon.Width:=pnlAddonWidth;
+    pnlAddon.BorderSpacing.Bottom:=bottomMargin;
 
     if i=0 then
     begin
@@ -171,7 +174,7 @@ begin
     btnNameOfAddon:=TButton.Create(mainAddonsPanel);
     btnNameOfAddon.Parent:=pnlAddon;
     btnNameOfAddon.AutoSize:=true;
-    btnNameOfAddon.AnchorParallel(akTop,10,pnlAddon);
+    btnNameOfAddon.AnchorParallel(akTop,topMargin,pnlAddon);
     btnNameOfAddon.AnchorParallel(akLeft,leftMargin,pnlAddon);
     btnNameOfAddon.AnchorParallel(akRight,rightMargin,pnlAddon);
 
@@ -187,17 +190,16 @@ begin
       lblDescOfAddon.WordWrap:=true;
       lblDescOfAddon.AutoSize:=true;
       lblDescOfAddon.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
-      lblDescOfAddon.Left:=leftMargin;
-      lblDescOfAddon.Constraints.MaxWidth:=textBlockWidth;
+      lblDescOfAddon.AnchorParallel(akLeft,leftMargin,pnlAddon);
+      lblDescOfAddon.AnchorParallel(akRight,rightMargin,pnlAddon);
       lblDescOfAddon.Caption:='Description:'+LineEnding+description;
 
       lblRequirementsOfAddon:=TLabel.Create(mainAddonsPanel);
       lblRequirementsOfAddon.Parent:=pnlAddon;
       lblRequirementsOfAddon.WordWrap:=true;
       lblRequirementsOfAddon.AutoSize:=true;
-      lblRequirementsOfAddon.AnchorToNeighbour(akTop,blockSpacing,lblDescOfAddon);
-      lblRequirementsOfAddon.Left:=leftMargin;
-      lblRequirementsOfAddon.Constraints.MaxWidth:=lblDescOfAddon.Constraints.MaxWidth;
+      lblRequirementsOfAddon.AnchorToCompanion(akTop,blockSpacing,lblDescOfAddon);
+      lblRequirementsOfAddon.BorderSpacing.Bottom:=bottomMargin;
       lblRequirementsOfAddon.Caption:='Requirements:'+LineEnding+requirements;
 
       // PREVIEW IMAGES
@@ -216,9 +218,14 @@ begin
             imgPreview.Constraints.MaxWidth:= textBlockWidth div 2;
             imgPreview.Constraints.MaxHeight:=(9 * imgPreview.Constraints.MaxWidth) div 16;
             imgPreview.Left:=leftMargin+textBlockWidth;
+            imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
+            imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
 
             if prevImgPreview=nil then
-              imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon)
+            begin
+              imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
+              lblDescOfAddon.AnchorToNeighbour(akRight,rightMargin,imgPreview);
+            end
             else
               imgPreview.AnchorToNeighbour(akTop,blockSpacing,prevImgPreview);
 
@@ -236,6 +243,7 @@ begin
 
           end;
         end;
+        imgPreview.BorderSpacing.Bottom:=bottomMargin;
       end;
 
       //make them clickable
@@ -243,18 +251,12 @@ begin
       lblDescOfAddon.OnClick:=addon_panelinfo_click;
       lblRequirementsOfAddon.Tag:=i;
       lblRequirementsOfAddon.OnClick:=addon_panelinfo_click;
-
-      //adjust height
-      pnlAddon.Height:=lblRequirementsOfAddon.Top+lblRequirementsOfAddon.Height+bottomMargin;
-      if imgPreview<>nil then pnlAddon.Height:=max(imgPreview.Top+imgPreview.Height+bottomMargin, pnlAddon.Height)
     end
     else
     begin
       AddonList_titles[i]:=AddonList_fileNames[i];
       btnNameOfAddon.Caption:=ExtractFileName(fileList[i])+'  (couldn''t find addoninfo.txt)';
-
-      //adjust height
-      pnlAddon.Height:=btnNameOfAddon.Top+btnNameOfAddon.Height+bottomMargin;
+      btnNameOfAddon.BorderSpacing.Bottom:=bottomMargin;
     end;
 
     //make them clickable (common)
@@ -263,6 +265,8 @@ begin
     btnNameOfAddon.Tag:=i;
     btnNameOfAddon.OnClick:=addon_panelinfo_click;
     btnNameOfAddon.OnEnter:=previewButtonEnter;
+
+    pnlAddon.AutoSize:=true;
 
   end;//end loop: "for i:=0 to fileList.Count-1"
 
