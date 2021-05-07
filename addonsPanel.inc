@@ -83,6 +83,7 @@ var
   MS: TMemoryStream=nil;
 
   title: string='';
+  credits: string='';
   description: string='';
   requirements: string='';
   imageCount: integer=0;
@@ -96,10 +97,6 @@ var
 
   prevImgPreview: TImage=nil;
   lastControl: TControl=nil;
-
-  pnlAddonClientWidth: integer;
-  textBlockWidth: integer;
-
 const
   leftMargin=10;// pnlAddon margins
   rightMargin=10;
@@ -128,13 +125,6 @@ begin
   mainAddonsPanel:=TPanel.Create(Form1);
   mainAddonsPanel.Parent:=ScrollBox1;
   mainAddonsPanel.Align:=alClient;
-
-  ScrollBox1.VertScrollBar.Range:=ScrollBox1.ClientHeight+1;
-  mainAddonsPanel.AdjustSize;
-  pnlAddonClientWidth:=mainAddonsPanel.ClientWidth;
-  ScrollBox1.VertScrollBar.Range:=0;
-  textBlockWidth:=(2*(pnlAddonClientWidth-leftMargin-rightMargin) div 3);
-  ScrollBox1.AutoScroll:=true;
 
   progressBar:=TProgressBar.Create(Form1);
   progressBar.Max:=fileList.Count-1;
@@ -180,10 +170,10 @@ begin
 
     if ExtractSingleFileToStringList(fileList[i], 'addoninfo.txt', addonInfoTXT) then
     begin
-      parseAddonInfoTXT(addonInfoTXT,title,description,requirements,imageCount);
+      parseAddonInfoTXT(addonInfoTXT,title,credits,description,requirements,imageCount);
       AddonList_titles[i]:=title;
 
-      btnNameOfAddon.Caption:=title;
+      btnNameOfAddon.Caption:=title+#32+credits;
 
       lblDescOfAddon:=TLabel.Create(mainAddonsPanel);
       lblDescOfAddon.Parent:=pnlAddon;
@@ -202,48 +192,74 @@ begin
       lblRequirementsOfAddon.BorderSpacing.Bottom:=bottomMargin;
       lblRequirementsOfAddon.Caption:='Requirements:'+LineEnding+requirements;
 
-      // PREVIEW IMAGES
-      prevImgPreview:=nil;
-      imgPreview:=nil;
-      if imageCount>0 then
+      //show only icon if exists
+      if ExtractSingleFileToStream(fileList[i],'preview/icon.png',MS)
+      then
       begin
-        for j:=1 to imageCount do
+        imgPreview:=TImage.Create(mainAddonsPanel);
+        imgPreview.Picture.LoadFromStream(MS);
+        imgPreview.Parent:=pnlAddon;
+        imgPreview.Constraints.MaxWidth:= 128;
+        imgPreview.Constraints.MaxHeight:=(9 * imgPreview.Constraints.MaxWidth) div 16;
+        imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
+        imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
+        imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
+
+        lblDescOfAddon.AnchorToNeighbour(akRight,rightMargin,imgPreview);
+
+        imgPreview.Proportional:=true;
+        imgPreview.Stretch:=true;
+        imgPreview.StretchInEnabled:=true;
+        imgPreview.StretchOutEnabled:=false;
+        imgPreview.AutoSize:=true;
+
+        imgPreview.Tag:=i;
+        imgPreview.OnClick:=addon_panelinfo_click;
+        imgPreview.OnDblClick:=PreviewClick;
+      end
+      else // else show preview images
+      begin
+        prevImgPreview:=nil;
+        imgPreview:=nil;
+        if imageCount>0 then
         begin
-          Application.ProcessMessages;
-          if ExtractSingleFileToStream(fileList[i], Format('preview/%d.jpg',[j]),MS) then
+          for j:=1 to imageCount do
           begin
-            imgPreview:=TImage.Create(mainAddonsPanel);
-            imgPreview.Picture.LoadFromStream(MS);
-            imgPreview.Parent:=pnlAddon;
-            imgPreview.Constraints.MaxWidth:= textBlockWidth div 2;
-            imgPreview.Constraints.MaxHeight:=(9 * imgPreview.Constraints.MaxWidth) div 16;
-            imgPreview.Left:=leftMargin+textBlockWidth;
-            imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
-            imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
-
-            if prevImgPreview=nil then
+            Application.ProcessMessages;
+            if ExtractSingleFileToStream(fileList[i], Format('preview/%d.jpg',[j]),MS) then
             begin
-              imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
-              lblDescOfAddon.AnchorToNeighbour(akRight,rightMargin,imgPreview);
-            end
-            else
-              imgPreview.AnchorToNeighbour(akTop,blockSpacing,prevImgPreview);
+              imgPreview:=TImage.Create(mainAddonsPanel);
+              imgPreview.Picture.LoadFromStream(MS);
+              imgPreview.Parent:=pnlAddon;
+              imgPreview.Constraints.MaxWidth:= 128;
+              imgPreview.Constraints.MaxHeight:=(9 * imgPreview.Constraints.MaxWidth) div 16;
+              imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
+              imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
 
-            imgPreview.Proportional:=true;
-            imgPreview.Stretch:=true;
-            imgPreview.StretchInEnabled:=true;
-            imgPreview.StretchOutEnabled:=false;
-            imgPreview.AutoSize:=true;
+              if prevImgPreview=nil then
+              begin
+                imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
+                lblDescOfAddon.AnchorToNeighbour(akRight,rightMargin,imgPreview);
+              end
+              else
+                imgPreview.AnchorToNeighbour(akTop,blockSpacing,prevImgPreview);
 
-            imgPreview.Tag:=i;
-            imgPreview.OnClick:=addon_panelinfo_click;
-            imgPreview.OnDblClick:=PreviewClick;
+              imgPreview.Proportional:=true;
+              imgPreview.Stretch:=true;
+              imgPreview.StretchInEnabled:=true;
+              imgPreview.StretchOutEnabled:=false;
+              imgPreview.AutoSize:=true;
 
-            prevImgPreview:=imgPreview;
+              imgPreview.Tag:=i;
+              imgPreview.OnClick:=addon_panelinfo_click;
+              imgPreview.OnDblClick:=PreviewClick;
 
+              prevImgPreview:=imgPreview;
+
+            end;
           end;
+          imgPreview.BorderSpacing.Bottom:=bottomMargin;
         end;
-        imgPreview.BorderSpacing.Bottom:=bottomMargin;
       end;
 
       //make them clickable
@@ -255,7 +271,7 @@ begin
     else
     begin
       AddonList_titles[i]:=AddonList_fileNames[i];
-      btnNameOfAddon.Caption:=ExtractFileName(fileList[i])+'  (couldn''t find addoninfo.txt)';
+      btnNameOfAddon.Caption:=ExtractFileName(fileList[i]);
       btnNameOfAddon.BorderSpacing.Bottom:=bottomMargin;
     end;
 

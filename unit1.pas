@@ -35,7 +35,7 @@ type
     btnExit: TButton;
     btnAddonScan: TButton;
     mainAddonsPanel: TPanel;
-    Panel1: TPanel;
+    pnlActiveAddon: TPanel;
     ScrollBox1: TScrollBox;
     Image1: TImage;
 
@@ -168,8 +168,8 @@ begin
   end
   else
   begin
-    lblActiveAddon.AnchorParallel(akLeft,0,Panel1);
-    lblActiveAddon.AnchorParallel(akTop,0,Panel1);
+    lblActiveAddon.AnchorParallel(akLeft,0,pnlActiveAddon);
+    lblActiveAddon.AnchorParallel(akTop,0,pnlActiveAddon);
   end;
 end;
 
