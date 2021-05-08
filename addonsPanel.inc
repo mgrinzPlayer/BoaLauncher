@@ -48,6 +48,11 @@ begin
   PreviewForm.Close;
 end;
 
+procedure TForm1.IconClick(Sender: TObject);
+begin
+
+end;
+
 procedure TForm1.PreviewClick(Sender: TObject);
 begin
   PreviewForm:=TForm.Create(Form1);
@@ -95,7 +100,6 @@ var
 
   progressBar: TProgressBar;
 
-  prevImgPreview: TImage=nil;
   lastControl: TControl=nil;
 const
   leftMargin=10;// pnlAddon margins
@@ -215,50 +219,37 @@ begin
 
         imgPreview.Tag:=i;
         imgPreview.OnClick:=addon_panelinfo_click;
-        imgPreview.OnDblClick:=PreviewClick;
-      end
-      else // else show preview images
-      begin
-        prevImgPreview:=nil;
-        imgPreview:=nil;
         if imageCount>0 then
         begin
-          for j:=1 to imageCount do
-          begin
-            Application.ProcessMessages;
-            if ExtractSingleFileToStream(fileList[i], Format('preview/%d.jpg',[j]),MS) then
-            begin
-              imgPreview:=TImage.Create(mainAddonsPanel);
-              imgPreview.Picture.LoadFromStream(MS);
-              imgPreview.Parent:=pnlAddon;
-              imgPreview.Constraints.MaxWidth:= 128;
-              imgPreview.Constraints.MaxHeight:=(9 * imgPreview.Constraints.MaxWidth) div 16;
-              imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
-              imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
+          imgPreview.Cursor:=crHandPoint;
+          imgPreview.OnDblClick:=IconClick;
+        end;
+      end
+      else if imageCount>0 then // else show preview image
+      begin
+        if ExtractSingleFileToStream(fileList[i],'preview/1.jpg',MS) then
+        begin
+          imgPreview:=TImage.Create(mainAddonsPanel);
+          imgPreview.Cursor:=crHandPoint;
+          imgPreview.Picture.LoadFromStream(MS);
+          imgPreview.Parent:=pnlAddon;
+          imgPreview.Constraints.MaxWidth:= 128;
+          imgPreview.Constraints.MaxHeight:=(9 * imgPreview.Constraints.MaxWidth) div 16;
+          imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
+          imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
+          imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
 
-              if prevImgPreview=nil then
-              begin
-                imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
-                lblDescOfAddon.AnchorToNeighbour(akRight,rightMargin,imgPreview);
-              end
-              else
-                imgPreview.AnchorToNeighbour(akTop,blockSpacing,prevImgPreview);
+          lblDescOfAddon.AnchorToNeighbour(akRight,rightMargin,imgPreview);
 
-              imgPreview.Proportional:=true;
-              imgPreview.Stretch:=true;
-              imgPreview.StretchInEnabled:=true;
-              imgPreview.StretchOutEnabled:=false;
-              imgPreview.AutoSize:=true;
+          imgPreview.Proportional:=true;
+          imgPreview.Stretch:=true;
+          imgPreview.StretchInEnabled:=true;
+          imgPreview.StretchOutEnabled:=false;
+          imgPreview.AutoSize:=true;
 
-              imgPreview.Tag:=i;
-              imgPreview.OnClick:=addon_panelinfo_click;
-              imgPreview.OnDblClick:=PreviewClick;
-
-              prevImgPreview:=imgPreview;
-
-            end;
-          end;
-          imgPreview.BorderSpacing.Bottom:=bottomMargin;
+          imgPreview.Tag:=i;
+          imgPreview.OnClick:=addon_panelinfo_click;
+          imgPreview.OnDblClick:=PreviewClick;
         end;
       end;
 

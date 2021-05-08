@@ -69,6 +69,7 @@ type
 
     //addon preview
     procedure ClosePreviewClick(Sender: TObject);
+    procedure IconClick(Sender: TObject);
     procedure PreviewClick(Sender: TObject);
     procedure previewButtonEnter(Sender: TObject);
 
