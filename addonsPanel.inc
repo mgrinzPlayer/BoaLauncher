@@ -47,13 +47,13 @@ end;
 
 procedure TForm1.PreviewKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if key=37 then
+  if (key=37) or (key=38) then
   begin
     PreviewImageIndex:=max(0,PreviewImageIndex-1);
     previewImagesArray[PreviewImageIndex].Position:=0;
     PreviewImageFullSize.Picture.LoadFromStream(previewImagesArray[PreviewImageIndex]);
   end
-  else if key=39 then
+  else if (key=39) or (key=40) then
   begin
     PreviewImageIndex:=min(Length(previewImagesArray)-1,PreviewImageIndex+1);
     previewImagesArray[PreviewImageIndex].Position:=0;
