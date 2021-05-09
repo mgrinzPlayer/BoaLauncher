@@ -9,7 +9,7 @@ begin
 
   if pos < ScrollBox1.VertScrollBar.Position then
     ScrollBox1.VertScrollBar.Position:=pos
-  else if pos-ScrollBox1.VertScrollBar.Position+15 > ScrollBox1.Height then
+  else if pos-ScrollBox1.VertScrollBar.Position > (3 * ScrollBox1.Height div 4) then
     ScrollBox1.VertScrollBar.Position:=pos;
 end;
 
@@ -50,7 +50,7 @@ end;
 
 procedure TForm1.IconClick(Sender: TObject);
 begin
-
+  // TODO
 end;
 
 procedure TForm1.PreviewClick(Sender: TObject);
@@ -123,10 +123,11 @@ begin
 
   SetLength(AddonList,fileList.Count);
 
-  mainAddonsPanel.Free;
-  mainAddonsPanel:=TPanel.Create(Form1);
-  mainAddonsPanel.Parent:=ScrollBox1;
-  mainAddonsPanel.Align:=alClient;
+  pnlAddonsContainer.Free;
+  pnlAddonsContainer:=TPanel.Create(Form1);
+  pnlAddonsContainer.Parent:=ScrollBox1;
+  pnlAddonsContainer.Align:=alClient;
+  pnlAddonsContainer.BevelOuter:=bvNone;
 
   progressBar:=TProgressBar.Create(Form1);
   progressBar.Max:=fileList.Count-1;
@@ -145,15 +146,15 @@ begin
     progressBar.Position:=i;
     Application.ProcessMessages;
 
-    pnlAddon:=TPanel.Create(mainAddonsPanel);
-    pnlAddon.Parent:=mainAddonsPanel;
+    pnlAddon:=TPanel.Create(pnlAddonsContainer);
+    pnlAddon.Parent:=pnlAddonsContainer;
     pnlAddon.BorderSpacing.Bottom:=bottomMargin;
 
     if i=0 then
     begin
-      pnlAddon.AnchorParallel(akTop,topMargin,mainAddonsPanel);
-      pnlAddon.AnchorParallel(akLeft,leftMargin,mainAddonsPanel);
-      pnlAddon.AnchorParallel(akRight,rightMargin,mainAddonsPanel);
+      pnlAddon.AnchorParallel(akTop,topMargin,pnlAddonsContainer);
+      pnlAddon.AnchorParallel(akLeft,leftMargin,pnlAddonsContainer);
+      pnlAddon.AnchorParallel(akRight,rightMargin,pnlAddonsContainer);
     end
     else
       pnlAddon.AnchorToCompanion(akTop,topMargin,lastControl);
@@ -163,7 +164,7 @@ begin
     AddonList[i].FileName:=ExtractFileName(fileList[i]);
     AddonList[i].Panel:=pnlAddon;
 
-    btnNameOfAddon:=TButton.Create(mainAddonsPanel);
+    btnNameOfAddon:=TButton.Create(pnlAddonsContainer);
     btnNameOfAddon.Parent:=pnlAddon;
     btnNameOfAddon.AutoSize:=true;
     btnNameOfAddon.AnchorParallel(akTop,topMargin,pnlAddon);
@@ -178,7 +179,7 @@ begin
 
       btnNameOfAddon.Caption:=title+' by '+credits;
 
-      lblDescOfAddon:=TLabel.Create(mainAddonsPanel);
+      lblDescOfAddon:=TLabel.Create(pnlAddonsContainer);
       lblDescOfAddon.Parent:=pnlAddon;
       lblDescOfAddon.WordWrap:=true;
       lblDescOfAddon.AutoSize:=true;
@@ -187,7 +188,7 @@ begin
       lblDescOfAddon.AnchorParallel(akRight,rightMargin,pnlAddon);
       lblDescOfAddon.Caption:='Description:'+LineEnding+description;
 
-      lblRequirementsOfAddon:=TLabel.Create(mainAddonsPanel);
+      lblRequirementsOfAddon:=TLabel.Create(pnlAddonsContainer);
       lblRequirementsOfAddon.Parent:=pnlAddon;
       lblRequirementsOfAddon.WordWrap:=true;
       lblRequirementsOfAddon.AutoSize:=true;
@@ -199,11 +200,11 @@ begin
       if ExtractSingleFileToStream(fileList[i],'preview/icon.png',MS)
       then
       begin
-        imgPreview:=TImage.Create(mainAddonsPanel);
+        imgPreview:=TImage.Create(pnlAddonsContainer);
         imgPreview.Picture.LoadFromStream(MS);
         imgPreview.Parent:=pnlAddon;
         imgPreview.Constraints.MaxWidth:= 128;
-        imgPreview.Constraints.MaxHeight:=(9 * imgPreview.Constraints.MaxWidth) div 16;
+        imgPreview.Constraints.MaxHeight:= (9 * imgPreview.Constraints.MaxWidth) div 16;
         imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
         imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
         imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
@@ -228,12 +229,12 @@ begin
       begin
         if ExtractSingleFileToStream(fileList[i],'preview/1.jpg',MS) then
         begin
-          imgPreview:=TImage.Create(mainAddonsPanel);
+          imgPreview:=TImage.Create(pnlAddonsContainer);
           imgPreview.Cursor:=crHandPoint;
           imgPreview.Picture.LoadFromStream(MS);
           imgPreview.Parent:=pnlAddon;
           imgPreview.Constraints.MaxWidth:= 128;
-          imgPreview.Constraints.MaxHeight:=(9 * imgPreview.Constraints.MaxWidth) div 16;
+          imgPreview.Constraints.MaxHeight:= (9 * imgPreview.Constraints.MaxWidth) div 16;
           imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
           imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
           imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);

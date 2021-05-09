@@ -27,8 +27,6 @@ type
   end;
 
   TForm1 = class(TForm)
-    Image2: TImage;
-
     lblDetailPreset: TLabel;
     cbDetailPreset: TComboBox;
     lblDisplacementTextures: TLabel;
@@ -42,17 +40,18 @@ type
     btnStart: TButton;
     btnExit: TButton;
     btnAddonScan: TButton;
-    mainAddonsPanel: TPanel;
+    pnlAddonsContainer: TPanel;
     pnlSettingsControls: TPanel;
     pnlActiveAddon: TPanel;
     ScrollBox1: TScrollBox;
+
     Image1: TImage;
+    Image2: TImage;
     Timer1: TTimer;
 
     procedure btnAddonScanClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
-
     procedure settingsControlsHorizontal(yes: boolean);
     procedure chkbLaunchWithAddonVisibilityChange(visible: boolean);
     procedure FormCreate(Sender: TObject);
@@ -193,6 +192,7 @@ end;
 procedure TForm1.settingsControlsHorizontal(yes: boolean);
 var x:integer;
 begin
+  pnlSettingsControls.Anchors:=pnlSettingsControls.Anchors-[akBottom];
   if yes then
   begin
     lblDetailPreset.AnchorHorizontalCenterTo(cbDetailPreset);
@@ -200,6 +200,7 @@ begin
     lblDisplacementTextures.AnchorToNeighbour(akBottom,5,cbDisplacementTextures);
     lblDisplacementTextures.AnchorHorizontalCenterTo(cbDisplacementTextures);
     lblDisplacementTextures.Anchors:=[akLeft, akBottom];
+    lblDisplacementTextures.BorderSpacing.Top:=0;
 
     cbDisplacementTextures.AnchorParallel(akTop,0,cbDetailPreset);
     cbDisplacementTextures.AnchorToNeighbour(akLeft,20,cbDetailPreset);
@@ -207,11 +208,13 @@ begin
     lblLanguage.AnchorToNeighbour(akBottom,5,cbLanguage);
     lblLanguage.AnchorHorizontalCenterTo(cbLanguage);
     lblLanguage.Anchors:=[akLeft, akBottom];
+    lblLanguage.BorderSpacing.Top:=0;
 
     cbLanguage.AnchorParallel(akTop,0,cbDisplacementTextures);
     cbLanguage.AnchorToNeighbour(akLeft,20,cbDisplacementTextures);
 
-    pnlActiveAddon.AnchorToNeighbour(akTop,5,cbDetailPreset);
+    chkbDeveloperCommentary.AnchorToNeighbour(akTop,5,cbDetailPreset);
+    chkbDeveloperCommentary.BorderSpacing.Bottom:=0;
 
             cbDetailPreset.Width:=        cbDetailPreset.Constraints.MinWidth;
     cbDisplacementTextures.Width:=cbDisplacementTextures.Constraints.MinWidth;
@@ -222,21 +225,22 @@ begin
   begin
     lblDetailPreset.AnchorParallel(akLeft,0,pnlSettingsControls);
 
-    lblDisplacementTextures.AnchorToNeighbour(akTop,5,cbDetailPreset);
+    lblDisplacementTextures.AnchorToNeighbour(akTop,30,cbDetailPreset);
     lblDisplacementTextures.AnchorParallel(akLeft,0,pnlSettingsControls);
     lblDisplacementTextures.Anchors:=[akLeft, akTop];
 
     cbDisplacementTextures.AnchorToNeighbour(akTop,5,lblDisplacementTextures);
     cbDisplacementTextures.AnchorParallel(akLeft,0,pnlSettingsControls);
 
-    lblLanguage.AnchorToNeighbour(akTop,5,cbDisplacementTextures);
+    lblLanguage.AnchorToNeighbour(akTop,30,cbDisplacementTextures);
     lblLanguage.AnchorParallel(akLeft,0,pnlSettingsControls);
     lblLanguage.Anchors:=[akLeft, akTop];
 
     cbLanguage.AnchorToNeighbour(akTop,5,lblLanguage);
     cbLanguage.AnchorParallel(akLeft,0,pnlSettingsControls);
 
-    pnlActiveAddon.AnchorToNeighbour(akTop,5,cbLanguage);
+    chkbDeveloperCommentary.AnchorToNeighbour(akTop,30,cbLanguage);
+    chkbDeveloperCommentary.BorderSpacing.Bottom:=30;
 
     x:=cbDetailPreset.Constraints.MinWidth;
     x:=max(x,cbDisplacementTextures.Constraints.MinWidth);
@@ -247,8 +251,14 @@ begin
                 cbLanguage.Width:=x;
 
   end;
-  Form1.Constraints.MinHeight:=btnStart.Top+btnStart.Height+15;
-  Form1.Height:=Form1.Constraints.MinHeight;
+
+  pnlSettingsControls.AdjustSize;
+
+  x:=btnStart.Top+btnStart.Height+15;
+  Form1.Top:=Form1.Top - ( (x-Form1.Height) div 2 ); // fix position
+  Form1.Height:=x;
+
+  pnlSettingsControls.Anchors:=pnlSettingsControls.Anchors+[akBottom];
 end;
 
 procedure TForm1.chkbLaunchWithAddonVisibilityChange(visible: boolean);
