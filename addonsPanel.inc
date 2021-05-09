@@ -9,7 +9,7 @@ begin
 
   if pos < ScrollBox1.VertScrollBar.Position then
     ScrollBox1.VertScrollBar.Position:=pos
-  else if pos-ScrollBox1.VertScrollBar.Position+5 > ScrollBox1.Height then
+  else if pos-ScrollBox1.VertScrollBar.Position+15 > ScrollBox1.Height then
     ScrollBox1.VertScrollBar.Position:=pos;
 end;
 

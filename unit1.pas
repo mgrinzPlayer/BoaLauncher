@@ -59,7 +59,6 @@ type
 
     procedure ClosePreviewKey(Sender: TObject; var {%H-}Key: Word; {%H-}Shift: TShiftState);
     procedure FormMouseDown(Sender: TObject; {%H-}Button: TMouseButton; {%H-}Shift: TShiftState; {%H-}X, {%H-}Y: Integer);
-    procedure Image1MouseDown(Sender: TObject; {%H-}Button: TMouseButton; {%H-}Shift: TShiftState; {%H-}X, {%H-}Y: Integer);
 
     procedure delayedExecution(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -154,13 +153,6 @@ begin
   SendMessage(Form1.Handle,WM_SYSCOMMAND,$F012,0);
 end;
 
-procedure TForm1.Image1MouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
-begin
-  ReleaseCapture;
-  SendMessage(Form1.Handle,WM_SYSCOMMAND,$F012,0);
-end;
-
 
 var delayedExecutionTimer: TTimer;
 
@@ -203,6 +195,8 @@ var x:integer;
 begin
   if yes then
   begin
+    lblDetailPreset.AnchorHorizontalCenterTo(cbDetailPreset);
+
     lblDisplacementTextures.AnchorToNeighbour(akBottom,5,cbDisplacementTextures);
     lblDisplacementTextures.AnchorHorizontalCenterTo(cbDisplacementTextures);
     lblDisplacementTextures.Anchors:=[akLeft, akBottom];
@@ -226,15 +220,17 @@ begin
   end
   else
   begin
+    lblDetailPreset.AnchorParallel(akLeft,0,pnlSettingsControls);
+
     lblDisplacementTextures.AnchorToNeighbour(akTop,5,cbDetailPreset);
-    lblDisplacementTextures.AnchorHorizontalCenterTo(cbDisplacementTextures);
+    lblDisplacementTextures.AnchorParallel(akLeft,0,pnlSettingsControls);
     lblDisplacementTextures.Anchors:=[akLeft, akTop];
 
     cbDisplacementTextures.AnchorToNeighbour(akTop,5,lblDisplacementTextures);
     cbDisplacementTextures.AnchorParallel(akLeft,0,pnlSettingsControls);
 
     lblLanguage.AnchorToNeighbour(akTop,5,cbDisplacementTextures);
-    lblLanguage.AnchorHorizontalCenterTo(cbLanguage);
+    lblLanguage.AnchorParallel(akLeft,0,pnlSettingsControls);
     lblLanguage.Anchors:=[akLeft, akTop];
 
     cbLanguage.AnchorToNeighbour(akTop,5,lblLanguage);
@@ -251,7 +247,8 @@ begin
                 cbLanguage.Width:=x;
 
   end;
-  Form1.Height:=btnStart.Top+btnStart.Height+15;
+  Form1.Constraints.MinHeight:=btnStart.Top+btnStart.Height+15;
+  Form1.Height:=Form1.Constraints.MinHeight;
 end;
 
 procedure TForm1.chkbLaunchWithAddonVisibilityChange(visible: boolean);

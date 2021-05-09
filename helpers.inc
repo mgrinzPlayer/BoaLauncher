@@ -78,7 +78,7 @@ begin
   else
     w:=maxwidth+16;
 
-  cb.width:=w;
   cb.Constraints.MinWidth:=w;
+  cb.width:=w;
 end;
 
