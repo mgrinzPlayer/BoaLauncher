@@ -1325,14 +1325,14 @@ object Form1: TForm1
   end
   object pnlSettingsControls: TPanel
     AnchorSideLeft.Control = Owner
+    AnchorSideLeft.Side = asrCenter
     AnchorSideTop.Control = Image1
     AnchorSideTop.Side = asrBottom
-    Left = 15
+    Left = 280
     Height = 67
     Top = 155
     Width = 340
     AutoSize = True
-    BorderSpacing.Left = 15
     BorderSpacing.Top = 15
     BevelOuter = bvNone
     ClientHeight = 67
@@ -1455,7 +1455,7 @@ object Form1: TForm1
     AnchorSideLeft.Control = pnlSettingsControls
     AnchorSideTop.Control = pnlSettingsControls
     AnchorSideTop.Side = asrBottom
-    Left = 15
+    Left = 280
     Height = 20
     Top = 227
     Width = 227
@@ -1494,7 +1494,7 @@ object Form1: TForm1
     AnchorSideTop.Control = pnlActiveAddon
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Side = asrBottom
-    Left = 15
+    Left = 280
     Height = 25
     Top = 260
     Width = 75
@@ -1508,7 +1508,7 @@ object Form1: TForm1
     AnchorSideLeft.Control = btnStart
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = btnStart
-    Left = 110
+    Left = 375
     Height = 25
     Top = 260
     Width = 75
@@ -1521,7 +1521,7 @@ object Form1: TForm1
     AnchorSideLeft.Control = btnExit
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = btnStart
-    Left = 205
+    Left = 470
     Height = 25
     Top = 260
     Width = 153
@@ -1539,10 +1539,10 @@ object Form1: TForm1
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = pnlSettingsControls
     AnchorSideBottom.Side = asrBottom
-    Left = 370
+    Left = 635
     Height = 67
     Top = 155
-    Width = 515
+    Width = 250
     HorzScrollBar.Increment = 1
     HorzScrollBar.Page = 1
     HorzScrollBar.Smooth = True
@@ -1556,14 +1556,14 @@ object Form1: TForm1
     BorderSpacing.Left = 15
     BorderSpacing.Right = 15
     ClientHeight = 63
-    ClientWidth = 511
+    ClientWidth = 246
     TabOrder = 3
     Visible = False
     object pnlAddonsContainer: TPanel
       Left = 0
       Height = 63
       Top = 0
-      Width = 511
+      Width = 246
       Align = alClient
       TabOrder = 0
     end

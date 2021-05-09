@@ -194,6 +194,9 @@ begin
   pnlSettingsControls.Anchors:=pnlSettingsControls.Anchors-[akBottom];
   if yes then
   begin
+    pnlSettingsControls.AnchorHorizontalCenterTo(Form1);
+    pnlSettingsControls.BorderSpacing.Left:=0;
+
     lblDetailPreset.AnchorHorizontalCenterTo(cbDetailPreset);
 
     lblDisplacementTextures.AnchorToNeighbour(akBottom,5,cbDisplacementTextures);
@@ -222,6 +225,8 @@ begin
   end
   else
   begin
+    pnlSettingsControls.AnchorParallel(akLeft,15,Form1);
+
     lblDetailPreset.AnchorParallel(akLeft,0,pnlSettingsControls);
 
     lblDisplacementTextures.AnchorToNeighbour(akTop,30,cbDetailPreset);
