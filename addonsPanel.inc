@@ -35,30 +35,56 @@ begin
 end;
 
 var
-  PreviewImageFullSize: TImage;
   PreviewForm: TForm;
+  PreviewImageFullSize: TImage;
+  previewImagesArray: array of TMemoryStream;
+  PreviewImageIndex: integer;
 
 procedure TForm1.ClosePreviewClick(Sender: TObject);
 begin
   PreviewForm.Close;
 end;
 
-procedure TForm1.ClosePreviewKey(Sender: TObject; var Key: Word; Shift: TShiftState);
+procedure TForm1.PreviewKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  PreviewForm.Close;
-end;
-
-procedure TForm1.IconClick(Sender: TObject);
-begin
-  // TODO
+  if key=37 then
+  begin
+    PreviewImageIndex:=max(0,PreviewImageIndex-1);
+    previewImagesArray[PreviewImageIndex].Position:=0;
+    PreviewImageFullSize.Picture.LoadFromStream(previewImagesArray[PreviewImageIndex]);
+  end
+  else if key=39 then
+  begin
+    PreviewImageIndex:=min(Length(previewImagesArray)-1,PreviewImageIndex+1);
+    previewImagesArray[PreviewImageIndex].Position:=0;
+    PreviewImageFullSize.Picture.LoadFromStream(previewImagesArray[PreviewImageIndex]);
+  end
+  else
+    PreviewForm.Close;
 end;
 
 procedure TForm1.PreviewClick(Sender: TObject);
+var
+  i,j,r: integer;
+  MS: TMemoryStream=nil;
 begin
+  i:=TControl(Sender).Tag;
+  if AddonList[i].PrevievImageCount<=0 then exit;
+
+  PreviewImageIndex:=0;
+
   PreviewForm:=TForm.Create(Form1);
+  PreviewForm.Color:=clBlack;
+  PreviewForm.BorderStyle:=bsToolWindow;
+  PreviewForm.Position:=Form1.Position;
+  PreviewForm.Constraints.MaxHeight:=Screen.DesktopHeight * 6 div 10;
+  PreviewForm.Constraints.MaxWidth:=Screen.DesktopWidth * 6 div 10;
+  PreviewForm.AutoSize:=true;
+  PreviewForm.OnClick:=ClosePreviewClick;
+  PreviewForm.OnKeyUp:=PreviewKeyUp;
+
   PreviewImageFullSize:=TImage.Create(PreviewForm);
   PreviewImageFullSize.Parent:=PreviewForm;
-  PreviewImageFullSize.Picture.Assign(TImage(Sender).Picture);
   PreviewImageFullSize.Align:=alClient;
   PreviewImageFullSize.BorderSpacing.Around:=10;
   PreviewImageFullSize.Stretch:=true;
@@ -66,17 +92,37 @@ begin
   PreviewImageFullSize.StretchOutEnabled:=true;
   PreviewImageFullSize.OnClick:=ClosePreviewClick;
 
-  PreviewForm.Color:=clBlack;
-  PreviewForm.BorderStyle:=bsNone;
-  PreviewForm.Position:=Form1.Position;
-  PreviewForm.Constraints.MaxHeight:=Screen.DesktopHeight * 6 div 10;
-  PreviewForm.Constraints.MaxWidth:=Screen.DesktopWidth * 6 div 10;
-  PreviewForm.AutoSize:=true;
+  //cleanup
+  for j:=0 to Length(previewImagesArray)-1 do previewImagesArray[j].free;
+  SetLength(previewImagesArray,0);
 
-  PreviewForm.OnClick:=ClosePreviewClick;
-  PreviewForm.OnKeyUp:=ClosePreviewKey;
+  //try to load all known existing images
+  for j:=1 to AddonList[i].PrevievImageCount do
+  begin
+    if ExtractSingleFileToStream(AddonList[i].FileName,format('preview/%d.jpg',[j]),MS) then
+    begin
+      r:=Length(previewImagesArray);
+      SetLength(previewImagesArray,r+1);
+      previewImagesArray[r]:=MS;
+    end;
+  end;
+
+  if Length(previewImagesArray)>0 then
+  begin
+    PreviewForm.Caption:='Add-on preview.';
+    if Length(previewImagesArray)>1 then
+      PreviewForm.Caption:=PreviewForm.Caption + ' Use arrow keys to check other images';
+  end;
+
+  previewImagesArray[0].Position:=0;
+  PreviewImageFullSize.Picture.LoadFromStream(previewImagesArray[0]);
+
   PreviewForm.ShowModal;
+
+  //cleanup
   PreviewForm.Free;
+  for j:=0 to Length(previewImagesArray)-1 do previewImagesArray[j].free;
+  SetLength(previewImagesArray,0);
 end;
 
 procedure TForm1.preparing_BoA_addons_page;
@@ -175,7 +221,7 @@ begin
     begin
       parseAddonInfoTXT(addonInfoTXT,title,credits,description,requirements,imageCount);
       AddonList[i].Title:=title;
-      AddonList[i].PrevievImageNumber:=imageCount;
+      AddonList[i].PrevievImageCount:=imageCount;
 
       btnNameOfAddon.Caption:=title+' by '+credits;
 
@@ -222,7 +268,7 @@ begin
         if imageCount>0 then
         begin
           imgPreview.Cursor:=crHandPoint;
-          imgPreview.OnDblClick:=IconClick;
+          imgPreview.OnDblClick:=PreviewClick;
         end;
       end
       else if imageCount>0 then // else show preview image

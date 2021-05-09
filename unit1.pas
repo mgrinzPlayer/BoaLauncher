@@ -23,7 +23,7 @@ type
     Title: string;
     FileName: string;
     Panel: TPanel;
-    PrevievImageNumber: integer;
+    PrevievImageCount: integer; // e.g. do not search for 7.jpg inside .boa when PrevievImageCount is 6
   end;
 
   TForm1 = class(TForm)
@@ -56,7 +56,7 @@ type
     procedure chkbLaunchWithAddonVisibilityChange(visible: boolean);
     procedure FormCreate(Sender: TObject);
 
-    procedure ClosePreviewKey(Sender: TObject; var {%H-}Key: Word; {%H-}Shift: TShiftState);
+    procedure PreviewKeyUp(Sender: TObject; var {%H-}Key: Word; {%H-}Shift: TShiftState);
     procedure FormMouseDown(Sender: TObject; {%H-}Button: TMouseButton; {%H-}Shift: TShiftState; {%H-}X, {%H-}Y: Integer);
 
     procedure delayedExecution(Sender: TObject);
@@ -78,7 +78,6 @@ type
 
     //addon preview
     procedure ClosePreviewClick(Sender: TObject);
-    procedure IconClick(Sender: TObject);
     procedure PreviewClick(Sender: TObject);
     procedure previewButtonEnter(Sender: TObject);
 
