@@ -14,8 +14,9 @@
         <DpiAware Value="True"/>
       </XPManifest>
       <Icon Value="0"/>
-      <Resources Count="1">
+      <Resources Count="2">
         <Resource_0 FileName="launcherimage.jpg" Type="RCDATA" ResourceName="LAUNCHERIMAGE"/>
+        <Resource_1 FileName="launcherWilliamBlazkowicz.png" Type="RCDATA" ResourceName="BLAZKOWICZ"/>
       </Resources>
     </General>
     <VersionInfo>

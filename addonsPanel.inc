@@ -1,10 +1,10 @@
 procedure TForm1.previewButtonEnter(Sender: TObject);
 var
-  pos: Integer=0;
+  pos: Integer;
   control: TControl;
 begin
   control:=TControl(TControl(Sender).Parent); //panel pos
-  inc(pos,control.Top);
+  pos:=control.Top;
   dec(pos,control.BorderSpacing.Top);
 
   if pos < ScrollBox1.VertScrollBar.Position then
@@ -20,17 +20,17 @@ begin
   if prepareBoA_addons_page_processing then exit;
 
   selected:=TControl(Sender).Tag;
-  addonTitle:=AddonList_titles[selected];
-  addonFileName:=AddonList_fileNames[selected];
+  addonTitle:=AddonList[selected].Title;
+  addonFileName:=AddonList[selected].FileName;
 
-  lblActiveAddon.Caption:='"'+AddonList_titles[selected]+'"';
+  lblActiveAddon.Caption:='"'+addonTitle+'"';
   chkbLaunchWithAddon.Checked:=true;
   chkbLaunchWithAddonVisibilityChange(true);
 
-  for i:=0 to Length(listOfAllAddonPanels)-1 do // colors
+  for i:=0 to Length(AddonList)-1 do // colors
   begin
-    if i=selected then listOfAllAddonPanels[i].Color:=clActiveCaption
-                  else listOfAllAddonPanels[i].Color:=clDefault;
+    if i=selected then AddonList[i].Panel.Color:=clActiveCaption
+                  else AddonList[i].Panel.Color:=clDefault;
   end;
 end;
 
@@ -82,7 +82,7 @@ end;
 procedure TForm1.preparing_BoA_addons_page;
 var
   searchRec: TSearchRec;
-  i,j,r: integer;
+  i,r: integer;
   fileList: TStringList=nil;
   addonInfoTXT: TStringList=nil;
   MS: TMemoryStream=nil;
@@ -121,9 +121,7 @@ begin
   end;
   SysUtils.FindClose(searchRec);
 
-  SetLength(AddonList_fileNames,fileList.Count);
-  SetLength(AddonList_titles,fileList.Count);
-  SetLength(listOfAllAddonPanels,fileList.Count);
+  SetLength(AddonList,fileList.Count);
 
   mainAddonsPanel.Free;
   mainAddonsPanel:=TPanel.Create(Form1);
@@ -162,8 +160,8 @@ begin
 
     lastControl:=pnlAddon;
 
-    AddonList_fileNames[i]:=ExtractFileName(fileList[i]);
-    listOfAllAddonPanels[i]:=pnlAddon;
+    AddonList[i].FileName:=ExtractFileName(fileList[i]);
+    AddonList[i].Panel:=pnlAddon;
 
     btnNameOfAddon:=TButton.Create(mainAddonsPanel);
     btnNameOfAddon.Parent:=pnlAddon;
@@ -175,9 +173,10 @@ begin
     if ExtractSingleFileToStringList(fileList[i], 'addoninfo.txt', addonInfoTXT) then
     begin
       parseAddonInfoTXT(addonInfoTXT,title,credits,description,requirements,imageCount);
-      AddonList_titles[i]:=title;
+      AddonList[i].Title:=title;
+      AddonList[i].PrevievImageNumber:=imageCount;
 
-      btnNameOfAddon.Caption:=title+#32+credits;
+      btnNameOfAddon.Caption:=title+' by '+credits;
 
       lblDescOfAddon:=TLabel.Create(mainAddonsPanel);
       lblDescOfAddon.Parent:=pnlAddon;
@@ -196,7 +195,7 @@ begin
       lblRequirementsOfAddon.BorderSpacing.Bottom:=bottomMargin;
       lblRequirementsOfAddon.Caption:='Requirements:'+LineEnding+requirements;
 
-      //show only icon if exists
+      //show icon if exists
       if ExtractSingleFileToStream(fileList[i],'preview/icon.png',MS)
       then
       begin
@@ -261,7 +260,7 @@ begin
     end
     else
     begin
-      AddonList_titles[i]:=AddonList_fileNames[i];
+      AddonList[i].Title:=AddonList[i].FileName;
       btnNameOfAddon.Caption:=ExtractFileName(fileList[i]);
       btnNameOfAddon.BorderSpacing.Bottom:=bottomMargin;
     end;
