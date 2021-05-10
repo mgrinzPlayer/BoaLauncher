@@ -1525,7 +1525,6 @@ object Form1: TForm1
     Height = 25
     Top = 260
     Width = 153
-    AutoSize = True
     BorderSpacing.Left = 20
     Caption = 'Click to scan for addons'
     OnClick = btnAddonScanClick
