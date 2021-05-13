@@ -144,6 +144,9 @@ var
   lblDescOfAddon, lblRequirementsOfAddon: TLabel;
   imgPreview: TImage;
 
+  creditsPnl: TPanel;
+  creditsLbl: TLabel;
+
   progressBar: TProgressBar;
 
   lastControl: TControl=nil;
@@ -223,7 +226,21 @@ begin
       AddonList[i].Title:=title;
       AddonList[i].PrevievImageCount:=imageCount;
 
-      btnNameOfAddon.Caption:=title+' by '+credits;
+      btnNameOfAddon.Caption:=title;
+
+      creditsPnl:= TPanel.Create(pnlAddonsContainer);
+      creditsPnl.Parent:=pnlAddon;
+      creditsPnl.Anchors:=[];
+      creditsPnl.AnchorVerticalCenterTo(btnNameOfAddon);
+      creditsPnl.AnchorParallel(akRight,5,btnNameOfAddon);
+      creditsPnl.BevelOuter:=bvNone;
+      creditsPnl.AutoSize:=True;
+      creditsLbl:=TLabel.Create(pnlAddonsContainer);
+      creditsLbl.Parent:=creditsPnl;
+      creditsLbl.Align:=alRight;
+      creditsLbl.Font.Style:=[fsBold];
+      creditsLbl.BorderSpacing.Bottom:=1;
+      creditsLbl.Caption:=' by '+credits+' ';
 
       lblDescOfAddon:=TLabel.Create(pnlAddonsContainer);
       lblDescOfAddon.Parent:=pnlAddon;

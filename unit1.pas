@@ -288,7 +288,7 @@ begin
 
   loadSettings;
   Image1.Picture.LoadFromResourceName(HInstance,'LAUNCHERIMAGE');
-  Image2.Picture.LoadFromResourceName(HInstance,'BLAZKOWICZ');
+  Image2.Picture.LoadFromResourceName(HInstance,'SIMPLEANIMATION');
 
   removePadding(execName);
   removePadding(ipk3Name);

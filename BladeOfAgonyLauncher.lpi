@@ -15,8 +15,8 @@
       </XPManifest>
       <Icon Value="0"/>
       <Resources Count="2">
-        <Resource_0 FileName="launcherimage.jpg" Type="RCDATA" ResourceName="LAUNCHERIMAGE"/>
-        <Resource_1 FileName="launcherWilliamBlazkowicz.png" Type="RCDATA" ResourceName="BLAZKOWICZ"/>
+        <Resource_0 FileName="images\brighter.launcherimage.jpg" Type="RCDATA" ResourceName="LAUNCHERIMAGE"/>
+        <Resource_1 FileName="images\simpleAnimation.brighter.launcherimage.png" Type="RCDATA" ResourceName="SIMPLEANIMATION"/>
       </Resources>
     </General>
     <VersionInfo>
@@ -25,13 +25,13 @@
       <StringTable FileDescription="Blade of Agony Launcher" InternalName="Blade of Agony Launcher.exe" OriginalFilename="Blade of Agony Launcher" ProductName="Blade of Agony Launcher"/>
     </VersionInfo>
     <BuildModes Count="2">
-      <Item1 Name="32bit" Default="True"/>
-      <Item2 Name="64bit">
+      <Item1 Name="Windows 64bit" Default="True"/>
+      <Item2 Name="Linux 64bit">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
           <Target>
-            <Filename Value="Blade of Agony — Launcher 64bit"/>
+            <Filename Value="Blade of Agony — Launcher"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
@@ -40,7 +40,10 @@
           <CodeGeneration>
             <SmartLinkUnit Value="True"/>
             <TargetCPU Value="x86_64"/>
-            <TargetOS Value="win64"/>
+            <TargetOS Value="linux"/>
+            <Optimizations>
+              <OptimizationLevel Value="2"/>
+            </Optimizations>
             <SmallerCode Value="True"/>
           </CodeGeneration>
           <Linking>
@@ -110,7 +113,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="Blade of Agony — Launcher 32bit"/>
+      <Filename Value="Blade of Agony — Launcher"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -118,8 +121,11 @@
     </SearchPaths>
     <CodeGeneration>
       <SmartLinkUnit Value="True"/>
-      <TargetCPU Value="i386"/>
-      <TargetOS Value="win32"/>
+      <TargetCPU Value="x86_64"/>
+      <TargetOS Value="win64"/>
+      <Optimizations>
+        <OptimizationLevel Value="2"/>
+      </Optimizations>
       <SmallerCode Value="True"/>
     </CodeGeneration>
     <Linking>
