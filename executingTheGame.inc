@@ -1,7 +1,8 @@
 procedure TForm1.gameExecute;
 var
-  detail,displacement,devcom,lang,commandLineParam: string;
+  detail,displacement,devcom,lang: string;
   //filtering: string;
+  {$ifndef windows}proc: TProcess;{$ifend windows}
 begin
 
   case cbDisplacementTextures.ItemIndex of
@@ -36,10 +37,27 @@ begin
   if cbLanguage.ItemIndex=0 then lang:=''
                             else lang:='+set language '+LanguageList[cbLanguage.ItemIndex-1];
 
+  {$ifdef windows}
   case (addonFileName<>'') and chkbLaunchWithAddon.Checked of
-    false: commandLineParam:=Format('-iwad "%s" %s %s %s %s',[ipk3Name,displacement,detail,devcom,lang]);
-    true: commandLineParam:=Format('-file "%s" %s %s %s %s',[addonFileName,displacement,detail,devcom,lang]);
+    false: ShellExecute(0, 'open', pchar(execName), pchar(Format('-iwad "%s" %s %s %s %s',[ipk3Name,displacement,detail,devcom,lang])), '', sw_show);
+    true:  ShellExecute(0, 'open', pchar(execName), pchar(Format('-file "%s" %s %s %s %s',[addonFileName,displacement,detail,devcom,lang])), '', sw_show);
+  end;
+  {$else}
+  proc:=TProcess.Create(nil);
+  proc.InheritHandles:=false;
+  //proc.Options:=[poNewConsole]; // uncomment when debugging
+  proc.Executable:=GetCurrentDir+PathDelim+execName;
+
+  case (addonFileName<>'') and chkbLaunchWithAddon.Checked of
+    false: proc.Parameters.Add(Format('-iwad %s',[ipk3Name]));
+    true: proc.Parameters.Add(Format('-file %s',[addonFileName]));
   end;
 
-  ShellExecute(0, 'open', pchar(execName), pchar(commandLineParam), '', sw_show);
+  if displacement<>'' then proc.Parameters.Add(displacement);
+  if detail<>'' then proc.Parameters.Add(detail);
+  if devcom<>'' then proc.Parameters.Add(devcom);
+  if lang<>'' then proc.Parameters.Add(lang);
+
+  proc.Execute;
+  {$ifend windows}
 end;

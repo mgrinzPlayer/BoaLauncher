@@ -111,7 +111,7 @@ begin
   begin
     PreviewForm.Caption:='Add-on preview.';
     if Length(previewImagesArray)>1 then
-      PreviewForm.Caption:=PreviewForm.Caption + ' Use arrow keys to check other images';
+      PreviewForm.Caption:=PreviewForm.Caption + ' Use arrow keys to see other images';
   end;
 
   previewImagesArray[0].Position:=0;
@@ -161,7 +161,6 @@ const
 begin
 
   fileList:=TStringList.Create;
-  ZeroMemory(@searchRec,sizeof(TSearchRec));
   r:=FindFirst('*.boa', FaAnyfile, searchRec);
   while (r=0) do
   begin
@@ -169,6 +168,8 @@ begin
     r:=FindNext(searchRec);
   end;
   SysUtils.FindClose(searchRec);
+
+  fileList.Sort;
 
   SetLength(AddonList,fileList.Count);
 
@@ -341,5 +342,9 @@ begin
   end;//end loop: "for i:=0 to fileList.Count-1"
 
   progressBar.Free;
+  if fileList<>nil then FreeAndNil(fileList);
+  if addonInfoTXT<>nil then FreeAndNil(addonInfoTXT);
+  if MS<>nil then FreeAndNil(MS);
+
   prepareBoA_addons_page_processing:=false;
 end;

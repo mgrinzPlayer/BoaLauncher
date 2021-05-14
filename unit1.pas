@@ -6,10 +6,14 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  ComCtrls, Zipper, windows, IniFiles;
+  ComCtrls, Zipper, IniFiles{$ifdef windows}, Windows{$else}, process{$ifend};
 
 var
+  {$ifdef windows}
   execName:string ='boa.exe:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
+  {$else}
+  execName:string ='boa:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
+  {$ifend windows}
   ipk3Name:string ='boa.ipk3:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
 
   prepareBoA_addons_page_processing: boolean=false;
@@ -147,8 +151,10 @@ end;
 procedure TForm1.FormMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
+  {$ifdef windows}
   ReleaseCapture;
   SendMessage(Form1.Handle,WM_SYSCOMMAND,$F012,0);
+  {$ifend windows}
 end;
 
 
@@ -161,6 +167,8 @@ begin
   AdjustComboboxSize(cbDetailPreset, Canvas);
   AdjustComboboxSize(cbDisplacementTextures, Canvas);
   AdjustComboboxSize(cbLanguage, Canvas);
+
+  btnAddonScan.Width:=Canvas.getTextWidth('_____'+btnAddonScan.Caption+'_____');
 end;
 
 var animDirection:integer=0;

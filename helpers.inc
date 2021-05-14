@@ -64,6 +64,7 @@ begin
   if a>0 then s:=copy(s,1,a-1);
 end;
 
+{$ifdef windows}
 procedure AdjustComboboxSize(cb: TComboBox; canvas: TCanvas);
 var
   i,w: integer;
@@ -81,4 +82,26 @@ begin
   cb.Constraints.MinWidth:=w;
   cb.width:=w;
 end;
+{$else}
+function min(a,b: integer):integer;
+begin
+  exit(IfThen<integer>(a<b,a,b));
+end;
+
+function max(a,b: integer):integer;
+begin
+  exit(IfThen<integer>(a<b,b,a));
+end;
+
+procedure AdjustComboboxSize(cb: TComboBox; canvas: TCanvas);
+var
+  i,w: integer;
+  maxwidth: integer=0;
+begin
+  for i:=0 to cb.Items.Count-1 do maxwidth:=max(maxwidth, canvas.TextWidth(cb.Items[i]));
+  w:=maxwidth+30;
+  cb.Constraints.MinWidth:=w;
+  cb.width:=w;
+end;
+{$ifend windows}
 
