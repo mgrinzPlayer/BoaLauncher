@@ -135,6 +135,7 @@ var
 
   title: string='';
   credits: string='';
+  creditsFull: string='';
   description: string='';
   requirements: string='';
   imageCount: integer=0;
@@ -223,7 +224,7 @@ begin
 
     if ExtractSingleFileToStringList(fileList[i], 'addoninfo.txt', addonInfoTXT) then
     begin
-      parseAddonInfoTXT(addonInfoTXT,title,credits,description,requirements,imageCount);
+      parseAddonInfoTXT(addonInfoTXT,title,credits,creditsFull,description,requirements,imageCount);
       AddonList[i].Title:=title;
       AddonList[i].PrevievImageCount:=imageCount;
 
@@ -241,7 +242,14 @@ begin
       creditsLbl.Align:=alRight;
       creditsLbl.Font.Style:=[fsBold];
       creditsLbl.BorderSpacing.Bottom:=1;
-      creditsLbl.Caption:=' by '+credits+' ';
+      creditsLbl.Caption:=' by '+credits.Replace('&','&&')+' ';
+      if creditsFull<>'' then
+      begin
+        creditsLbl.Caption:=creditsLbl.Caption+'(...)';
+        creditsLbl.ShowHint:=true;
+        creditsLbl.Hint:=creditsFull.Replace('\n',LineEnding);
+        creditsLbl.Cursor:=crHandPoint;
+      end;
 
       lblDescOfAddon:=TLabel.Create(pnlAddonsContainer);
       lblDescOfAddon.Parent:=pnlAddon;
@@ -287,6 +295,8 @@ begin
         begin
           imgPreview.Cursor:=crHandPoint;
           imgPreview.OnDblClick:=PreviewClick;
+          imgPreview.Hint:='double click';
+          imgPreview.ShowHint:=true;
         end;
       end
       else if imageCount>0 then // else show preview image
@@ -314,6 +324,8 @@ begin
           imgPreview.Tag:=i;
           imgPreview.OnClick:=addon_panelinfo_click;
           imgPreview.OnDblClick:=PreviewClick;
+          imgPreview.Hint:='double click';
+          imgPreview.ShowHint:=true;
         end;
       end;
 

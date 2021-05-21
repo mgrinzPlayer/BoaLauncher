@@ -52,15 +52,20 @@ begin
   end;
 end;
 
-procedure parseAddonInfoTXT(SL: TStringList; var title,credits,description,requirements: string; var previewImages: integer);
+procedure parseAddonInfoTXT(SL: TStringList; var title,credits,creditsFull,description,requirements: string; var previewImages: integer);
 var
   s,key,value: string;
   i,a: integer;
 begin
+
+  //mandatory
   title:='missing title';
   credits:='missing credits';
   description:='missing description';
   requirements:='missing requirements';
+
+  //optional
+  creditsFull:='';
   previewImages:=0;
 
   for i:=0 to SL.Count-1 do
@@ -74,6 +79,7 @@ begin
       value:=s.Substring(a+1); value:=value.Trim();
       if key='title' then title:=value;
       if key='credits' then credits:=value;
+      if key='creditsfull' then creditsFull:=value;
       if key='description' then description:=value;
       if key='requirements' then requirements:=value;
       if key='previewimages' then previewImages:=StrToInt(value);

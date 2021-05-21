@@ -12,7 +12,7 @@ var
   {$ifdef windows}
   execName:string ='boa.exe:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
   {$else}
-  execName:string ='boa:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
+  execName:string ='gzdoom:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
   {$ifend windows}
   ipk3Name:string ='boa.ipk3:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
 
@@ -200,6 +200,8 @@ procedure TForm1.settingsControlsHorizontal(yes: boolean);
 var x:integer;
 begin
   pnlSettingsControls.Anchors:=pnlSettingsControls.Anchors-[akBottom];
+  pnlSettingsControls.DisableAutoSizing;
+
   if yes then
   begin
     pnlSettingsControls.AnchorHorizontalCenterTo(Form1);
@@ -264,6 +266,7 @@ begin
 
   end;
 
+  pnlSettingsControls.EnableAutoSizing;
   pnlSettingsControls.AdjustSize;
 
   x:=btnStart.Top+btnStart.Height+15;

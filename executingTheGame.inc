@@ -46,7 +46,7 @@ begin
   proc:=TProcess.Create(nil);
   proc.InheritHandles:=false;
   //proc.Options:=[poNewConsole]; // uncomment when debugging
-  proc.Executable:=GetCurrentDir+PathDelim+execName;
+  proc.Executable:=execName;
 
   case (addonFileName<>'') and chkbLaunchWithAddon.Checked of
     false: proc.Parameters.Add(Format('-iwad %s',[ipk3Name]));
@@ -57,6 +57,9 @@ begin
   if detail<>'' then proc.Parameters.Add(detail);
   if devcom<>'' then proc.Parameters.Add(devcom);
   if lang<>'' then proc.Parameters.Add(lang);
+
+  writeln(ExtractFileName(ParamStr(0))+' parameters:');
+  writeln(proc.Parameters.Text);
 
   proc.Execute;
   {$ifend windows}
