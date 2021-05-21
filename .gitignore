@@ -1,9 +1,9 @@
 *.exe
 *.lps
 *.res
-lib/
-backup/
+lib
+backup
 boa-launcher.ini
-.svn/
+.svn
 *.7z
 *.zip

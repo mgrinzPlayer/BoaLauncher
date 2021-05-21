@@ -157,7 +157,7 @@
     <Version Value="11"/>
     <PathDelim Value="\"/>
     <Target>
-      <Filename Value="Blade of Agony — Launcher"/>
+      <Filename Value="release\Blade of Agony - Launcher"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
