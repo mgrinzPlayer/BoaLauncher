@@ -168,7 +168,7 @@ begin
   end;
   SysUtils.FindClose(searchRec);
 
-  Form2.ListBox2.Items.AddStrings(addonFileName.Split([':']));
+  if addonFileName<>'' then Form2.ListBox2.Items.AddStrings(addonFileName.Split([':']));
   Form2.ListBox2.Items.Add(' '); // empty item
 
 
@@ -184,7 +184,7 @@ begin
     for i:=1 to Form2.ListBox2.Items.Count-2 do  // -2, because we ignore the last empty item
     begin
       if i<3 then lblActiveAddon.Caption:=lblActiveAddon.Caption+', "'+Form2.ListBox2.Items[i]+'"';
-      if i=3 then lblActiveAddon.Caption:=lblActiveAddon.Caption+', ...';
+      if i=3 then lblActiveAddon.Caption:=lblActiveAddon.Caption+', and '+inttostr(Form2.ListBox2.Items.Count-4)+' more';
       addonFileName:=addonFileName+':'+Form2.ListBox2.Items[i];
     end;
   end;
