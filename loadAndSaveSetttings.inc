@@ -2,7 +2,7 @@ procedure TForm1.saveSettings;
 var
   inifile:TIniFile;
 begin
-  inifile:=TIniFile.Create('boa-launcher.ini');
+  inifile:=TIniFile.Create(configs_and_saves_path+'boa-launcher.ini');
   inifile.WriteBool('Launcher','DevCommentary',chkbDeveloperCommentary.Checked);
   inifile.WriteInteger('Launcher','DisplacementTextures',cbDisplacementTextures.ItemIndex);
 
@@ -23,7 +23,7 @@ procedure TForm1.loadSettings;
 var
   inifile:TIniFile;
 begin
-  inifile:=TIniFile.Create('boa-launcher.ini');
+  inifile:=TIniFile.Create(configs_and_saves_path+'boa-launcher.ini');
   chkbDeveloperCommentary.Checked:=inifile.ReadBool('Launcher','DevCommentary',false);
   cbDisplacementTextures.ItemIndex:=inifile.ReadInteger('Launcher','DisplacementTextures',0);
 
