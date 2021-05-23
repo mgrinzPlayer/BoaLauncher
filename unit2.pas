@@ -68,9 +68,9 @@ procedure TForm2.ListBox1DblClick(Sender: TObject);
 begin
   if ListBox1.ItemIndex<0 then exit;
   if ListBox2.ItemIndex<0 then
-    ListBox2.Items.Insert(ListBox2.Items.Count-1,ListBox1.Items[ListBox1.ItemIndex])
+    ListBox2.Items.InsertObject(ListBox2.Items.Count-1,ListBox1.Items[ListBox1.ItemIndex],ListBox1.Items.Objects[ListBox1.ItemIndex])
   else
-    ListBox2.Items.Insert(ListBox2.ItemIndex,ListBox1.Items[ListBox1.ItemIndex]);
+    ListBox2.Items.InsertObject(ListBox2.ItemIndex,    ListBox1.Items[ListBox1.ItemIndex],ListBox1.Items.Objects[ListBox1.ItemIndex]);
 
   ListBox1.Items.Delete(ListBox1.ItemIndex)
 end;
@@ -81,7 +81,7 @@ begin
   if ListBox2.ItemIndex<0 then exit;
   if ListBox2.ItemIndex=ListBox2.Items.Count-1 then exit; // prevent removing last empty item
 
-  ListBox1.Items.Add(ListBox2.Items[ListBox2.ItemIndex]);
+  ListBox1.Items.AddObject(ListBox2.Items[ListBox2.ItemIndex],ListBox2.Items.Objects[ListBox2.ItemIndex]);
   i:=ListBox2.ItemIndex;
   ListBox2.Items.Delete(ListBox2.ItemIndex);
   ListBox2.ItemIndex:=i;

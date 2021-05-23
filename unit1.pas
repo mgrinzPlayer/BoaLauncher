@@ -162,40 +162,52 @@ end;
 
 procedure TForm1.btnAddonMultiselectClick(Sender: TObject);
 var
-  searchRec: TSearchRec;
-  i,r: integer;
+  i: integer;
+  s: string;
 begin
   Form2:=TForm2.Create(Form1);
 
-  r:=FindFirst('*.boa', FaAnyfile, searchRec);
-  while (r=0) do
-  begin
-    if Pos(searchRec.Name,addonFileName)=0 then Form2.ListBox1.Items.Add(searchRec.Name);
-    r:=FindNext(searchRec);
-  end;
-  SysUtils.FindClose(searchRec);
+  scanAllBoaFiles(AddonList);
 
-  if addonFileName<>'' then Form2.ListBox2.Items.AddStrings(addonFileName.Split([':']));
+  for i:=0 to Length(AddonList)-1 do
+    if Pos(AddonList[i].FileName,addonFileName)=0 then Form2.ListBox1.Items.AddObject(AddonList[i].Title,TStringStream.Create(AddonList[i].FileName));
+
+  if addonFileName<>'' then
+    for s in addonFileName.Split([':']) do
+      for i:=0 to Length(AddonList)-1 do
+        if s=AddonList[i].FileName then begin Form2.ListBox2.Items.AddObject(AddonList[i].Title,TStringStream.Create(AddonList[i].FileName)); break; end;
+
   Form2.ListBox2.Items.Add(' '); // empty item
 
-
-  if (Form2.ShowModal=mrOK) and (Form2.ListBox2.Items.Count>=2) then
+  if (Form2.ShowModal=mrOK) then
   begin
-    chkbLaunchWithAddonVisibilityChange(true);
-    chkbLaunchWithAddon.Checked:=true;
-
-    addonTitle:='multiple add-ons';
-    addonFileName:=Form2.ListBox2.Items[0];
-    lblActiveAddon.Caption:='"'+Form2.ListBox2.Items[0]+'"';
-
-    for i:=1 to Form2.ListBox2.Items.Count-2 do  // -2, because we ignore the last empty item
+    if (Form2.ListBox2.Items.Count>=2) then
     begin
-      if i<3 then lblActiveAddon.Caption:=lblActiveAddon.Caption+', "'+Form2.ListBox2.Items[i]+'"';
-      if i=3 then lblActiveAddon.Caption:=lblActiveAddon.Caption+', and '+inttostr(Form2.ListBox2.Items.Count-4)+' more';
-      addonFileName:=addonFileName+':'+Form2.ListBox2.Items[i];
+      chkbLaunchWithAddon.Checked:=true;
+      chkbLaunchWithAddonVisibilityChange(true);
+
+      addonTitle:='"'+Form2.ListBox2.Items[0]+'"';
+      addonFileName:=TStringStream(Form2.ListBox2.Items.Objects[0]).DataString;
+
+      for i:=1 to Form2.ListBox2.Items.Count-2 do  // -2, because we ignore the last empty item
+      begin
+        if i<3 then addonTitle:=addonTitle+', "'+Form2.ListBox2.Items[i]+'"';
+        if i=3 then addonTitle:=addonTitle+', and '+inttostr(Form2.ListBox2.Items.Count-4)+' more';
+        addonFileName:=addonFileName+':'+TStringStream(Form2.ListBox2.Items.Objects[i]).DataString;
+      end;
+
+      lblActiveAddon.Caption:=addonTitle;
+    end
+    else
+    begin
+      chkbLaunchWithAddon.Checked:=false;
+      chkbLaunchWithAddonVisibilityChange(false);
+      addonFileName:='';
     end;
   end;
 
+  for i:=1 to Form2.ListBox1.Items.Count-1 do Form2.ListBox1.Items.Objects[i].Free;
+  for i:=1 to Form2.ListBox2.Items.Count-1 do Form2.ListBox2.Items.Objects[i].Free;
   Form2.Free;
 end;
 
@@ -342,6 +354,7 @@ begin
   begin
     lblActiveAddon.AnchorParallel(akLeft,0,pnlActiveAddon);
     lblActiveAddon.AnchorParallel(akTop,0,pnlActiveAddon);
+    lblActiveAddon.Caption:='Addon not selected.';
   end;
 end;
 
