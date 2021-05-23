@@ -127,18 +127,8 @@ end;
 
 procedure TForm1.preparing_BoA_addons_page;
 var
-  searchRec: TSearchRec;
-  i,r: integer;
-  fileList: TStringList=nil;
-  addonInfoTXT: TStringList=nil;
+  i: integer;
   MS: TMemoryStream=nil;
-
-  title: string='';
-  credits: string='';
-  creditsFull: string='';
-  description: string='';
-  requirements: string='';
-  imageCount: integer=0;
 
   pnlAddon: TPanel;
   btnNameOfAddon: TButton; // user can use tab to select addon
@@ -160,19 +150,7 @@ const
   buttonBottomSpace=15;// space between btnNameOfAddon and other control below
   blockSpacing=10; //space between two TextBlocks, or two images
 begin
-
-  fileList:=TStringList.Create;
-  r:=FindFirst('*.boa', FaAnyfile, searchRec);
-  while (r=0) do
-  begin
-    fileList.Add(GetCurrentDir + pathdelim + searchRec.Name);
-    r:=FindNext(searchRec);
-  end;
-  SysUtils.FindClose(searchRec);
-
-  fileList.Sort;
-
-  SetLength(AddonList,fileList.Count);
+  scanAllBoaFiles(AddonList);
 
   pnlAddonsContainer.Free;
   pnlAddonsContainer:=TPanel.Create(Form1);
@@ -181,7 +159,7 @@ begin
   pnlAddonsContainer.BevelOuter:=bvNone;
 
   progressBar:=TProgressBar.Create(Form1);
-  progressBar.Max:=fileList.Count-1;
+  progressBar.Max:=Length(AddonList)-1;
   progressBar.Parent:=Form1;
   progressBar.Anchors:=[];
   progressBar.AnchorParallel(akBottom,0,ScrollBox1);
@@ -190,7 +168,7 @@ begin
 
   prepareBoA_addons_page_processing:=true;
 
-  for i:=0 to fileList.Count-1 do
+  for i:=0 to Length(AddonList)-1 do
   begin
     if terminate then break;
 
@@ -212,24 +190,18 @@ begin
 
     lastControl:=pnlAddon;
 
-    AddonList[i].FileName:=ExtractFileName(fileList[i]);
     AddonList[i].Panel:=pnlAddon;
 
     btnNameOfAddon:=TButton.Create(pnlAddonsContainer);
+    btnNameOfAddon.Caption:=AddonList[i].Title;
     btnNameOfAddon.Parent:=pnlAddon;
     btnNameOfAddon.AutoSize:=true;
     btnNameOfAddon.AnchorParallel(akTop,topMargin,pnlAddon);
     btnNameOfAddon.AnchorParallel(akLeft,leftMargin,pnlAddon);
     btnNameOfAddon.AnchorParallel(akRight,rightMargin,pnlAddon);
 
-    if ExtractSingleFileToStringList(fileList[i], 'addoninfo.txt', addonInfoTXT) then
+    if AddonList[i].hasAddonInfoTXT then
     begin
-      parseAddonInfoTXT(addonInfoTXT,title,credits,creditsFull,description,requirements,imageCount);
-      AddonList[i].Title:=title;
-      AddonList[i].PrevievImageCount:=imageCount;
-
-      btnNameOfAddon.Caption:=title;
-
       creditsPnl:= TPanel.Create(pnlAddonsContainer);
       creditsPnl.Parent:=pnlAddon;
       creditsPnl.Anchors:=[];
@@ -242,12 +214,12 @@ begin
       creditsLbl.Align:=alRight;
       creditsLbl.Font.Style:=[fsBold];
       creditsLbl.BorderSpacing.Bottom:=1;
-      creditsLbl.Caption:=' by '+credits.Replace('&','&&')+' ';
-      if creditsFull<>'' then
+      creditsLbl.Caption:=' by '+AddonList[i].Credits.Replace('&','&&')+' ';
+      if AddonList[i].CreditsFull<>'' then
       begin
         creditsLbl.Caption:=creditsLbl.Caption+'(...)';
         creditsLbl.ShowHint:=true;
-        creditsLbl.Hint:=creditsFull.Replace('\n',LineEnding);
+        creditsLbl.Hint:=AddonList[i].CreditsFull.Replace('\n',LineEnding);
         creditsLbl.Cursor:=crHandPoint;
       end;
 
@@ -258,7 +230,7 @@ begin
       lblDescOfAddon.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
       lblDescOfAddon.AnchorParallel(akLeft,leftMargin,pnlAddon);
       lblDescOfAddon.AnchorParallel(akRight,rightMargin,pnlAddon);
-      lblDescOfAddon.Caption:='Description:'+LineEnding+description;
+      lblDescOfAddon.Caption:='Description:'+LineEnding+AddonList[i].Description;
 
       lblRequirementsOfAddon:=TLabel.Create(pnlAddonsContainer);
       lblRequirementsOfAddon.Parent:=pnlAddon;
@@ -266,10 +238,10 @@ begin
       lblRequirementsOfAddon.AutoSize:=true;
       lblRequirementsOfAddon.AnchorToCompanion(akTop,blockSpacing,lblDescOfAddon);
       lblRequirementsOfAddon.BorderSpacing.Bottom:=bottomMargin;
-      lblRequirementsOfAddon.Caption:='Requirements:'+LineEnding+requirements;
+      lblRequirementsOfAddon.Caption:='Requirements:'+LineEnding+AddonList[i].Requirements;
 
       //show icon if exists
-      if ExtractSingleFileToStream(fileList[i],'preview/icon.png',MS)
+      if ExtractSingleFileToStream(AddonList[i].FileName,'preview/icon.png',MS)
       then
       begin
         imgPreview:=TImage.Create(pnlAddonsContainer);
@@ -291,7 +263,7 @@ begin
 
         imgPreview.Tag:=i;
         imgPreview.OnClick:=addon_panelinfo_click;
-        if imageCount>0 then
+        if AddonList[i].PrevievImageCount>0 then
         begin
           imgPreview.Cursor:=crHandPoint;
           imgPreview.OnDblClick:=PreviewClick;
@@ -299,9 +271,9 @@ begin
           imgPreview.ShowHint:=true;
         end;
       end
-      else if imageCount>0 then // else show preview image
+      else if AddonList[i].PrevievImageCount>0 then // else show preview image
       begin
-        if ExtractSingleFileToStream(fileList[i],'preview/1.jpg',MS) then
+        if ExtractSingleFileToStream(AddonList[i].FileName,'preview/1.jpg',MS) then
         begin
           imgPreview:=TImage.Create(pnlAddonsContainer);
           imgPreview.Cursor:=crHandPoint;
@@ -337,8 +309,6 @@ begin
     end
     else
     begin
-      AddonList[i].Title:=AddonList[i].FileName;
-      btnNameOfAddon.Caption:=ExtractFileName(fileList[i]);
       btnNameOfAddon.BorderSpacing.Bottom:=bottomMargin;
     end;
 
@@ -354,8 +324,6 @@ begin
   end;//end loop: "for i:=0 to fileList.Count-1"
 
   progressBar.Free;
-  if fileList<>nil then FreeAndNil(fileList);
-  if addonInfoTXT<>nil then FreeAndNil(addonInfoTXT);
   if MS<>nil then FreeAndNil(MS);
 
   prepareBoA_addons_page_processing:=false;

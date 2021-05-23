@@ -60,5 +60,7 @@ begin
   writeln(proc.Parameters.Text.Replace(LineEnding,' ').Replace(' -',LineEnding+'-').Replace(' +',LineEnding+'+'));
   {$ifend windows}
 
+  if FileExists('boa.cmd') then proc.Executable:='boa.cmd'; // remove this line later
+
   proc.Execute;
 end;

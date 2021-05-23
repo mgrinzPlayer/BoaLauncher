@@ -27,11 +27,18 @@ type
   { TForm1 }
 
   dotBoAFile = record
-    Title: string;
-    FileName: string;
     Panel: TPanel;
+    FileName: string;
+    hasAddonInfoTXT: boolean;
+    Title: string;
+    Credits: string;
+    CreditsFull: string;
+    Description: string;
+    Requirements: string;
     PrevievImageCount: integer; // e.g. do not search for 7.jpg inside .boa when PrevievImageCount is 6
   end;
+
+  dotBoAFileArray = array of dotBoAFile;
 
   TForm1 = class(TForm)
     lblDetailPreset: TLabel;
@@ -72,7 +79,7 @@ type
     procedure Timer1Timer(Sender: TObject);
   private
     LanguageList: array of string;
-    AddonList: array of dotBoAFile;
+    AddonList: dotBoAFileArray;
     addonFileName: string;
     addonTitle: string;
 

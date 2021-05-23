@@ -86,3 +86,61 @@ begin
     end;
   end;
 end;
+
+procedure scanAllBoaFiles(var AddonList: dotBoAFileArray);
+var
+  searchRec: TSearchRec;
+  i,r: integer;
+  fileList: TStringList=nil;
+  addonInfoTXT: TStringList=nil;
+
+  title: string='';
+  credits: string='';
+  creditsFull: string='';
+  description: string='';
+  requirements: string='';
+  imageCount: integer=0;
+begin
+
+  fileList:=TStringList.Create;
+  r:=FindFirst('*.boa', FaAnyfile, searchRec);
+  while (r=0) do
+  begin
+    fileList.Add(GetCurrentDir + pathdelim + searchRec.Name);
+    r:=FindNext(searchRec);
+  end;
+  SysUtils.FindClose(searchRec);
+
+  fileList.Sort;
+
+  SetLength(AddonList,fileList.Count);
+
+  for i:=0 to fileList.Count-1 do
+  begin
+    AddonList[i].FileName:=ExtractFileName(fileList[i]);
+    if Form1.ExtractSingleFileToStringList(fileList[i], 'addoninfo.txt', addonInfoTXT) then
+    begin
+      parseAddonInfoTXT(addonInfoTXT,title,credits,creditsFull,description,requirements,imageCount);
+      AddonList[i].Title:=title;
+      AddonList[i].Credits:=credits;
+      AddonList[i].CreditsFull:=creditsFull;
+      AddonList[i].Description:=description;
+      AddonList[i].Requirements:=requirements;
+      AddonList[i].PrevievImageCount:=imageCount;
+      AddonList[i].hasAddonInfoTXT:=true;
+    end
+    else
+    begin
+      AddonList[i].Title:=AddonList[i].FileName;
+      AddonList[i].Credits:='';
+      AddonList[i].CreditsFull:='';
+      AddonList[i].Description:='';
+      AddonList[i].Requirements:='';
+      AddonList[i].PrevievImageCount:=0;
+      AddonList[i].hasAddonInfoTXT:=false;
+    end;
+  end;
+
+  if fileList<>nil then FreeAndNil(fileList);
+  if addonInfoTXT<>nil then FreeAndNil(addonInfoTXT);
+end;
