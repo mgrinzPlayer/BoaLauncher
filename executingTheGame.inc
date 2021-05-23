@@ -1,36 +1,29 @@
 procedure TForm1.gameExecute;
 var
-  {$ifdef windows}
-  params: string='';
-  procedure addParam(s: array of string);
-  var i: integer;
-  begin
-    for i:=0 to Length(s)-1 do params:=Format('%s %s',[params,s[i]]);
-  end;
-  {$else}
   proc: TProcess;
   procedure addParam(s: array of string);
   var i: integer;
   begin
     for i:=0 to Length(s)-1 do proc.Parameters.Add(s[i]);
   end;
-  {$ifend windows}
 begin
-
-  {$ifndef windows}
   proc:=TProcess.Create(nil);
   proc.InheritHandles:=false;
   proc.Executable:=execName;
-  {$ifend}
 
+  {$ifndef windows}
   addParam(['-config',configs_and_saves_path+'gzdoom.ini']);
   addParam(['-savedir',configs_and_saves_path+'Save']);
   addParam(['-screenshot_dir',configs_and_saves_path+'Screenshots']);
   addParam(['-shotdir',configs_and_saves_path+'Screenshots']);
+  {$ifend}
 
   case (addonFileName<>'') and chkbLaunchWithAddon.Checked of
     false: addParam(['-iwad',ipk3Name]);
-    true:  addParam(['-file',addonFileName]);
+    true: begin
+           addParam(['-file']);
+           addParam(addonFileName.Split([':']));
+          end;
   end;
 
   if cbDisplacementTextures.ItemIndex=1 then addParam(['-file','boa_dt.pk3']);
@@ -59,16 +52,13 @@ begin
 
   if cbLanguage.ItemIndex<>0 then addParam([   '+set','language',LanguageList[cbLanguage.ItemIndex-1]   ]);
 
-  addParam(userCommands.ToStringArray);
-
-  {$ifdef windows}
-  ShellExecute(0, 'open', pchar(execName), pchar(params), '', sw_show);
-  {$else}
   //append user commands
   proc.Parameters.AddStrings(userCommands);
 
+  {$ifndef windows}
   writeln(ExtractFileName(ParamStr(0))+' parameters:');
   writeln(proc.Parameters.Text.Replace(LineEnding,' ').Replace(' -',LineEnding+'-').Replace(' +',LineEnding+'+'));
-  proc.Execute;
   {$ifend windows}
+
+  proc.Execute;
 end;

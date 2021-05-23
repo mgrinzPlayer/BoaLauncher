@@ -5,8 +5,8 @@ unit Unit1;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  ComCtrls, Zipper, IniFiles{$ifdef windows}, Windows{$else}, process{$ifend};
+  Unit2, Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
+  ComCtrls, Zipper, IniFiles, process{$ifdef windows}, Windows{$ifend};
 
 var
   {$ifdef windows}
@@ -47,6 +47,7 @@ type
     btnStart: TButton;
     btnExit: TButton;
     btnAddonScan: TButton;
+    btnAddonMultiselect: TButton;
     pnlAddonsContainer: TPanel;
     pnlSettingsControls: TPanel;
     pnlActiveAddon: TPanel;
@@ -56,6 +57,7 @@ type
     Image2: TImage;
     Timer1: TTimer;
 
+    procedure btnAddonMultiselectClick(Sender: TObject);
     procedure btnAddonScanClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
     procedure btnStartClick(Sender: TObject);
@@ -151,6 +153,45 @@ begin
   end;
 end;
 
+procedure TForm1.btnAddonMultiselectClick(Sender: TObject);
+var
+  searchRec: TSearchRec;
+  i,r: integer;
+begin
+  Form2:=TForm2.Create(Form1);
+
+  r:=FindFirst('*.boa', FaAnyfile, searchRec);
+  while (r=0) do
+  begin
+    if Pos(searchRec.Name,addonFileName)=0 then Form2.ListBox1.Items.Add(searchRec.Name);
+    r:=FindNext(searchRec);
+  end;
+  SysUtils.FindClose(searchRec);
+
+  Form2.ListBox2.Items.AddStrings(addonFileName.Split([':']));
+  Form2.ListBox2.Items.Add(' '); // empty item
+
+
+  if (Form2.ShowModal=mrOK) and (Form2.ListBox2.Items.Count>=2) then
+  begin
+    chkbLaunchWithAddonVisibilityChange(true);
+    chkbLaunchWithAddon.Checked:=true;
+
+    addonTitle:='multiple add-ons';
+    addonFileName:=Form2.ListBox2.Items[0];
+    lblActiveAddon.Caption:='"'+Form2.ListBox2.Items[0]+'"';
+
+    for i:=1 to Form2.ListBox2.Items.Count-2 do  // -2, because we ignore the last empty item
+    begin
+      if i<3 then lblActiveAddon.Caption:=lblActiveAddon.Caption+', "'+Form2.ListBox2.Items[i]+'"';
+      if i=3 then lblActiveAddon.Caption:=lblActiveAddon.Caption+', ...';
+      addonFileName:=addonFileName+':'+Form2.ListBox2.Items[i];
+    end;
+  end;
+
+  Form2.Free;
+end;
+
 procedure TForm1.FormMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
@@ -172,6 +213,7 @@ begin
   AdjustComboboxSize(cbLanguage, Canvas);
 
   btnAddonScan.Width:=Canvas.getTextWidth('_____'+btnAddonScan.Caption+'_____');
+  btnAddonMultiselect.Width:=Canvas.getTextWidth('_____'+btnAddonMultiselect.Caption+'_____');
 end;
 
 var animDirection:integer=0;

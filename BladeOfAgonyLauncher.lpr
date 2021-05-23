@@ -2,7 +2,7 @@ program BladeOfAgonyLauncher;
 {$mode delphi}
 
 uses
-  Interfaces, Forms, Unit1, Classes, sysutils;
+  Interfaces, Forms, Unit1, Classes, sysutils, Unit2;
 
 {$R *.res}
 

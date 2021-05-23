@@ -2543,7 +2543,7 @@ object Form1: TForm1
     BevelOuter = bvNone
     ClientHeight = 67
     ClientWidth = 340
-    TabOrder = 4
+    TabOrder = 5
     OnMouseDown = FormMouseDown
     object lblDetailPreset: TLabel
       AnchorSideLeft.Control = cbDetailPreset
@@ -2671,7 +2671,7 @@ object Form1: TForm1
     ClientHeight = 20
     ClientWidth = 227
     Constraints.MinHeight = 20
-    TabOrder = 5
+    TabOrder = 6
     object lblActiveAddon: TLabel
       AnchorSideLeft.Control = chkbLaunchWithAddon
       AnchorSideLeft.Side = asrBottom
@@ -2736,6 +2736,19 @@ object Form1: TForm1
     OnClick = btnAddonScanClick
     TabOrder = 2
   end
+  object btnAddonMultiselect: TButton
+    AnchorSideLeft.Control = btnAddonScan
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = btnStart
+    Left = 643
+    Height = 25
+    Top = 260
+    Width = 151
+    BorderSpacing.Left = 20
+    Caption = 'Select multiple add-ons'
+    OnClick = btnAddonMultiselectClick
+    TabOrder = 3
+  end
   object ScrollBox1: TScrollBox
     AnchorSideLeft.Control = pnlSettingsControls
     AnchorSideLeft.Side = asrBottom
@@ -2762,7 +2775,7 @@ object Form1: TForm1
     BorderSpacing.Right = 15
     ClientHeight = 63
     ClientWidth = 246
-    TabOrder = 3
+    TabOrder = 4
     Visible = False
     object pnlAddonsContainer: TPanel
       Left = 0
