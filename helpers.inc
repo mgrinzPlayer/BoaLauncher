@@ -50,11 +50,11 @@ begin
   result:=true;
 end;
 
-procedure trimComment(var s: string);
+function trimComment(s: string): string;
 var a: integer;
 begin
   a:=pos('//',s);
-  if a>0 then s:=copy(s,1,a-1);
+  if a>0 then result:=s.Substring(0,a-1).Trim() else result:=s.Trim();
 end;
 
 procedure removePadding(var s: string);

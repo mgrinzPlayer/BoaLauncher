@@ -1,6 +1,9 @@
 procedure TForm1.gameExecute;
 var
   proc: TProcess;
+  IWAD: string='';
+  LOAD: string='';
+  s: string;
   procedure addParam(s: array of string);
   var i: integer;
   begin
@@ -18,12 +21,19 @@ begin
   addParam(['-shotdir',configs_and_saves_path+'Screenshots']);
   {$ifend}
 
-  case (addonFileName<>'') and chkbLaunchWithAddon.Checked of
-    false: addParam(['-iwad',ipk3Name]);
-    true: begin
-           addParam(['-file']);
-           addParam(addonFileName.Split([':']));
-          end;
+  addParam(['-iwad',ipk3Name]);
+
+  if (addonFileName<>'') and chkbLaunchWithAddon.Checked then
+  begin
+   addParam(['-file']);
+   if pos(':',addonFileName)>0 then
+     for s in addonFileName.Split([':']) do
+     begin
+       get_gameinfo_LOAD(s,IWAD,LOAD);
+       addParam(LOAD);
+     end
+   else
+     addParam(addonFileName);
   end;
 
   if cbDisplacementTextures.ItemIndex=1 then addParam(['-file','boa_dt.pk3']);

@@ -17,7 +17,7 @@ begin
     s:=menudef_txt_SL.Strings[i].Trim().ToLower;
     if s.StartsWith('optionstring "boalanguageoptions"') then
     begin
-      s:=menudef_txt_SL.Strings[i+1].Trim(); trimComment(s);
+      s:=trimComment(menudef_txt_SL.Strings[i+1]);
       inc(brackets,s.CountChar('{'));dec(brackets,s.CountChar('}'));
       if brackets=0 then break;
 
@@ -27,7 +27,7 @@ begin
 
       for j:=i+2 to menudef_txt_SL.Count-1 do
       begin
-        s:=menudef_txt_SL.Strings[j].Trim(); trimComment(s);
+        s:=trimComment(menudef_txt_SL.Strings[j]);
         if s='' then continue;
 
         inc(brackets,s.CountChar('{'));dec(brackets,s.CountChar('}'));
@@ -70,13 +70,13 @@ begin
 
   for i:=0 to SL.Count-1 do
   begin
-    s:=SL.Strings[i].Trim(); trimComment(s);
+    s:=trimComment(SL.Strings[i]);
     if s='' then continue;
     a:=Pos('=',s);
     if (a>0) then
     begin
       key:=copy(s,1,a-1); key:=key.Trim().ToLower;
-      value:=s.Substring(a+1); value:=value.Trim();
+      value:=s.Substring(a).Trim();
       if key='title' then title:=value;
       if key='credits' then credits:=value;
       if key='creditsfull' then creditsFull:=value;
@@ -144,3 +144,47 @@ begin
   if fileList<>nil then FreeAndNil(fileList);
   if addonInfoTXT<>nil then FreeAndNil(addonInfoTXT);
 end;
+
+procedure get_gameinfo_LOAD(boaFile: string; var IWAD, LOAD: string);
+var
+  i,a: integer;
+  gameInfoTXT: TStringList=nil;
+  s,key,value: string;
+  sa: TStringArray;
+begin
+  IWAD:='';
+  LOAD:='';
+
+  if Form1.ExtractSingleFileToStringList(boaFile, 'gameinfo.txt', gameInfoTXT) then
+  begin
+    for i:=0 to gameInfoTXT.Count-1 do
+    begin
+      s:=trimComment(gameInfoTXT.Strings[i]);
+      if s='' then continue;
+      a:=Pos('=',s);
+      if (a>0) then
+      begin
+        key:=copy(s,1,a-1); key:=key.Trim().ToLower;
+        value:=s.Substring(a).Trim();
+        if key='iwad' then IWAD:=value;
+        if key='load' then LOAD:=value;
+      end;
+    end;
+
+    if LOAD<>'' then
+    begin
+      sa:=LOAD.Split(',');
+      LOAD:=sa[0].Trim();
+      for i:=1 to Length(sa)-1 do
+        LOAD:=LOAD+' '+sa[i].Trim();
+    end;
+  end;
+
+  if gameInfoTXT<>nil then FreeAndNil(gameInfoTXT);
+end;
+
+
+
+
+
+
