@@ -53,8 +53,10 @@ end;
 function trimComment(s: string): string;
 var a: integer;
 begin
-  a:=pos('//',s);
-  if a>0 then result:=s.Substring(0,a-1).Trim() else result:=s.Trim();
+  result:=s.Replace('://',':\/\/');
+  a:=pos('//',result);
+  if a>0 then result:=result.Substring(0,a-1).Trim();
+  result:=s.Replace(':\/\/','://');
 end;
 
 procedure removePadding(var s: string);
