@@ -56,7 +56,7 @@ begin
   result:=s.Replace('://',':\/\/');
   a:=pos('//',result);
   if a>0 then result:=result.Substring(0,a-1).Trim();
-  result:=s.Replace(':\/\/','://');
+  result:=result.Replace(':\/\/','://');
 end;
 
 procedure removePadding(var s: string);
