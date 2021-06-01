@@ -1,6 +1,4 @@
 # BoaLauncher
-
-For testing purposes boa.ipk3 contains only menudef.txt file.
 ---
 how to build the executable Windows:
 - download https://www.lazarus-ide.org , suggested 32bit version from here: https://sourceforge.net/projects/lazarus/files/Lazarus%20Windows%2032%20bits/Lazarus%202.0.10/
@@ -20,3 +18,5 @@ be sure you have those packages installed:
 - libc6-dev 
 - and for QT5: libqt5pas-dev, libx11-dev
 - and for GTK2: libpango1.0-dev, libgdk-pixbuf2.0-dev, libgtk2.0-dev
+---
+For testing purposes boa.ipk3 contains only menudef.txt file.
