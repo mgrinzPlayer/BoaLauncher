@@ -233,6 +233,9 @@ begin
 
   btnAddonScan.Width:=Canvas.getTextWidth('_____'+btnAddonScan.Caption+'_____');
   btnAddonMultiselect.Width:=Canvas.getTextWidth('_____'+btnAddonMultiselect.Caption+'_____');
+
+  Constraints.MinHeight:=btnStart.Top+btnStart.Height+15;
+  Height:=Constraints.MinHeight;
 end;
 
 var animDirection:integer=0;

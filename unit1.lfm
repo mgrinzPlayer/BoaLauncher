@@ -6,7 +6,6 @@ object Form1: TForm1
   Caption = 'Blade of Agony'
   ClientHeight = 300
   ClientWidth = 900
-  Constraints.MinHeight = 300
   Constraints.MinWidth = 900
   Icon.Data = {
     E73601000000010005000000000001002000B1B9000056000000404000000100
