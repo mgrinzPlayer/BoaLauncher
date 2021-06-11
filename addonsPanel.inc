@@ -245,21 +245,18 @@ begin
       then
       begin
         imgPreview:=TImage.Create(pnlAddonsContainer);
+        imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
         imgPreview.Picture.LoadFromStream(MS);
         imgPreview.Parent:=pnlAddon;
-        imgPreview.Constraints.MaxWidth:=trunc(Screen.PixelsPerInch / Form1.DesignTimePPI * 128);
-        //imgPreview.Constraints.MaxHeight:= (9 * imgPreview.Constraints.MaxWidth) div 16;
+        imgPreview.Width:=trunc(Screen.PixelsPerInch / Form1.DesignTimePPI * 128);
+        imgPreview.Height:=trunc(imgPreview.Picture.Height / imgPreview.Picture.Width * imgPreview.Width);
         imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
-        imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
         imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
 
         lblDescOfAddon.AnchorToNeighbour(akRight,rightMargin,imgPreview);
 
         imgPreview.Proportional:=true;
         imgPreview.Stretch:=true;
-        imgPreview.StretchInEnabled:=true;
-        imgPreview.StretchOutEnabled:=false;
-        imgPreview.AutoSize:=true;
 
         imgPreview.Tag:=i;
         imgPreview.OnClick:=addon_panelinfo_click;
@@ -276,22 +273,19 @@ begin
         if ExtractSingleFileToStream(AddonList[i].FileName,'preview/1.jpg',MS) then
         begin
           imgPreview:=TImage.Create(pnlAddonsContainer);
+          imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
           imgPreview.Cursor:=crHandPoint;
           imgPreview.Picture.LoadFromStream(MS);
           imgPreview.Parent:=pnlAddon;
-          imgPreview.Constraints.MaxWidth:= trunc(Screen.PixelsPerInch / Form1.DesignTimePPI * 128);
-          imgPreview.Constraints.MaxHeight:= (9 * imgPreview.Constraints.MaxWidth) div 16;
+          imgPreview.Width:=trunc(Screen.PixelsPerInch / Form1.DesignTimePPI * 128);
+          imgPreview.Height:=trunc(imgPreview.Picture.Height / imgPreview.Picture.Width * imgPreview.Width);
           imgPreview.AnchorParallel(akRight,0,btnNameOfAddon);
-          imgPreview.Anchors:=imgPreview.Anchors-[akLeft];
           imgPreview.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
 
           lblDescOfAddon.AnchorToNeighbour(akRight,rightMargin,imgPreview);
 
           imgPreview.Proportional:=true;
           imgPreview.Stretch:=true;
-          imgPreview.StretchInEnabled:=true;
-          imgPreview.StretchOutEnabled:=false;
-          imgPreview.AutoSize:=true;
 
           imgPreview.Tag:=i;
           imgPreview.OnClick:=addon_panelinfo_click;
