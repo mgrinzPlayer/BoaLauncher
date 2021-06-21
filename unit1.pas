@@ -51,7 +51,7 @@ type
     lblActiveAddon: TLabel;
     chkbLaunchWithAddon: TCheckBox;
 
-    btnStart: TButton;
+    btnPlay: TButton;
     btnExit: TButton;
     btnAddonScan: TButton;
     btnAddonMultiselect: TButton;
@@ -67,7 +67,7 @@ type
     procedure btnAddonMultiselectClick(Sender: TObject);
     procedure btnAddonScanClick(Sender: TObject);
     procedure btnExitClick(Sender: TObject);
-    procedure btnStartClick(Sender: TObject);
+    procedure btnPlayClick(Sender: TObject);
     procedure settingsControlsHorizontal(yes: boolean);
     procedure chkbLaunchWithAddonVisibilityChange(visible: boolean);
     procedure FormCreate(Sender: TObject);
@@ -113,6 +113,43 @@ var
 
 implementation
 
+resourcestring
+  rsUseLastSettings = 'Use last settings';
+  rsResetToDefaultSettings = 'Reset to default settings';
+
+  rsDetailPreset = 'Detail preset:';
+  rsVeryLowDetail = 'Very low detail (fastest)';
+  rsLowDetail = 'Low detail (faster)';
+  rsNormalDetail = 'Normal detail';
+  rsHighDetail = 'High detail (prettier)';
+  rsVeryHighDetail = 'Very high detail (beautiful)';
+
+  rsDisplacementTextures = 'Displacement textures:';
+  rsDisplacementTexturesDisable = 'Disable (faster)';
+  rsDisplacementTexturesEnable = 'Enable (beautiful)';
+
+  rsLanguage = 'Game language:';
+
+  rsDeveloperCommentary = 'Developer commentary';
+
+  rsLaunchWithAddon = 'Launch with:';
+
+  rsPlay = 'Play';
+  rsExit = 'Exit';
+
+  rsAddonScan = 'Scan for addons';
+  rsAddonHide = 'Hide addons';
+  rsAddonMultiselect = 'Select multiple addons';
+  rsNoAddonSelected = 'No addon selected.';
+  rsAndMore = ', and %d more';
+
+  rsAddonPreview = 'Addon preview';
+  rsAddonPreview_alt= 'Addon preview (use arrow keys to see other images)';
+  rsDescription = 'Description:';
+  rsRequirements = 'Requirements:';
+  rsCreditsAuthor = ' by %s ';
+  rsDoubleClick = 'double click';
+
 {$R *.lfm}
 
 //extract from ZIP functions/procedures, parsing text helpers
@@ -130,7 +167,7 @@ implementation
 //Addons
 {$I addonsPanel.inc}
 
-procedure TForm1.btnStartClick(Sender: TObject);
+procedure TForm1.btnPlayClick(Sender: TObject);
 begin
   saveSettings;
   gameExecute;
@@ -149,14 +186,14 @@ begin
   begin
     settingsControlsHorizontal(false);
     ScrollBox1.Visible:=true;
-    btnAddonScan.Caption:='Close addons informations';
+    btnAddonScan.Caption:=rsAddonHide;
     if not prepareBoA_addons_page_processing then preparing_BoA_addons_page();
   end
   else
   begin
     ScrollBox1.Visible:=false;
     settingsControlsHorizontal(true);
-    btnAddonScan.Caption:='Click to scan for addons';
+    btnAddonScan.Caption:=rsAddonScan;
   end;
 end;
 
@@ -192,7 +229,7 @@ begin
       for i:=1 to Form2.ListBox2.Items.Count-2 do  // -2, because we ignore the last empty item
       begin
         if i<3 then addonTitle:=addonTitle+', "'+Form2.ListBox2.Items[i]+'"';
-        if i=3 then addonTitle:=addonTitle+', and '+inttostr(Form2.ListBox2.Items.Count-4)+' more';
+        if i=3 then addonTitle:=addonTitle+Format(rsAndMore,[(Form2.ListBox2.Items.Count-4)]);
         addonFileName:=addonFileName+':'+TStringStream(Form2.ListBox2.Items.Objects[i]).DataString;
       end;
 
@@ -234,7 +271,7 @@ begin
   btnAddonScan.Width:=Canvas.getTextWidth('_____'+btnAddonScan.Caption+'_____');
   btnAddonMultiselect.Width:=Canvas.getTextWidth('_____'+btnAddonMultiselect.Caption+'_____');
 
-  Constraints.MinHeight:=btnStart.Top+btnStart.Height+15;
+  Constraints.MinHeight:=btnPlay.Top+btnPlay.Height+15;
   Height:=Constraints.MinHeight;
 end;
 
@@ -336,7 +373,7 @@ begin
   pnlSettingsControls.EnableAutoSizing;
   pnlSettingsControls.AdjustSize;
 
-  x:=btnStart.Top+btnStart.Height+15;
+  x:=btnPlay.Top+btnPlay.Height+15;
   Form1.Top:=Form1.Top - ( (x-Form1.Height) div 2 ); // fix position
   Form1.Height:=x;
 
@@ -357,13 +394,38 @@ begin
   begin
     lblActiveAddon.AnchorParallel(akLeft,0,pnlActiveAddon);
     lblActiveAddon.AnchorParallel(akTop,0,pnlActiveAddon);
-    lblActiveAddon.Caption:='Addon not selected.';
+    lblActiveAddon.Caption:=rsNoAddonSelected;
   end;
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  SetCurrentDir(ExtractFilePath(ParamStr(0)));
+  lblDetailPreset.Caption:=rsDetailPreset;
+  cbDetailPreset.Items.Add(rsUseLastSettings);
+  cbDetailPreset.Items.Add(rsResetToDefaultSettings);
+  cbDetailPreset.Items.Add(rsVeryLowDetail);
+  cbDetailPreset.Items.Add(rsLowDetail);
+  cbDetailPreset.Items.Add(rsNormalDetail);
+  cbDetailPreset.Items.Add(rsHighDetail);
+  cbDetailPreset.Items.Add(rsVeryHighDetail);
+  cbDetailPreset.ItemIndex:=0;
+
+  lblDisplacementTextures.Caption:=rsDisplacementTextures;
+  cbDisplacementTextures.Items.Add(rsDisplacementTexturesDisable);
+  cbDisplacementTextures.Items.Add(rsDisplacementTexturesEnable);
+  cbDisplacementTextures.ItemIndex:=0;
+
+  lblLanguage.Caption:=rsLanguage;
+  cbLanguage.Items.Add(rsUseLastSettings);
+  cbLanguage.ItemIndex:=0;
+
+  chkbDeveloperCommentary.Caption:=rsDeveloperCommentary;
+  chkbLaunchWithAddon.Caption:=rsLaunchWithAddon;
+
+  btnPlay.Caption:=rsPlay;
+  btnExit.Caption:=rsExit;
+  btnAddonScan.Caption:=rsAddonScan;
+  btnAddonMultiselect.Caption:=rsAddonMultiselect;
 
   loadSettings;
   Image1.Picture.LoadFromResourceName(HInstance,'LAUNCHERIMAGE');

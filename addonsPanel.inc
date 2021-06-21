@@ -107,12 +107,8 @@ begin
     end;
   end;
 
-  if Length(previewImagesArray)>0 then
-  begin
-    PreviewForm.Caption:='Add-on preview.';
-    if Length(previewImagesArray)>1 then
-      PreviewForm.Caption:=PreviewForm.Caption + ' Use arrow keys to see other images';
-  end;
+  if Length(previewImagesArray)>1 then PreviewForm.Caption:=rsAddonPreview_alt
+                                  else PreviewForm.Caption:=rsAddonPreview;
 
   previewImagesArray[0].Position:=0;
   PreviewImageFullSize.Picture.LoadFromStream(previewImagesArray[0]);
@@ -214,7 +210,7 @@ begin
       creditsLbl.Align:=alRight;
       creditsLbl.Font.Style:=[fsBold];
       creditsLbl.BorderSpacing.Bottom:=1;
-      creditsLbl.Caption:=' by '+AddonList[i].Credits.Replace('&','&&')+' ';
+      creditsLbl.Caption:=Format(rsCreditsAuthor, [AddonList[i].Credits.Replace('&','&&')] );
       if AddonList[i].CreditsFull<>'' then
       begin
         creditsLbl.Caption:=creditsLbl.Caption+'(...)';
@@ -230,7 +226,7 @@ begin
       lblDescOfAddon.AnchorToNeighbour(akTop,buttonBottomSpace,btnNameOfAddon);
       lblDescOfAddon.AnchorParallel(akLeft,leftMargin,pnlAddon);
       lblDescOfAddon.AnchorParallel(akRight,rightMargin,pnlAddon);
-      lblDescOfAddon.Caption:='Description:'+LineEnding+AddonList[i].Description;
+      lblDescOfAddon.Caption:=rsDescription+LineEnding+AddonList[i].Description;
 
       lblRequirementsOfAddon:=TLabel.Create(pnlAddonsContainer);
       lblRequirementsOfAddon.Parent:=pnlAddon;
@@ -238,7 +234,7 @@ begin
       lblRequirementsOfAddon.AutoSize:=true;
       lblRequirementsOfAddon.AnchorToCompanion(akTop,blockSpacing,lblDescOfAddon);
       lblRequirementsOfAddon.BorderSpacing.Bottom:=bottomMargin;
-      lblRequirementsOfAddon.Caption:='Requirements:'+LineEnding+AddonList[i].Requirements;
+      lblRequirementsOfAddon.Caption:=rsRequirements+LineEnding+AddonList[i].Requirements;
 
       //show icon if exists
       if ExtractSingleFileToStream(AddonList[i].FileName,'preview/icon.png',MS)
@@ -264,7 +260,7 @@ begin
         begin
           imgPreview.Cursor:=crHandPoint;
           imgPreview.OnDblClick:=PreviewClick;
-          imgPreview.Hint:='double click';
+          imgPreview.Hint:=rsDoubleClick;
           imgPreview.ShowHint:=true;
         end;
       end
@@ -290,7 +286,7 @@ begin
           imgPreview.Tag:=i;
           imgPreview.OnClick:=addon_panelinfo_click;
           imgPreview.OnDblClick:=PreviewClick;
-          imgPreview.Hint:='double click';
+          imgPreview.Hint:=rsDoubleClick;
           imgPreview.ShowHint:=true;
         end;
       end;

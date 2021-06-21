@@ -1,0 +1,130 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: unit1.rsaddonhide
+msgid "Hide addons"
+msgstr "Спрятать модификации"
+
+#: unit1.rsaddonmultiselect
+msgid "Select multiple addons"
+msgstr "Выбрать несколько модификаций"
+
+#: unit1.rsaddonpreview
+msgid "Addon preview"
+msgstr "Предпросмотр"
+
+#: unit1.rsaddonpreview_alt
+msgid "Addon preview (use arrow keys to see other images)"
+msgstr "Предпросмотр (переключайте изображения клавишами-стрелками)"
+
+#: unit1.rsaddonscan
+msgid "Scan for addons"
+msgstr "Поиск модификаций"
+
+#: unit1.rsandmore
+msgid ", and %d more"
+msgstr ", и еще %d"
+
+#: unit1.rscreditsauthor
+msgid " by %s "
+msgstr " %s "
+
+#: unit1.rsdescription
+msgid "Description:"
+msgstr "Описание:"
+
+#: unit1.rsdetailpreset
+msgid "Detail preset:"
+msgstr "Уровень детализации:"
+
+#: unit1.rsdevelopercommentary
+msgid "Developer commentary"
+msgstr "Комментарии разработчиков"
+
+#: unit1.rsdisplacementtextures
+msgid "Displacement textures:"
+msgstr "Карты смещения:"
+
+#: unit1.rsdisplacementtexturesdisable
+msgid "Disable (faster)"
+msgstr "Выключены (быстрее)"
+
+#: unit1.rsdisplacementtexturesenable
+msgid "Enable (beautiful)"
+msgstr "Включены (красивее)"
+
+#: unit1.rsdoubleclick
+msgid "double click"
+msgstr "двойной клик"
+
+#: unit1.rsexit
+msgid "Exit"
+msgstr "Выход"
+
+#: unit1.rshighdetail
+msgid "High detail (prettier)"
+msgstr "Высокий (красивый)"
+
+#: unit1.rslanguage
+msgid "Game language:"
+msgstr "Язык игры:"
+
+#: unit1.rslaunchwithaddon
+msgid "Launch with:"
+msgstr "Запустить с:"
+
+#: unit1.rslowdetail
+msgid "Low detail (faster)"
+msgstr "Низкий (быстрый)"
+
+#: unit1.rsnoaddonselected
+msgid "No addon selected."
+msgstr "Модификации не выбраны."
+
+#: unit1.rsnormaldetail
+msgid "Normal detail"
+msgstr "Обычный"
+
+#: unit1.rsplay
+msgid "Play"
+msgstr "Играть"
+
+#: unit1.rsrequirements
+msgid "Requirements:"
+msgstr "Требования:"
+
+#: unit1.rsresettodefaultsettings
+msgid "Reset to default settings"
+msgstr "Настройки по умолчанию"
+
+#: unit1.rsuselastsettings
+msgid "Use last settings"
+msgstr "Текущие настройки"
+
+#: unit1.rsveryhighdetail
+msgid "Very high detail (beautiful)"
+msgstr "Очень высокий (самый красивый)"
+
+#: unit1.rsverylowdetail
+msgid "Very low detail (fastest)"
+msgstr "Очень низкий (самый быстрый)"
+
+#: unit2.rsapply
+msgid "Apply"
+msgstr "Применить"
+
+#: unit2.rsavailableaddons
+msgid "Available addons:"
+msgstr "Доступные модификации:"
+
+#: unit2.rscancel
+msgid "Cancel"
+msgstr "Отмена"
+
+#: unit2.rsloadorder
+msgid "Load order:"
+msgstr "Порядок подключения:"
+
+#: unit2.rsmultiselect
+msgid "select multiple addons"
+msgstr "выбрать несколько модификаций"

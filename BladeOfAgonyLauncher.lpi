@@ -19,6 +19,10 @@
         <Resource_1 FileName="images\simpleAnimation.brighter.launcherimage.png" Type="RCDATA" ResourceName="SIMPLEANIMATION"/>
       </Resources>
     </General>
+    <i18n>
+      <EnableI18N Value="True" LFM="False"/>
+      <OutDir Value="language"/>
+    </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>

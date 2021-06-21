@@ -3,7 +3,7 @@ object Form2: TForm2
   Height = 400
   Top = 530
   Width = 500
-  Caption = 'Blade of Agony: add-ons multiselect'
+  Caption = 'Blade of Agony: select multiple addons'
   ClientHeight = 400
   ClientWidth = 500
   OnCreate = FormCreate
@@ -14,12 +14,12 @@ object Form2: TForm2
     AnchorSideLeft.Side = asrCenter
     AnchorSideTop.Control = Owner
     AnchorSideRight.Side = asrCenter
-    Left = 68
+    Left = 71
     Height = 15
     Top = 10
-    Width = 98
+    Width = 93
     BorderSpacing.Top = 10
-    Caption = 'Available add-ons:'
+    Caption = 'Available addons:'
     ParentColor = False
   end
   object ListBox1: TListBox
@@ -62,12 +62,12 @@ object Form2: TForm2
     AnchorSideLeft.Control = ListBox2
     AnchorSideLeft.Side = asrCenter
     AnchorSideTop.Control = Owner
-    Left = 308
+    Left = 352
     Height = 15
     Top = 10
-    Width = 148
+    Width = 60
     BorderSpacing.Top = 10
-    Caption = 'Selected add-ons and order:'
+    Caption = 'Load order:'
     ParentColor = False
   end
   object Panel1: TPanel

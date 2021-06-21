@@ -44,12 +44,25 @@ var
 
 implementation
 
+resourcestring
+  rsMultiselect = 'select multiple addons';
+  rsAvailableAddons = 'Available addons:';
+  rsLoadOrder = 'Load order:';
+  rsApply = 'Apply';
+  rsCancel = 'Cancel';
+
 {$R *.lfm}
 
 { TForm2 }
 
 procedure TForm2.FormCreate(Sender: TObject);
 begin
+  Caption:='Blade of Agony: '+rsMultiselect;
+  Label1.Caption:=rsAvailableAddons;
+  Label2.Caption:=rsLoadOrder;
+  Button1.Caption:=rsApply;
+  Button2.Caption:=rsCancel;
+
   ListBox1.Sorted:=true;
 end;
 

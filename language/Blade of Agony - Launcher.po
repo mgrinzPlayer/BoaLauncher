@@ -1,0 +1,131 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: unit1.rsaddonhide
+msgid "Hide addons"
+msgstr ""
+
+#: unit1.rsaddonmultiselect
+msgid "Select multiple addons"
+msgstr ""
+
+#: unit1.rsaddonpreview
+msgid "Addon preview"
+msgstr ""
+
+#: unit1.rsaddonpreview_alt
+msgid "Addon preview (use arrow keys to see other images)"
+msgstr ""
+
+#: unit1.rsaddonscan
+msgid "Scan for addons"
+msgstr ""
+
+#: unit1.rsandmore
+msgid ", and %d more"
+msgstr ""
+
+#: unit1.rscreditsauthor
+msgid " by %s "
+msgstr ""
+
+#: unit1.rsdescription
+msgid "Description:"
+msgstr ""
+
+#: unit1.rsdetailpreset
+msgid "Detail preset:"
+msgstr ""
+
+#: unit1.rsdevelopercommentary
+msgid "Developer commentary"
+msgstr ""
+
+#: unit1.rsdisplacementtextures
+msgid "Displacement textures:"
+msgstr ""
+
+#: unit1.rsdisplacementtexturesdisable
+msgid "Disable (faster)"
+msgstr ""
+
+#: unit1.rsdisplacementtexturesenable
+msgid "Enable (beautiful)"
+msgstr ""
+
+#: unit1.rsdoubleclick
+msgid "double click"
+msgstr ""
+
+#: unit1.rsexit
+msgid "Exit"
+msgstr ""
+
+#: unit1.rshighdetail
+msgid "High detail (prettier)"
+msgstr ""
+
+#: unit1.rslanguage
+msgid "Game language:"
+msgstr ""
+
+#: unit1.rslaunchwithaddon
+msgid "Launch with:"
+msgstr ""
+
+#: unit1.rslowdetail
+msgid "Low detail (faster)"
+msgstr ""
+
+#: unit1.rsnoaddonselected
+msgid "No addon selected."
+msgstr ""
+
+#: unit1.rsnormaldetail
+msgid "Normal detail"
+msgstr ""
+
+#: unit1.rsplay
+msgid "Play"
+msgstr ""
+
+#: unit1.rsrequirements
+msgid "Requirements:"
+msgstr ""
+
+#: unit1.rsresettodefaultsettings
+msgid "Reset to default settings"
+msgstr ""
+
+#: unit1.rsuselastsettings
+msgid "Use last settings"
+msgstr ""
+
+#: unit1.rsveryhighdetail
+msgid "Very high detail (beautiful)"
+msgstr ""
+
+#: unit1.rsverylowdetail
+msgid "Very low detail (fastest)"
+msgstr ""
+
+#: unit2.rsapply
+msgid "Apply"
+msgstr ""
+
+#: unit2.rsavailableaddons
+msgid "Available addons:"
+msgstr ""
+
+#: unit2.rscancel
+msgid "Cancel"
+msgstr ""
+
+#: unit2.rsloadorder
+msgid "Load order:"
+msgstr ""
+
+#: unit2.rsmultiselect
+msgid "select multiple addons"
+msgstr ""
+

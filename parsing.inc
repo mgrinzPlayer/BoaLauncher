@@ -21,10 +21,6 @@ begin
       inc(brackets,s.CountChar('{'));dec(brackets,s.CountChar('}'));
       if brackets=0 then break;
 
-      cbLanguage.Clear;
-      cbLanguage.AddItem('Use Last Settings',nil);
-      cbLanguage.ItemIndex:=0;
-
       for j:=i+2 to menudef_txt_SL.Count-1 do
       begin
         s:=trimComment(menudef_txt_SL.Strings[j]);
@@ -43,7 +39,7 @@ begin
           z:=length(LanguageList);
           setlength(LanguageList, z+1);
           LanguageList[z]:=copy(s,a+1,b-a-1);
-          cbLanguage.AddItem(copy(s,c+1,d-c-1),nil);
+          cbLanguage.Items.Add(copy(s,c+1,d-c-1));
         end;
       end;
 
