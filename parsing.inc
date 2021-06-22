@@ -52,7 +52,9 @@ procedure parseAddonInfoTXT(SL: TStringList; var title,credits,creditsFull,descr
 var
   s,key,value: string;
   i,a: integer;
+  lang: string;
 begin
+  if langid<>'en' then lang:='_'+langid.ToLower else lang:='';
 
   //mandatory
   title:='missing title';
@@ -79,6 +81,12 @@ begin
       if key='description' then description:=value;
       if key='requirements' then requirements:=value;
       if key='previewimages' then previewImages:=StrToInt(value);
+
+      // other languages
+      if key='title'+lang then title:=value;
+      if key='creditsfull'+lang then creditsFull:=value;
+      if key='description'+lang then description:=value;
+      if key='requirements'+lang then requirements:=value;
     end;
   end;
 end;

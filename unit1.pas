@@ -19,6 +19,8 @@ var
   prepareBoA_addons_page_processing: boolean=false;
   terminate: boolean=false;
 
+  langid: string='';
+
   //for sandboxed packages
   userCommands: TStringList=nil;
   configs_and_saves_path: string='.'+PathDelim;

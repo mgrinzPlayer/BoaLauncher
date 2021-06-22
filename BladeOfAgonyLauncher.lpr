@@ -8,7 +8,6 @@ uses
 
 var
   i: integer=1;
-  langid: string='';
 begin
   SetCurrentDir(ExtractFilePath(ParamStr(0)));
 
@@ -16,9 +15,15 @@ begin
   while i<=ParamCount do
   begin
     if (ParamStr(i).Substring(0,18).ToLower='-launcher_mainpath') and (i+1<=ParamCount) then
-    // search for launcher command
+    // search for launcher command mainpath
     begin
       configs_and_saves_path:=ExcludeTrailingPathDelimiter(ParamStr(i+1))+PathDelim;
+      inc(i);
+    end
+    else if (ParamStr(i).Substring(0,14).ToLower='-launcher_lang') and (i+1<=ParamCount) then
+    // search for launcher command lang
+    begin
+      langid:=ParamStr(i+1);
       inc(i);
     end
     // gather the rest for gzdoom
@@ -33,7 +38,7 @@ begin
   Application.Scaled:=True;
   Application.Initialize;
 
-  LazGetShortLanguageID(langid);
+  if langid='' then LazGetShortLanguageID(langid);
   Translations.TranslateResourceStrings('language'+PathDelim+'Blade of Agony - Launcher.'+langid+'.po');
 
   Application.CreateForm(TForm1, Form1);
