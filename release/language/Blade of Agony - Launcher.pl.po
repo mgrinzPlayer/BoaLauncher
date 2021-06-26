@@ -1,0 +1,130 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: unit1.rsaddonhide
+msgid "Hide addons"
+msgstr "Schowaj dodatki"
+
+#: unit1.rsaddonmultiselect
+msgid "Select multiple addons"
+msgstr "Wybierz wiele dodatków"
+
+#: unit1.rsaddonpreview
+msgid "Addon preview"
+msgstr "Podgląd dodatku"
+
+#: unit1.rsaddonpreview_alt
+msgid "Addon preview (use arrow keys to see other images)"
+msgstr "Podgląd dodatku (użyj klawiszy strzałek aby zobaczyć pozostałe obrazy)"
+
+#: unit1.rsaddonscan
+msgid "Scan for addons"
+msgstr "Skanuj dodatki"
+
+#: unit1.rsandmore
+msgid ", and %d more"
+msgstr ", i %d więcej"
+
+#: unit1.rscreditsauthor
+msgid " by %s "
+msgstr " wykonał %s "
+
+#: unit1.rsdescription
+msgid "Description:"
+msgstr "Opis:"
+
+#: unit1.rsdetailpreset
+msgid "Detail preset:"
+msgstr "Jakość:"
+
+#: unit1.rsdevelopercommentary
+msgid "Developer commentary"
+msgstr "Komentarz dewelopera"
+
+#: unit1.rsdisplacementtextures
+msgid "Displacement textures:"
+msgstr "Wypukłość:"
+
+#: unit1.rsdisplacementtexturesdisable
+msgid "Disable (faster)"
+msgstr "Wyłącz (szybciej)"
+
+#: unit1.rsdisplacementtexturesenable
+msgid "Enable (beautiful)"
+msgstr "Włącz (śliczne)"
+
+#: unit1.rsdoubleclick
+msgid "double click"
+msgstr "podwójne kliknięcie"
+
+#: unit1.rsexit
+msgid "Exit"
+msgstr "Wyjście"
+
+#: unit1.rshighdetail
+msgid "High detail (prettier)"
+msgstr "Wysokie detale (ładniejsze)"
+
+#: unit1.rslanguage
+msgid "Game language:"
+msgstr "Język gry:"
+
+#: unit1.rslaunchwithaddon
+msgid "Launch with:"
+msgstr "Uruchom z:"
+
+#: unit1.rslowdetail
+msgid "Low detail (faster)"
+msgstr "Niskie detale (szybciej)"
+
+#: unit1.rsnoaddonselected
+msgid "No addon selected."
+msgstr "Nie wybrano dodatku."
+
+#: unit1.rsnormaldetail
+msgid "Normal detail"
+msgstr "Normalne detale"
+
+#: unit1.rsplay
+msgid "Play"
+msgstr "Graj"
+
+#: unit1.rsrequirements
+msgid "Requirements:"
+msgstr "Wymagania:"
+
+#: unit1.rsresettodefaultsettings
+msgid "Reset to default settings"
+msgstr "Przywróć ustawienia domyślne"
+
+#: unit1.rsuselastsettings
+msgid "Use last settings"
+msgstr "Użyj ostatnich ustawień"
+
+#: unit1.rsveryhighdetail
+msgid "Very high detail (beautiful)"
+msgstr "Bardzo wysokie detale (śliczne)"
+
+#: unit1.rsverylowdetail
+msgid "Very low detail (fastest)"
+msgstr "Bardzo niskie detale (najszybsze)"
+
+#: unit2.rsapply
+msgid "Apply"
+msgstr "Zastosuj"
+
+#: unit2.rsavailableaddons
+msgid "Available addons:"
+msgstr "Dostępne dodatki:"
+
+#: unit2.rscancel
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: unit2.rsloadorder
+msgid "Load order:"
+msgstr "Kolejność wczytywania:"
+
+#: unit2.rsmultiselect
+msgid "select multiple addons"
+msgstr "wybierz wiele dodatków"

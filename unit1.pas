@@ -263,6 +263,7 @@ end;
 var delayedExecutionTimer: TTimer;
 
 procedure TForm1.delayedExecution(Sender: TObject);
+var calcWidth: integer=0;
 begin
   delayedExecutionTimer.Enabled:=false;
 
@@ -272,6 +273,10 @@ begin
 
   btnAddonScan.Width:=Canvas.getTextWidth('_____'+btnAddonScan.Caption+'_____');
   btnAddonMultiselect.Width:=Canvas.getTextWidth('_____'+btnAddonMultiselect.Caption+'_____');
+
+  calcWidth:=max(Canvas.getTextWidth('_____'+btnPlay.Caption+'_____'),Canvas.getTextWidth('_____'+btnExit.Caption+'_____'));
+  btnPlay.Width:=calcWidth;
+  btnExit.Width:=calcWidth;
 
   Constraints.MinHeight:=btnPlay.Top+btnPlay.Height+15;
   Height:=Constraints.MinHeight;
