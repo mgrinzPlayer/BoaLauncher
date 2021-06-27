@@ -1,0 +1,130 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: unit1.rsaddonhide
+msgid "Hide addons"
+msgstr "Addons verstecken"
+
+#: unit1.rsaddonmultiselect
+msgid "Select multiple addons"
+msgstr "Mehrere Addons auswählen"
+
+#: unit1.rsaddonpreview
+msgid "Addon preview"
+msgstr "Addon Vorschau"
+
+#: unit1.rsaddonpreview_alt
+msgid "Addon preview (use arrow keys to see other images)"
+msgstr "Addon Vorschau (Pfeiltasten verwenden um weitere Ansichten zu sehen)"
+
+#: unit1.rsaddonscan
+msgid "Scan for addons"
+msgstr "Nach Addons scannen"
+
+#: unit1.rsandmore
+msgid ", and %d more"
+msgstr ", und %d weitere"
+
+#: unit1.rscreditsauthor
+msgid " by %s "
+msgstr " von %s "
+
+#: unit1.rsdescription
+msgid "Description:"
+msgstr "Beschreibung:"
+
+#: unit1.rsdetailpreset
+msgid "Detail preset:"
+msgstr "Detail Voreinstellung:"
+
+#: unit1.rsdevelopercommentary
+msgid "Developer commentary"
+msgstr "Entwicklerkommentare"
+
+#: unit1.rsdisplacementtextures
+msgid "Displacement textures:"
+msgstr "Texturen Tiefenwirkung:"
+
+#: unit1.rsdisplacementtexturesdisable
+msgid "Disable (faster)"
+msgstr "Deaktiviert (schneller)"
+
+#: unit1.rsdisplacementtexturesenable
+msgid "Enable (beautiful)"
+msgstr "Aktiviert (schöner)"
+
+#: unit1.rsdoubleclick
+msgid "double click"
+msgstr "doppelklicken"
+
+#: unit1.rsexit
+msgid "Exit"
+msgstr "Beenden"
+
+#: unit1.rshighdetail
+msgid "High detail (prettier)"
+msgstr "Hohe Detailstufe (schöner)"
+
+#: unit1.rslanguage
+msgid "Game language:"
+msgstr "Spielsprache:"
+
+#: unit1.rslaunchwithaddon
+msgid "Launch with:"
+msgstr "Starte mit:"
+
+#: unit1.rslowdetail
+msgid "Low detail (faster)"
+msgstr "Niedrige Detailstufe (schneller)"
+
+#: unit1.rsnoaddonselected
+msgid "No addon selected."
+msgstr "Kein Addon ausgewählt."
+
+#: unit1.rsnormaldetail
+msgid "Normal detail"
+msgstr "Mittlere Detailstufe"
+
+#: unit1.rsplay
+msgid "Play"
+msgstr "Spielen"
+
+#: unit1.rsrequirements
+msgid "Requirements:"
+msgstr "Voraussetzungen:"
+
+#: unit1.rsresettodefaultsettings
+msgid "Reset to default settings"
+msgstr "Standardeinstellungen zurücksetzen"
+
+#: unit1.rsuselastsettings
+msgid "Use last settings"
+msgstr "Zuletzt verwendete Einstellung nutzen"
+
+#: unit1.rsveryhighdetail
+msgid "Very high detail (beautiful)"
+msgstr "Maximale Detailstufe (wunderschön)"
+
+#: unit1.rsverylowdetail
+msgid "Very low detail (fastest)"
+msgstr "Minimale Detailstufe (am schnellsten)"
+
+#: unit2.rsapply
+msgid "Apply"
+msgstr "Anwenden"
+
+#: unit2.rsavailableaddons
+msgid "Available addons:"
+msgstr "Verfügbare Addons:"
+
+#: unit2.rscancel
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: unit2.rsloadorder
+msgid "Load order:"
+msgstr "Ladereihenfolge:"
+
+#: unit2.rsmultiselect
+msgid "select multiple addons"
+msgstr "wähle mehrere Addons aus"
