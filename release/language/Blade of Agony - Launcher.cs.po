@@ -1,0 +1,131 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: unit1.rsaddonhide
+msgid "Hide addons"
+msgstr "Skryj doplňky"
+
+#: unit1.rsaddonmultiselect
+msgid "Select multiple addons"
+msgstr "Vyber více doplňků"
+
+#: unit1.rsaddonpreview
+msgid "Addon preview"
+msgstr "Náhled doplňku"
+
+#: unit1.rsaddonpreview_alt
+msgid "Addon preview (use arrow keys to see other images)"
+msgstr "Náhled doplňku (použij šipky k zobrazení dalších obrázků)"
+
+#: unit1.rsaddonscan
+msgid "Scan for addons"
+msgstr "Hledat doplňky"
+
+#: unit1.rsandmore
+msgid ", and %d more"
+msgstr ", a %d více"
+
+#: unit1.rscreditsauthor
+msgid " by %s "
+msgstr " od %s "
+
+#: unit1.rsdescription
+msgid "Description:"
+msgstr "Popis:"
+
+#: unit1.rsdetailpreset
+msgid "Detail preset:"
+msgstr "Detail předvolby:"
+
+#: unit1.rsdevelopercommentary
+msgid "Developer commentary"
+msgstr "Komentáře vývojářů"
+
+#: unit1.rsdisplacementtextures
+msgid "Displacement textures:"
+msgstr "Efekt hloubky textur:"
+
+#: unit1.rsdisplacementtexturesdisable
+msgid "Disable (faster)"
+msgstr "Deaktivovat (rychlejší)"
+
+#: unit1.rsdisplacementtexturesenable
+msgid "Enable (beautiful)"
+msgstr "Aktivovat (hezčí)"
+
+#: unit1.rsdoubleclick
+msgid "double click"
+msgstr "dvojitý klik"
+
+#: unit1.rsexit
+msgid "Exit"
+msgstr "Exit"
+
+#: unit1.rshighdetail
+msgid "High detail (prettier)"
+msgstr "Vysoké detaily (krásnější)"
+
+#: unit1.rslanguage
+msgid "Game language:"
+msgstr "Jazyk:"
+
+#: unit1.rslaunchwithaddon
+msgid "Launch with:"
+msgstr "Spusť s:"
+
+#: unit1.rslowdetail
+msgid "Low detail (faster)"
+msgstr "Nízké detaily (rychlejší)"
+
+#: unit1.rsnoaddonselected
+msgid "No addon selected."
+msgstr "Nevybrán žádný doplněk."
+
+#: unit1.rsnormaldetail
+msgid "Normal detail"
+msgstr "Normální detaily"
+
+#: unit1.rsplay
+msgid "Play"
+msgstr "Hrát"
+
+#: unit1.rsrequirements
+msgid "Requirements:"
+msgstr "Požadavky:"
+
+#: unit1.rsresettodefaultsettings
+msgid "Reset to default settings"
+msgstr "Resetování do výchozího nastavení"
+
+#: unit1.rsuselastsettings
+msgid "Use last settings"
+msgstr "Použij poslední nastavení"
+
+#: unit1.rsveryhighdetail
+msgid "Very high detail (beautiful)"
+msgstr "Velmi mnoho detailů (krásné)"
+
+#: unit1.rsverylowdetail
+msgid "Very low detail (fastest)"
+msgstr "Velmi málo detailů (nejrychlejší)"
+
+#: unit2.rsapply
+msgid "Apply"
+msgstr "Použít"
+
+#: unit2.rsavailableaddons
+msgid "Available addons:"
+msgstr "Dostupné doplňky:"
+
+#: unit2.rscancel
+msgid "Cancel"
+msgstr "Zrušit"
+
+#: unit2.rsloadorder
+msgid "Load order:"
+msgstr "Načti pořadí:"
+
+#: unit2.rsmultiselect
+msgid "select multiple addons"
+msgstr "Vyber více doplňků"
+
