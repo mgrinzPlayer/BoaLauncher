@@ -78,14 +78,16 @@ end;
 
 // double clicking will just append an entry
 procedure TForm2.ListBox1DblClick(Sender: TObject);
+var i:integer;
 begin
   if ListBox1.ItemIndex<0 then exit;
   if ListBox2.ItemIndex<0 then
     ListBox2.Items.InsertObject(ListBox2.Items.Count-1,ListBox1.Items[ListBox1.ItemIndex],ListBox1.Items.Objects[ListBox1.ItemIndex])
   else
     ListBox2.Items.InsertObject(ListBox2.ItemIndex,    ListBox1.Items[ListBox1.ItemIndex],ListBox1.Items.Objects[ListBox1.ItemIndex]);
-
-  ListBox1.Items.Delete(ListBox1.ItemIndex)
+  i:=ListBox1.ItemIndex; if i=ListBox1.Items.Count-1 then Dec(i);
+  ListBox1.Items.Delete(ListBox1.ItemIndex);
+  ListBox1.ItemIndex:=i;
 end;
 
 procedure TForm2.ListBox2DblClick(Sender: TObject);
