@@ -62,6 +62,17 @@ begin
 
   if cbLanguage.ItemIndex<>0 then addParam([   '+set','language',LanguageList[cbLanguage.ItemIndex-1]   ]);
 
+  if chkbCoop.Checked then
+  begin
+    if cbCoopPlayers.ItemIndex=0 then addParam([   '-join',edtCoopJoinHostIP.Text   ])
+    else
+    begin
+      addParam([   '-host',IntToStr(cbCoopPlayers.ItemIndex)   ]);
+      addParam([   '-port',edtCoopPort.Text   ]);
+      addParam([   '+map',cbCoopStartMap.Text   ]);
+    end;
+  end;
+
   //append user commands
   proc.Parameters.AddStrings(userCommands);
 

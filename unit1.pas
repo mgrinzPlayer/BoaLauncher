@@ -16,6 +16,7 @@ var
   {$ifend windows}
   ipk3Name:string ='boa.ipk3:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
 
+  multiplayerStartChapter: string = 'INTROMAP,C2M1,C3INTRO:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONSPADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONSPADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONSPADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
   prepareBoA_addons_page_processing: boolean=false;
   terminate: boolean=false;
 
@@ -52,6 +53,14 @@ type
     chkbDeveloperCommentary: TCheckBox;
     lblActiveAddon: TLabel;
     chkbLaunchWithAddon: TCheckBox;
+    chkbCoop: TCheckBox;
+    lblCoopPlayers: TLabel;
+    cbCoopPlayers: TComboBox;
+    lblCoopStartMap: TLabel;
+    cbCoopStartMap: TComboBox;
+    lblCoop_hostIP_or_port: TLabel;
+    edtCoopJoinHostIP: TEdit;
+    edtCoopPort: TEdit;
 
     btnPlay: TButton;
     btnExit: TButton;
@@ -68,8 +77,9 @@ type
 
     procedure btnAddonMultiselectClick(Sender: TObject);
     procedure btnAddonScanClick(Sender: TObject);
-    procedure btnExitClick(Sender: TObject);
     procedure btnPlayClick(Sender: TObject);
+    procedure btnExitClick(Sender: TObject);
+    procedure CoopChange(Sender: TObject);
     procedure settingsControlsHorizontal(yes: boolean);
     procedure chkbLaunchWithAddonVisibilityChange(visible: boolean);
     procedure FormCreate(Sender: TObject);
@@ -152,6 +162,13 @@ resourcestring
   rsCreditsAuthor = ' by %s ';
   rsDoubleClick = 'double click';
 
+  rsCoop = 'Co-op';
+  rsCoopPlayers = 'Players:';
+  rsCoopJoining = 'Joining';
+  rsCoopStartMap = 'Starting map:';
+  rsCoopHostIP = 'Hostname / IP:';
+  rsCoopPort = 'Port:';
+
 {$R *.lfm}
 
 //extract from ZIP functions/procedures, parsing text helpers
@@ -180,6 +197,47 @@ procedure TForm1.btnExitClick(Sender: TObject);
 begin
   terminate:=true;
   Application.Terminate;
+end;
+
+procedure TForm1.CoopChange(Sender: TObject);
+begin
+  if chkbCoop.Checked then
+  begin
+    lblCoopPlayers.Visible:=true;
+    cbCoopPlayers.Visible:=true;
+    lblCoop_hostIP_or_port.Visible:=true;
+
+    if cbCoopPlayers.ItemIndex<>0 then
+    begin
+      lblCoopStartMap.Visible:=true;
+      cbCoopStartMap.Visible:=true;
+
+      lblCoop_hostIP_or_port.Caption:=rsCoopPort;
+      edtCoopJoinHostIP.Visible:=false;
+      edtCoopPort.Visible:=true;
+    end
+    else
+    begin
+      lblCoopStartMap.Visible:=false;
+      cbCoopStartMap.Visible:=false;
+
+      lblCoop_hostIP_or_port.Caption:=rsCoopHostIP;
+      edtCoopJoinHostIP.Visible:=true;
+      edtCoopPort.Visible:=false;
+    end;
+  end
+  else
+  begin
+    lblCoopPlayers.Visible:=false;
+    cbCoopPlayers.Visible:=false;
+
+    lblCoopStartMap.Visible:=false;
+    cbCoopStartMap.Visible:=false;
+
+    lblCoop_hostIP_or_port.Visible:=false;
+    edtCoopJoinHostIP.Visible:=false;
+    edtCoopPort.Visible:=false;
+  end;
 end;
 
 procedure TForm1.btnAddonScanClick(Sender: TObject);
@@ -270,6 +328,8 @@ begin
   AdjustComboboxSize(cbDetailPreset, Canvas);
   AdjustComboboxSize(cbDisplacementTextures, Canvas);
   AdjustComboboxSize(cbLanguage, Canvas);
+  AdjustComboboxSize(cbCoopStartMap, Canvas);
+  AdjustComboboxSize(cbCoopPlayers, Canvas);
 
   btnAddonScan.Width:=Canvas.getTextWidth('_____'+btnAddonScan.Caption+'_____');
   btnAddonMultiselect.Width:=Canvas.getTextWidth('_____'+btnAddonMultiselect.Caption+'_____');
@@ -380,7 +440,7 @@ begin
   pnlSettingsControls.EnableAutoSizing;
   pnlSettingsControls.AdjustSize;
 
-  x:=btnPlay.Top+btnPlay.Height+15;
+  x:=btnPlay.Top+btnPlay.Height+btnPlay.BorderSpacing.Bottom;
   Form1.Top:=Form1.Top - ( (x-Form1.Height) div 2 ); // fix position
   Form1.Height:=x;
 
@@ -406,7 +466,12 @@ begin
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
+var s:string;
 begin
+  removePadding(execName);
+  removePadding(ipk3Name);
+  removePadding(multiplayerStartChapter);
+
   lblDetailPreset.Caption:=rsDetailPreset;
   cbDetailPreset.Items.Add(rsUseLastSettings);
   cbDetailPreset.Items.Add(rsResetToDefaultSettings);
@@ -434,12 +499,16 @@ begin
   btnAddonScan.Caption:=rsAddonScan;
   btnAddonMultiselect.Caption:=rsAddonMultiselect;
 
+  chkbCoop.Caption:=rsCoop;
+  lblCoopStartMap.Caption:=rsCoopStartMap;
+  lblCoopPlayers.Caption:=rsCoopPlayers;
+  lblCoop_hostIP_or_port.Caption:=rsCoopHostIP;
+  cbCoopPlayers.Items[0]:=rsCoopJoining;
+  for s in multiplayerStartChapter.Split([',']) do cbCoopStartMap.Items.Add(s);
+
   loadSettings;
   Image1.Picture.LoadFromResourceName(HInstance,'LAUNCHERIMAGE');
   Image2.Picture.LoadFromResourceName(HInstance,'SIMPLEANIMATION');
-
-  removePadding(execName);
-  removePadding(ipk3Name);
 
   findSupportedLanguages;
 

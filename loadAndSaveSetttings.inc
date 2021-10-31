@@ -6,14 +6,20 @@ begin
   inifile.WriteBool('Launcher','DevCommentary',chkbDeveloperCommentary.Checked);
   inifile.WriteInteger('Launcher','DisplacementTextures',cbDisplacementTextures.ItemIndex);
 
+  inifile.WriteBool('Launcher co-op','Enabled',chkbCoop.Checked);
+  inifile.WriteInteger('Launcher co-op','Players',cbCoopPlayers.ItemIndex);
+  inifile.WriteString('Launcher co-op','StartMap',cbCoopStartMap.Text);
+  inifile.WriteString('Launcher co-op','Hostname/IP',edtCoopJoinHostIP.Text);
+  inifile.WriteString('Launcher co-op','Port',edtCoopPort.Text);
+
   if chkbLaunchWithAddon.Checked then
   begin
-    inifile.WriteBool('Launcher','LaunchWithAddon',true);
-    inifile.WriteString('Launcher','addonTitle',addonTitle);
-    inifile.WriteString('Launcher','addonFileName',addonFileName);
+    inifile.WriteBool('Addon','LaunchWithAddon',true);
+    inifile.WriteString('Addon','addonTitle',addonTitle);
+    inifile.WriteString('Addon','addonFileName',addonFileName);
   end
   else
-    inifile.WriteBool('Launcher','LaunchWithAddon',false);
+    inifile.WriteBool('Addon','LaunchWithAddon',false);
 
   inifile.UpdateFile;
   inifile.Free;
@@ -27,9 +33,16 @@ begin
   chkbDeveloperCommentary.Checked:=inifile.ReadBool('Launcher','DevCommentary',false);
   cbDisplacementTextures.ItemIndex:=inifile.ReadInteger('Launcher','DisplacementTextures',0);
 
-  addonTitle:=inifile.ReadString('Launcher','addonTitle','');
-  addonFileName:=inifile.ReadString('Launcher','addonFileName','');
-  chkbLaunchWithAddon.Checked:=inifile.ReadBool('Launcher','LaunchWithAddon',false);
+  chkbCoop.Checked:=inifile.ReadBool('Launcher co-op','Enabled',false);
+  cbCoopPlayers.ItemIndex:=inifile.ReadInteger('Launcher co-op','Players',0);
+  cbCoopStartMap.Text:=inifile.ReadString('Launcher co-op','StartMap','INTROMAP');
+  edtCoopJoinHostIP.Text:=inifile.ReadString('Launcher co-op','Hostname/IP','127.0.0.1');
+  edtCoopPort.Text:=inifile.ReadString('Launcher co-op','Port','5029');
+  CoopChange(chkbCoop);
+
+  addonTitle:=inifile.ReadString('Addon','addonTitle','');
+  addonFileName:=inifile.ReadString('Addon','addonFileName','');
+  chkbLaunchWithAddon.Checked:=inifile.ReadBool('Addon','LaunchWithAddon',false);
 
   if (addonTitle<>'') and (addonFileName<>'') then
   begin

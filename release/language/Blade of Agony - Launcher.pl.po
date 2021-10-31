@@ -25,6 +25,30 @@ msgstr "Skanuj dodatki"
 msgid ", and %d more"
 msgstr ", i %d więcej"
 
+#: unit1.rscoop
+msgid "Co-op"
+msgstr "Kooperacja"
+
+#: unit1.rscoophostip
+msgid "Hostname / IP:"
+msgstr "Nazwa hosta / IP:"
+
+#: unit1.rscoopjoining
+msgid "Joining"
+msgstr "Dołączaj"
+
+#: unit1.rscoopplayers
+msgid "Players:"
+msgstr "Graczy:"
+
+#: unit1.rscoopport
+msgid "Port:"
+msgstr "Port:"
+
+#: unit1.rscoopstartmap
+msgid "Starting map:"
+msgstr "Mapa startowa:"
+
 #: unit1.rscreditsauthor
 msgid " by %s "
 msgstr " wykonał %s "

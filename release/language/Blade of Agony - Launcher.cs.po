@@ -25,6 +25,30 @@ msgstr "Hledat doplňky"
 msgid ", and %d more"
 msgstr ", a %d více"
 
+#: unit1.rscoop
+msgid "Co-op"
+msgstr ""
+
+#: unit1.rscoophostip
+msgid "Hostname / IP:"
+msgstr ""
+
+#: unit1.rscoopjoining
+msgid "Joining"
+msgstr ""
+
+#: unit1.rscoopplayers
+msgid "Players:"
+msgstr ""
+
+#: unit1.rscoopport
+msgid "Port:"
+msgstr ""
+
+#: unit1.rscoopstartmap
+msgid "Starting map:"
+msgstr ""
+
 #: unit1.rscreditsauthor
 msgid " by %s "
 msgstr " od %s "
