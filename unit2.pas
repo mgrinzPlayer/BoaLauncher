@@ -36,6 +36,7 @@ type
   private
 
   public
+    notDefaultBoAPlayer: boolean;
 
   end;
 
@@ -64,6 +65,7 @@ begin
   Button2.Caption:=rsCancel;
 
   ListBox1.Sorted:=true;
+  notDefaultBoAPlayer:=false;
 end;
 
 procedure TForm2.Button1Click(Sender: TObject);
@@ -81,6 +83,13 @@ procedure TForm2.ListBox1DblClick(Sender: TObject);
 var i:integer;
 begin
   if ListBox1.ItemIndex<0 then exit;
+
+  if Pos('*',ListBox1.Items[ListBox1.ItemIndex])<>0 then
+  begin
+    if notDefaultBoAPlayer then exit;
+    notDefaultBoAPlayer:=true;
+  end;
+
   if ListBox2.ItemIndex<0 then
     ListBox2.Items.InsertObject(ListBox2.Items.Count-1,ListBox1.Items[ListBox1.ItemIndex],ListBox1.Items.Objects[ListBox1.ItemIndex])
   else
@@ -95,6 +104,8 @@ var i:integer;
 begin
   if ListBox2.ItemIndex<0 then exit;
   if ListBox2.ItemIndex=ListBox2.Items.Count-1 then exit; // prevent removing last empty item
+
+  if Pos('*',ListBox2.Items[ListBox2.ItemIndex])<>0 then notDefaultBoAPlayer:=false;
 
   ListBox1.Items.AddObject(ListBox2.Items[ListBox2.ItemIndex],ListBox2.Items.Objects[ListBox2.ItemIndex]);
   i:=ListBox2.ItemIndex;

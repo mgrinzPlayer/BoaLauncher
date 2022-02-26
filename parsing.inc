@@ -91,7 +91,66 @@ begin
   end;
 end;
 
-procedure scanAllBoaFiles(var AddonList: dotBoAFileArray);
+function isDefaultBoAPlayer(pk3file: string): boolean;
+var
+  i,a: integer;
+  mapInfoTXT: TStringList=nil;
+  s,key,value: string;
+begin
+  result:=true;
+  if Form1.ExtractSingleFileToStringList(pk3file.Replace('"',''), 'mapinfo.txt', mapInfoTXT) then
+  begin
+    for i:=0 to mapInfoTXT.Count-1 do
+    begin
+      s:=trimComment(mapInfoTXT.Strings[i]);
+      if s='' then continue;
+      a:=Pos('=',s);
+      if (a>0) then
+      begin
+        key:=copy(s,1,a-1); key:=key.Trim().ToLower;
+        value:=s.Substring(a).Replace('"','').Trim().ToLower;
+        if (key='playerclasses') and (value<>'boaplayer') then begin result:=false; break; end;
+      end;
+    end;
+  end;
+  if mapInfoTXT<>nil then FreeAndNil(mapInfoTXT);
+end;
+
+procedure get_gameinfo_LOAD(boaFile: string; var IWAD: string; var LOAD: TStringArray);
+var
+  i,a: integer;
+  gameInfoTXT: TStringList=nil;
+  s,key,value, LOADstr: string;
+begin
+  IWAD:='';
+  LOADstr:='';
+
+  if Form1.ExtractSingleFileToStringList(boaFile, 'gameinfo.txt', gameInfoTXT) then
+  begin
+    for i:=0 to gameInfoTXT.Count-1 do
+    begin
+      s:=trimComment(gameInfoTXT.Strings[i]);
+      if s='' then continue;
+      a:=Pos('=',s);
+      if (a>0) then
+      begin
+        key:=copy(s,1,a-1); key:=key.Trim().ToLower;
+        value:=s.Substring(a).Trim();
+        if key='iwad' then IWAD:=value;
+        if key='load' then LOADstr:=value;
+      end;
+    end;
+
+    {$ifdef windows}
+    LOADstr:=LOADstr.Replace('/','\');
+    {$ifend windows}
+
+    LOAD:=LOADstr.Split([',',' '], TStringSplitOptions.ExcludeEmpty);
+  end;
+  if gameInfoTXT<>nil then FreeAndNil(gameInfoTXT);
+end;
+
+procedure scanAllBoaFiles(var AddonList: dotBoAFileArray; checkForDefaultBoAPlayer:boolean=false);
 var
   searchRec: TSearchRec;
   i,r: integer;
@@ -104,6 +163,10 @@ var
   description: string='';
   requirements: string='';
   imageCount: integer=0;
+
+  IWAD: string='';
+  LOAD: TStringArray=[];
+  s: string;
 begin
 
   fileList:=TStringList.Create;
@@ -122,6 +185,9 @@ begin
   for i:=0 to fileList.Count-1 do
   begin
     AddonList[i].FileName:=ExtractFileName(fileList[i]);
+    AddonList[i].DefaultBoAPlayer:=true;
+
+    //addon addoninfo.txt
     if Form1.ExtractSingleFileToStringList(fileList[i], 'addoninfo.txt', addonInfoTXT) then
     begin
       parseAddonInfoTXT(addonInfoTXT,title,credits,creditsFull,description,requirements,imageCount);
@@ -143,49 +209,30 @@ begin
       AddonList[i].PrevievImageCount:=0;
       AddonList[i].hasAddonInfoTXT:=false;
     end;
+
+    //addon gameinfo.txt (checking for different playerclasses)
+    if checkForDefaultBoAPlayer then
+    begin
+      get_gameinfo_LOAD(fileList[i], IWAD, LOAD);
+      for s in LOAD do
+        if isDefaultBoAPlayer(s)=false then
+        begin
+          AddonList[i].DefaultBoAPlayer:=false;
+          break;
+        end;
+    end;
+
   end;
 
   if fileList<>nil then FreeAndNil(fileList);
   if addonInfoTXT<>nil then FreeAndNil(addonInfoTXT);
 end;
 
-procedure get_gameinfo_LOAD(boaFile: string; var IWAD, LOAD: string);
-var
-  i,a: integer;
-  gameInfoTXT: TStringList=nil;
-  s,key,value: string;
-  sa: TStringArray;
-begin
-  IWAD:='';
-  LOAD:='';
 
-  if Form1.ExtractSingleFileToStringList(boaFile, 'gameinfo.txt', gameInfoTXT) then
-  begin
-    for i:=0 to gameInfoTXT.Count-1 do
-    begin
-      s:=trimComment(gameInfoTXT.Strings[i]);
-      if s='' then continue;
-      a:=Pos('=',s);
-      if (a>0) then
-      begin
-        key:=copy(s,1,a-1); key:=key.Trim().ToLower;
-        value:=s.Substring(a).Trim();
-        if key='iwad' then IWAD:=value;
-        if key='load' then LOAD:=value;
-      end;
-    end;
 
-    if LOAD<>'' then
-    begin
-      sa:=LOAD.Split(',');
-      LOAD:=sa[0].Trim();
-      for i:=1 to Length(sa)-1 do
-        LOAD:=LOAD+' '+sa[i].Trim();
-    end;
-  end;
 
-  if gameInfoTXT<>nil then FreeAndNil(gameInfoTXT);
-end;
+
+
 
 
 

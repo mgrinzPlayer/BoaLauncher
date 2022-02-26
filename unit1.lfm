@@ -2697,6 +2697,7 @@ object Form1: TForm1
     BorderSpacing.Left = 10
     Caption = 'Players:'
     ParentColor = False
+    Visible = False
   end
   object cbCoopPlayers: TComboBox
     AnchorSideLeft.Control = lblCoopPlayers
@@ -2724,6 +2725,7 @@ object Form1: TForm1
     Style = csDropDownList
     TabOrder = 8
     Text = 'Joining'
+    Visible = False
   end
   object lblCoopStartMap: TLabel
     AnchorSideLeft.Control = cbCoopPlayers
@@ -2737,6 +2739,7 @@ object Form1: TForm1
     BorderSpacing.Left = 10
     Caption = 'Starting map:'
     ParentColor = False
+    Visible = False
   end
   object cbCoopStartMap: TComboBox
     AnchorSideLeft.Control = lblCoopStartMap
@@ -2749,6 +2752,7 @@ object Form1: TForm1
     Width = 100
     ItemHeight = 15
     TabOrder = 9
+    Visible = False
   end
   object lblCoop_hostIP_or_port: TLabel
     AnchorSideLeft.Control = cbCoopStartMap
@@ -2762,6 +2766,7 @@ object Form1: TForm1
     BorderSpacing.Left = 10
     Caption = 'Hostname / IP:'
     ParentColor = False
+    Visible = False
   end
   object edtCoopJoinHostIP: TEdit
     AnchorSideLeft.Control = lblCoop_hostIP_or_port
@@ -2774,6 +2779,7 @@ object Form1: TForm1
     Width = 200
     TabOrder = 10
     Text = '127.0.0.1'
+    Visible = False
   end
   object edtCoopPort: TEdit
     AnchorSideLeft.Control = lblCoop_hostIP_or_port
@@ -2786,6 +2792,7 @@ object Form1: TForm1
     Width = 80
     TabOrder = 11
     Text = '5029'
+    Visible = False
   end
   object btnPlay: TButton
     AnchorSideLeft.Control = pnlSettingsControls

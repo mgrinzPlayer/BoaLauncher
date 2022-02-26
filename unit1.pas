@@ -39,6 +39,7 @@ type
     Description: string;
     Requirements: string;
     PrevievImageCount: integer; // e.g. do not search for 7.jpg inside .boa when PrevievImageCount is 6
+    DefaultBoAPlayer: boolean;
   end;
 
   dotBoAFileArray = array of dotBoAFile;
@@ -264,15 +265,27 @@ var
 begin
   Form2:=TForm2.Create(Form1);
 
-  scanAllBoaFiles(AddonList);
+  scanAllBoaFiles(AddonList,true);
 
   for i:=0 to Length(AddonList)-1 do
-    if Pos(AddonList[i].FileName,addonFileName)=0 then Form2.ListBox1.Items.AddObject(AddonList[i].Title,TStringStream.Create(AddonList[i].FileName));
+    if Pos(AddonList[i].FileName,addonFileName)=0 then
+      Form2.ListBox1.Items.AddObject(AddonList[i].Title+(ifthen<string>(AddonList[i].DefaultBoAPlayer, '', '*')), TStringStream.Create(AddonList[i].FileName));
 
   if addonFileName<>'' then
     for s in addonFileName.Split([':']) do
       for i:=0 to Length(AddonList)-1 do
-        if s=AddonList[i].FileName then begin Form2.ListBox2.Items.AddObject(AddonList[i].Title,TStringStream.Create(AddonList[i].FileName)); break; end;
+        if s=AddonList[i].FileName then
+  begin
+    if AddonList[i].DefaultBoAPlayer then
+      Form2.ListBox2.Items.AddObject(AddonList[i].Title    , TStringStream.Create(AddonList[i].FileName))
+    else if not Form2.notDefaultBoAPlayer then
+    begin
+      Form2.ListBox2.Items.AddObject(AddonList[i].Title+'*', TStringStream.Create(AddonList[i].FileName));
+      Form2.notDefaultBoAPlayer:=true;
+    end;
+
+    break;
+  end;
 
   Form2.ListBox2.Items.Add(' '); // empty item
 
@@ -283,12 +296,12 @@ begin
       chkbLaunchWithAddon.Checked:=true;
       chkbLaunchWithAddonVisibilityChange(true);
 
-      addonTitle:='"'+Form2.ListBox2.Items[0]+'"';
+      addonTitle:='"'+Form2.ListBox2.Items[0].Replace('*','')+'"';
       addonFileName:=TStringStream(Form2.ListBox2.Items.Objects[0]).DataString;
 
       for i:=1 to Form2.ListBox2.Items.Count-2 do  // -2, because we ignore the last empty item
       begin
-        if i<3 then addonTitle:=addonTitle+', "'+Form2.ListBox2.Items[i]+'"';
+        if i<3 then addonTitle:=addonTitle+', "'+Form2.ListBox2.Items[i].Replace('*','')+'"';
         if i=3 then addonTitle:=addonTitle+Format(rsAndMore,[(Form2.ListBox2.Items.Count-4)]);
         addonFileName:=addonFileName+':'+TStringStream(Form2.ListBox2.Items.Objects[i]).DataString;
       end;

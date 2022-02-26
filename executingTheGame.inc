@@ -2,7 +2,7 @@ procedure TForm1.gameExecute;
 var
   proc: TProcess;
   IWAD: string='';
-  LOAD: string='';
+  LOAD: TStringArray=[];
   s: string;
   procedure addParam(s: array of string);
   var i: integer;
