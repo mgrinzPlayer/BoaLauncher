@@ -67,6 +67,7 @@ type
     btnExit: TButton;
     btnAddonScan: TButton;
     btnAddonMultiselect: TButton;
+    pnlCoopSettings: TPanel;
     pnlAddonsContainer: TPanel;
     pnlSettingsControls: TPanel;
     pnlActiveAddon: TPanel;

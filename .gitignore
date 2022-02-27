@@ -7,3 +7,5 @@ boa-launcher.ini
 .svn
 *.7z
 *.zip
+*.lnk
+*.cmd
