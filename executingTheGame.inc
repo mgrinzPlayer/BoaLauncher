@@ -71,7 +71,7 @@ begin
       addParam([   '-port',edtCoopPort.Text   ]);
       addParam([   '+map',cbCoopStartMap.Text   ]);
       addParam([   '-skill',IntToStr(cbCoopSkill.ItemIndex)   ]);
-      if chkbCoopSVCHEATS.Checked then addParam([   '+sv_cheats','1'   ]);
+      if chkbCoopSVCHEATS.Checked then addParam([   '+set','sv_cheats','1'   ]);
     end;
   end;
 
