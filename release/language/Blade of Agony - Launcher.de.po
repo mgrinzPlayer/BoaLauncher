@@ -45,6 +45,36 @@ msgstr ""
 msgid "Port:"
 msgstr ""
 
+#: unit1.rscoopskill
+msgctxt "unit1.rscoopskill"
+msgid "Skill:"
+msgstr "Schwierigkeitsgrad:"
+
+#: unit1.rscoopskill_1
+msgctxt "unit1.rscoopskill_1"
+msgid "Warming-Up"
+msgstr "Aufwärmen"
+
+#: unit1.rscoopskill_2
+msgctxt "unit1.rscoopskill_2"
+msgid "Morning Stroll"
+msgstr "Morgenspaziergang"
+
+#: unit1.rscoopskill_3
+msgctxt "unit1.rscoopskill_3"
+msgid "Ordinary"
+msgstr "Nichts Besonderes"
+
+#: unit1.rscoopskill_4
+msgctxt "unit1.rscoopskill_4"
+msgid "Blazkowicz"
+msgstr "Blazkowicz"
+
+#: unit1.rscoopskill_5
+msgctxt "unit1.rscoopskill_5"
+msgid "Mein Leben!"
+msgstr "Mein Leben!"
+
 #: unit1.rscoopstartmap
 msgid "Starting map:"
 msgstr ""
