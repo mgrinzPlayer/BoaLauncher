@@ -2533,22 +2533,22 @@ object Form1: TForm1
     AnchorSideLeft.Side = asrCenter
     AnchorSideTop.Control = Image1
     AnchorSideTop.Side = asrBottom
-    Left = 280
+    Left = 130
     Height = 67
     Top = 155
-    Width = 340
+    Width = 640
     AutoSize = True
     BorderSpacing.Top = 15
     BevelOuter = bvNone
     ClientHeight = 67
-    ClientWidth = 340
+    ClientWidth = 640
     TabOrder = 5
     OnMouseDown = FormMouseDown
     object lblDetailPreset: TLabel
       AnchorSideLeft.Control = cbDetailPreset
       AnchorSideLeft.Side = asrCenter
       AnchorSideTop.Control = pnlSettingsControls
-      Left = 16
+      Left = 66
       Height = 15
       Top = 0
       Width = 68
@@ -2562,7 +2562,7 @@ object Form1: TForm1
       Left = 0
       Height = 23
       Top = 20
-      Width = 100
+      Width = 200
       BorderSpacing.Top = 5
       ItemHeight = 15
       Style = csDropDownList
@@ -2572,7 +2572,7 @@ object Form1: TForm1
       AnchorSideLeft.Control = cbDisplacementTextures
       AnchorSideLeft.Side = asrCenter
       AnchorSideBottom.Control = cbDisplacementTextures
-      Left = 110
+      Left = 260
       Height = 15
       Top = 0
       Width = 120
@@ -2585,10 +2585,10 @@ object Form1: TForm1
       AnchorSideLeft.Control = cbDetailPreset
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = cbDetailPreset
-      Left = 120
+      Left = 220
       Height = 23
       Top = 20
-      Width = 100
+      Width = 200
       BorderSpacing.Left = 20
       ItemHeight = 15
       Style = csDropDownList
@@ -2598,7 +2598,7 @@ object Form1: TForm1
       AnchorSideLeft.Control = cbLanguage
       AnchorSideLeft.Side = asrCenter
       AnchorSideBottom.Control = cbLanguage
-      Left = 263
+      Left = 513
       Height = 15
       Top = 0
       Width = 55
@@ -2612,10 +2612,10 @@ object Form1: TForm1
       AnchorSideLeft.Control = cbDisplacementTextures
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = cbDisplacementTextures
-      Left = 240
+      Left = 440
       Height = 23
       Top = 20
-      Width = 100
+      Width = 200
       BorderSpacing.Left = 20
       ItemHeight = 15
       Style = csDropDownList
@@ -2638,7 +2638,7 @@ object Form1: TForm1
     AnchorSideLeft.Control = pnlSettingsControls
     AnchorSideTop.Control = pnlSettingsControls
     AnchorSideTop.Side = asrBottom
-    Left = 280
+    Left = 130
     Height = 20
     Top = 227
     Width = 168
@@ -2676,21 +2676,21 @@ object Form1: TForm1
     AnchorSideLeft.Control = pnlSettingsControls
     AnchorSideTop.Control = pnlActiveAddon
     AnchorSideTop.Side = asrBottom
-    Left = 280
-    Height = 21
+    Left = 130
+    Height = 23
     Top = 247
     Width = 674
-    AutoSize = True
     BevelOuter = bvNone
-    ClientHeight = 21
+    ClientHeight = 23
     ClientWidth = 674
     TabOrder = 7
     object chkbCoop: TCheckBox
       AnchorSideLeft.Control = pnlCoopSettings
-      AnchorSideTop.Control = pnlCoopSettings
+      AnchorSideTop.Control = cbCoopPlayers
+      AnchorSideTop.Side = asrCenter
       Left = 0
       Height = 19
-      Top = 0
+      Top = 2
       Width = 54
       Caption = 'Co-op'
       OnChange = CoopChange
@@ -2703,7 +2703,7 @@ object Form1: TForm1
       AnchorSideTop.Side = asrCenter
       Left = 64
       Height = 15
-      Top = 2
+      Top = 4
       Width = 40
       BorderSpacing.Left = 10
       Caption = 'Players:'
@@ -2713,11 +2713,10 @@ object Form1: TForm1
     object cbCoopPlayers: TComboBox
       AnchorSideLeft.Control = lblCoopPlayers
       AnchorSideLeft.Side = asrBottom
-      AnchorSideTop.Control = lblCoopPlayers
-      AnchorSideTop.Side = asrCenter
+      AnchorSideTop.Control = pnlCoopSettings
       Left = 104
       Height = 23
-      Top = -2
+      Top = 0
       Width = 100
       ItemHeight = 15
       ItemIndex = 0
@@ -2745,7 +2744,7 @@ object Form1: TForm1
       AnchorSideTop.Side = asrCenter
       Left = 214
       Height = 15
-      Top = 2
+      Top = 4
       Width = 71
       BorderSpacing.Left = 10
       Caption = 'Starting map:'
@@ -2759,7 +2758,7 @@ object Form1: TForm1
       AnchorSideTop.Side = asrCenter
       Left = 285
       Height = 23
-      Top = -2
+      Top = 0
       Width = 100
       ItemHeight = 15
       TabOrder = 2
@@ -2772,7 +2771,7 @@ object Form1: TForm1
       AnchorSideTop.Side = asrCenter
       Left = 395
       Height = 15
-      Top = 2
+      Top = 4
       Width = 79
       BorderSpacing.Left = 10
       Caption = 'Hostname / IP:'
@@ -2786,7 +2785,7 @@ object Form1: TForm1
       AnchorSideTop.Side = asrCenter
       Left = 474
       Height = 23
-      Top = -2
+      Top = 0
       Width = 200
       TabOrder = 3
       Text = '127.0.0.1'
@@ -2799,7 +2798,7 @@ object Form1: TForm1
       AnchorSideTop.Side = asrCenter
       Left = 474
       Height = 23
-      Top = -2
+      Top = 0
       Width = 80
       TabOrder = 4
       Text = '5029'
@@ -2811,9 +2810,9 @@ object Form1: TForm1
     AnchorSideTop.Control = pnlCoopSettings
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Side = asrBottom
-    Left = 280
+    Left = 130
     Height = 25
-    Top = 281
+    Top = 283
     Width = 75
     BorderSpacing.Top = 13
     BorderSpacing.Bottom = 15
@@ -2825,9 +2824,9 @@ object Form1: TForm1
     AnchorSideLeft.Control = btnPlay
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = btnPlay
-    Left = 375
+    Left = 225
     Height = 25
-    Top = 281
+    Top = 283
     Width = 75
     BorderSpacing.Left = 20
     Caption = 'Exit'
@@ -2838,9 +2837,9 @@ object Form1: TForm1
     AnchorSideLeft.Control = btnExit
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = btnPlay
-    Left = 470
+    Left = 320
     Height = 25
-    Top = 281
+    Top = 283
     Width = 153
     BorderSpacing.Left = 20
     Caption = 'Scan for addons'
@@ -2851,9 +2850,9 @@ object Form1: TForm1
     AnchorSideLeft.Control = btnAddonScan
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = btnPlay
-    Left = 643
+    Left = 493
     Height = 25
-    Top = 281
+    Top = 283
     Width = 151
     BorderSpacing.Left = 20
     Caption = 'Select multiple addons'
@@ -2868,10 +2867,10 @@ object Form1: TForm1
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = pnlSettingsControls
     AnchorSideBottom.Side = asrBottom
-    Left = 635
+    Left = 785
     Height = 67
     Top = 155
-    Width = 250
+    Width = 100
     HorzScrollBar.Increment = 1
     HorzScrollBar.Page = 1
     HorzScrollBar.Smooth = True
@@ -2885,14 +2884,14 @@ object Form1: TForm1
     BorderSpacing.Left = 15
     BorderSpacing.Right = 15
     ClientHeight = 63
-    ClientWidth = 246
+    ClientWidth = 96
     TabOrder = 4
     Visible = False
     object pnlAddonsContainer: TPanel
       Left = 0
       Height = 63
       Top = 0
-      Width = 246
+      Width = 96
       Align = alClient
       TabOrder = 0
     end
