@@ -11,6 +11,8 @@ begin
   inifile.WriteString('Launcher co-op','StartMap',cbCoopStartMap.Text);
   inifile.WriteString('Launcher co-op','Hostname/IP',edtCoopJoinHostIP.Text);
   inifile.WriteString('Launcher co-op','Port',edtCoopPort.Text);
+  inifile.WriteInteger('Launcher co-op','skill',cbCoopSkill.ItemIndex);
+  inifile.WriteBool('Launcher co-op','sv_cheats',chkbCoopSVCHEATS.Checked);
 
   if chkbLaunchWithAddon.Checked then
   begin
@@ -38,6 +40,8 @@ begin
   cbCoopStartMap.Text:=inifile.ReadString('Launcher co-op','StartMap','INTROMAP');
   edtCoopJoinHostIP.Text:=inifile.ReadString('Launcher co-op','Hostname/IP','127.0.0.1');
   edtCoopPort.Text:=inifile.ReadString('Launcher co-op','Port','5029');
+  cbCoopSkill.ItemIndex:=inifile.ReadInteger('Launcher co-op','skill',2);
+  chkbCoopSVCHEATS.Checked:=inifile.ReadBool('Launcher co-op','sv_cheats',false);
   CoopChange(chkbCoop);
 
   addonTitle:=inifile.ReadString('Addon','addonTitle','');

@@ -45,6 +45,9 @@ type
   dotBoAFileArray = array of dotBoAFile;
 
   TForm1 = class(TForm)
+    cbCoopSkill: TComboBox;
+    chkbCoopSVCHEATS: TCheckBox;
+    lblCoopSkill: TLabel;
     lblDetailPreset: TLabel;
     cbDetailPreset: TComboBox;
     lblDisplacementTextures: TLabel;
@@ -170,6 +173,13 @@ resourcestring
   rsCoopStartMap = 'Starting map:';
   rsCoopHostIP = 'Hostname / IP:';
   rsCoopPort = 'Port:';
+  rsCoopSkill = 'Skill:';
+  rsCoopSkill_1 = 'Warming-Up';
+  rsCoopSkill_2 = 'Morning Stroll';
+  rsCoopSkill_3 = 'Ordinary';
+  rsCoopSkill_4 = 'Blazkowicz';
+  rsCoopSkill_5 = 'Mein Leben!';
+
 
 {$R *.lfm}
 
@@ -203,6 +213,8 @@ end;
 
 procedure TForm1.CoopChange(Sender: TObject);
 begin
+  pnlCoopSettings.DisableAutoSizing;
+
   if chkbCoop.Checked then
   begin
     lblCoopPlayers.Visible:=true;
@@ -217,6 +229,11 @@ begin
       lblCoop_hostIP_or_port.Caption:=rsCoopPort;
       edtCoopJoinHostIP.Visible:=false;
       edtCoopPort.Visible:=true;
+
+      lblCoopSkill.Visible:=true;
+      cbCoopSkill.Visible:=true;
+
+      chkbCoopSVCHEATS.Visible:=true;
     end
     else
     begin
@@ -226,6 +243,11 @@ begin
       lblCoop_hostIP_or_port.Caption:=rsCoopHostIP;
       edtCoopJoinHostIP.Visible:=true;
       edtCoopPort.Visible:=false;
+
+      lblCoopSkill.Visible:=false;
+      cbCoopSkill.Visible:=false;
+
+      chkbCoopSVCHEATS.Visible:=false;
     end;
   end
   else
@@ -239,7 +261,14 @@ begin
     lblCoop_hostIP_or_port.Visible:=false;
     edtCoopJoinHostIP.Visible:=false;
     edtCoopPort.Visible:=false;
+
+    lblCoopSkill.Visible:=false;
+    cbCoopSkill.Visible:=false;
+
+    chkbCoopSVCHEATS.Visible:=false;
   end;
+
+  pnlCoopSettings.EnableAutoSizing;
 end;
 
 procedure TForm1.btnAddonScanClick(Sender: TObject);
@@ -344,6 +373,7 @@ begin
   AdjustComboboxSize(cbLanguage, Canvas);
   AdjustComboboxSize(cbCoopStartMap, Canvas);
   AdjustComboboxSize(cbCoopPlayers, Canvas);
+  AdjustComboboxSize(cbCoopSkill, Canvas);
 
   btnAddonScan.Width:=Canvas.getTextWidth('_____'+btnAddonScan.Caption+'_____');
   btnAddonMultiselect.Width:=Canvas.getTextWidth('_____'+btnAddonMultiselect.Caption+'_____');
@@ -389,8 +419,8 @@ begin
 
   if yes then
   begin
-    pnlSettingsControls.AnchorHorizontalCenterTo(Form1);
-    pnlSettingsControls.BorderSpacing.Left:=0;
+    //pnlSettingsControls.AnchorHorizontalCenterTo(Form1);
+    //pnlSettingsControls.BorderSpacing.Left:=0;
 
     lblDetailPreset.AnchorHorizontalCenterTo(cbDetailPreset);
 
@@ -420,7 +450,7 @@ begin
   end
   else
   begin
-    pnlSettingsControls.AnchorParallel(akLeft,15,Form1);
+    //pnlSettingsControls.AnchorParallel(akLeft,15,Form1);
 
     lblDetailPreset.AnchorParallel(akLeft,0,pnlSettingsControls);
 
@@ -519,6 +549,13 @@ begin
   lblCoop_hostIP_or_port.Caption:=rsCoopHostIP;
   cbCoopPlayers.Items[0]:=rsCoopJoining;
   for s in multiplayerStartChapter.Split([',']) do cbCoopStartMap.Items.Add(s);
+  lblCoopSkill.Caption:=rsCoopSkill;
+  cbCoopSkill.Items.Add(rsCoopSkill_1);
+  cbCoopSkill.Items.Add(rsCoopSkill_2);
+  cbCoopSkill.Items.Add(rsCoopSkill_3);
+  cbCoopSkill.Items.Add(rsCoopSkill_4);
+  cbCoopSkill.Items.Add(rsCoopSkill_5);
+  cbCoopSkill.ItemIndex:=2;
 
   loadSettings;
   Image1.Picture.LoadFromResourceName(HInstance,'LAUNCHERIMAGE');

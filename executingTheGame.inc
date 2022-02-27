@@ -70,6 +70,8 @@ begin
       addParam([   '-host',IntToStr(cbCoopPlayers.ItemIndex)   ]);
       addParam([   '-port',edtCoopPort.Text   ]);
       addParam([   '+map',cbCoopStartMap.Text   ]);
+      addParam([   '-skill',IntToStr(cbCoopSkill.ItemIndex)   ]);
+      if chkbCoopSVCHEATS.Checked then addParam([   '+sv_cheats','1'   ]);
     end;
   end;
 
