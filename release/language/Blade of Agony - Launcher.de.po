@@ -27,23 +27,23 @@ msgstr ", und %d weitere"
 
 #: unit1.rscoop
 msgid "Co-op"
-msgstr ""
+msgstr "Kooperativ"
 
 #: unit1.rscoophostip
 msgid "Hostname / IP:"
-msgstr ""
+msgstr "Host Name / IP:"
 
 #: unit1.rscoopjoining
 msgid "Joining"
-msgstr ""
+msgstr "Teilnehmen"
 
 #: unit1.rscoopplayers
 msgid "Players:"
-msgstr ""
+msgstr "Spieler:"
 
 #: unit1.rscoopport
 msgid "Port:"
-msgstr ""
+msgstr "Port:"
 
 #: unit1.rscoopskill
 msgctxt "unit1.rscoopskill"
@@ -77,7 +77,7 @@ msgstr "Mein Leben!"
 
 #: unit1.rscoopstartmap
 msgid "Starting map:"
-msgstr ""
+msgstr "Startmission:"
 
 #: unit1.rscreditsauthor
 msgid " by %s "
