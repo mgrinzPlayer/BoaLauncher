@@ -37,7 +37,7 @@ begin
 
   chkbCoop.Checked:=inifile.ReadBool('Launcher co-op','Enabled',false);
   cbCoopPlayers.ItemIndex:=inifile.ReadInteger('Launcher co-op','Players',0);
-  cbCoopStartMap.Text:=inifile.ReadString('Launcher co-op','StartMap','INTROMAP');
+  cbCoopStartMap.Text:=inifile.ReadString('Launcher co-op','StartMap','Chapter 1');
   edtCoopJoinHostIP.Text:=inifile.ReadString('Launcher co-op','Hostname/IP','127.0.0.1');
   edtCoopPort.Text:=inifile.ReadString('Launcher co-op','Port','5029');
   cbCoopSkill.ItemIndex:=inifile.ReadInteger('Launcher co-op','skill',2);
