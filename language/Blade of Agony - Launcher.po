@@ -29,6 +29,10 @@ msgstr ""
 msgid "Co-op"
 msgstr ""
 
+#: unit1.rscoopenablecheats
+msgid "Enable Cheats"
+msgstr ""
+
 #: unit1.rscoophostip
 msgid "Hostname / IP:"
 msgstr ""

@@ -67,9 +67,12 @@ begin
     if cbCoopPlayers.ItemIndex=0 then addParam([   '-join',edtCoopJoinHostIP.Text   ])
     else
     begin
+      if cbCoopStartMap.ItemIndex=-1 then s:=cbCoopStartMap.Text
+                                     else s:=TStringStream(cbCoopStartMap.Items.Objects[cbCoopStartMap.ItemIndex]).DataString;
+
       addParam([   '-host',IntToStr(cbCoopPlayers.ItemIndex)   ]);
       addParam([   '-port',edtCoopPort.Text   ]);
-      addParam([   '+map',cbCoopStartMap.Text   ]);
+      addParam([   '+map',s   ]);
       addParam([   '-skill',IntToStr(cbCoopSkill.ItemIndex)   ]);
       if chkbCoopSVCHEATS.Checked then addParam([   '+set','sv_cheats','1'   ]);
     end;

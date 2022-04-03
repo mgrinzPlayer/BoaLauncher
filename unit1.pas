@@ -5,7 +5,7 @@ unit Unit1;
 interface
 
 uses
-  Unit2, Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
+  Unit2, Classes, SysUtils, StrUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
   ComCtrls, Zipper, IniFiles, process{$ifdef windows}, Windows{$ifend};
 
 var
@@ -16,7 +16,7 @@ var
   {$ifend windows}
   ipk3Name:string ='boa.ipk3:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
 
-  multiplayerStartChapter: string = 'INTROMAP,C2M1,C3INTRO:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONSPADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONSPADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONSPADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
+  multiplayerStartChapter: string = 'Chapter 1:INTROMAP,Chapter 2:C2M1,Chapter 3:C3INTRO:PADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONSPADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONSPADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONSPADDINGPADDINGPADDINGPADDINGFORYOURHEXEDITMODIFICATIONS';
   prepareBoA_addons_page_processing: boolean=false;
   terminate: boolean=false;
 
@@ -179,6 +179,7 @@ resourcestring
   rsCoopSkill_3 = 'Ordinary';
   rsCoopSkill_4 = 'Blazkowicz';
   rsCoopSkill_5 = 'Mein Leben!';
+  rsCoopEnableCheats = 'Enable Cheats';
 
 
 {$R *.lfm}
@@ -220,6 +221,8 @@ begin
     lblCoopPlayers.Visible:=true;
     cbCoopPlayers.Visible:=true;
     lblCoop_hostIP_or_port.Visible:=true;
+
+    chkbCoopSVCHEATS.Caption:=rsCoopEnableCheats;
 
     if cbCoopPlayers.ItemIndex<>0 then
     begin
@@ -299,7 +302,7 @@ begin
 
   for i:=0 to Length(AddonList)-1 do
     if Pos(AddonList[i].FileName,addonFileName)=0 then
-      Form2.ListBox1.Items.AddObject(AddonList[i].Title+(ifthen<string>(AddonList[i].DefaultBoAPlayer, '', '*')), TStringStream.Create(AddonList[i].FileName));
+      Form2.ListBox1.Items.AddObject(AddonList[i].Title+(SysUtils.ifthen<string>(AddonList[i].DefaultBoAPlayer, '', '*')), TStringStream.Create(AddonList[i].FileName));
 
   if addonFileName<>'' then
     for s in addonFileName.Split([':']) do
@@ -548,7 +551,7 @@ begin
   lblCoopPlayers.Caption:=rsCoopPlayers;
   lblCoop_hostIP_or_port.Caption:=rsCoopHostIP;
   cbCoopPlayers.Items[0]:=rsCoopJoining;
-  for s in multiplayerStartChapter.Split([',']) do cbCoopStartMap.Items.Add(s);
+  for s in multiplayerStartChapter.Split([',']) do cbCoopStartMap.Items.AddObject(  s.Split([':'])[0], TStringStream.Create(s.Split([':'])[1])  );
   lblCoopSkill.Caption:=rsCoopSkill;
   cbCoopSkill.Items.Add(rsCoopSkill_1);
   cbCoopSkill.Items.Add(rsCoopSkill_2);

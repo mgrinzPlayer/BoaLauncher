@@ -62,7 +62,7 @@ end;
 procedure removePadding(var s: string);
 var a: integer;
 begin
-  a:=pos(':',s);
+  a:=rpos(':',s);
   if a>0 then s:=copy(s,1,a-1);
 end;
 
@@ -87,12 +87,12 @@ end;
 {$else}
 function min(a,b: integer):integer;
 begin
-  exit(IfThen<integer>(a<b,a,b));
+  exit(SysUtils.IfThen<integer>(a<b,a,b));
 end;
 
 function max(a,b: integer):integer;
 begin
-  exit(IfThen<integer>(a<b,b,a));
+  exit(SysUtils.IfThen<integer>(a<b,b,a));
 end;
 
 procedure AdjustComboboxSize(cb: TComboBox; canvas: TCanvas);
